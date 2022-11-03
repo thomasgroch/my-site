@@ -23,7 +23,7 @@
     "@types/tailwindcss": "^3.0.10",
     "@vitejs/plugin-vue": "^2.3.3",
     "autoprefixer": "^10.4.7",
-    "flowbite": "^1.4.7",
+    "flowbite": "^1.5.3",
     "mailgun-js": "^0.22.0",
     "nprogress": "0.2.0",
     "postcss": "^8.1.0",
