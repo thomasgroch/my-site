@@ -1,0 +1,28 @@
+{
+  "project": {
+    "type_0": "Academic",
+    "type_1": "Professional",
+    "type_2": "Freelancer",
+    "type_3": "Personal",
+    "description_0": "Website for international currency transactions, enabling currency conversion. Construction of the access interfaces, the system's internal interfaces and new features.",
+    "description_1": "Course site based on the edools platform. Creation of cards for courses page and maintenance.",
+    "description_2": "Courses website based on the edools platform. Maintenance of the interface and navigation, development of features and integrations",
+    "description_3": "Metrics website about Twitter data. Tweetric is able to build daily metrics about a user's public data. Backend, frontend and API consumption construction.",
+    "description_4": "Registration form for the Forum do Feijão, fills in the fields using the zip code via the postal service API.",
+    "description_5": "Used and semi-new car website. Displays and informs data about the business, uses forms for financing consultancy and sales by email."
+  },
+  "profile_description": "I'm motivated and I'm always learning new technologies, updating myself through documentation and articles. I recognize the tradeoffs of client-side frameworks and analyze and test the code, always looking to improve them. I aspire to modern design but recognize that good design must also meet a real need.",
+  "stack_description_1": "My main stack is composed of tools associated with VueJS. To handle the styling part, I use TailwindCSS.",
+  "stack_description_2": "I design modern and resilient interfaces for web applications. I work meticulously to design components that are optimized for reuse, compatibility and lightness resulting in a solid interface that reacts in real time to every system state.",
+  "stack_description_3": "I am familiar with templates engines used in backend frameworks.",
+  "stack_description_4": "I have analytical and operational knowledge of database.",
+  "stack_description_5": "I can orchestrate the basic settings to make an application available with these tools.",
+  "stack_description_6": "You can see above knowledge adjacent to the front-end field. Many of them were acquired by getting involved with the entire application stack, this helps me understand how people on the team connect.",
+  "nav_about": "About",
+  "nav_stack": "Stack",
+  "nav_projects": "Projects",
+  "nav_contact": "Contact",
+  "role_profile": "Web developer",
+  "nothing_here": "There is nothing here.",
+  "goto_site":"go to site"
+}

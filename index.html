@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Front end developer who builds awesome web solutions">
+  <meta name="keywords" content="HTML,CSS,JS,Vuejs,Vite,Frontend,Web,Developer">
+  <meta name="author" content="Thomas Groch">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thomas Groch</title>
+  <script>
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  </script>
+</head>
+<body class="dark:bg-neutral-800">
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

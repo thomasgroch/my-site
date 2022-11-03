@@ -1,0 +1,19 @@
+Humans.txt is a legal initiative of (humanstxt.org), to talk a little about who is behind the web-based applications, the team involved and the stack used.
+Remembering, we are human beings and not machines.
+
+/* SITE */
+    Last update: 2019-03-18
+    Site name: Thomas Groch
+    Site URL: https://camilarody.dev/
+    Language: English/Portugues
+    Contact: camilasrody@gmail.com
+    Built with: Vue.js, HTML5, CSS3, Tailwind, Accessibility techniques
+    Software: Visual Code Studio (VS Code)
+
+/* AUTHOR */
+    Name:        Thomas Groch
+    Nickname:    camilasrody
+    Title:       Frontend Software Developer
+    Location:    Curitiba. Paraná, Brazil
+    Site:        https://camilarody.dev/
+    Gitlab:      https://gitlab.com/camilasrody/
