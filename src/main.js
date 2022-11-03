@@ -9,8 +9,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons'
-import { createI18n } from 'vue-i18n/index'
-import { messages } from "vite-i18n-resources";
+import i18n from "./i18n";
 
 
 import 'flowbite';
@@ -23,15 +22,6 @@ library.add(fab)
 const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon)
 // app.component('ValidationProvider', ValidationProvider);
-
-const i18n = createI18n({
-    legacy: false,
-    locale: 'pt',
-    fallbackLocale: 'pt',
-    globalInjection: true,
-    silentTranslationWarn: true,
-    messages
-  })
 
   
 app.config.productionTip = false

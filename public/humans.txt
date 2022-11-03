@@ -3,17 +3,19 @@ Remembering, we are human beings and not machines.
 
 /* SITE */
     Last update: 2019-03-18
-    Site name: Thomas Groch
-    Site URL: https://camilarody.dev/
+    Site name:
+    Site URL:
     Language: English/Portugues
-    Contact: camilasrody@gmail.com
-    Built with: Vue.js, HTML5, CSS3, Tailwind, Accessibility techniques
+    Twitter: thgroch
+    Contact: thomas.groch@gmail.com
+    Built with: Vue.js, Vuepress, HTML5, CSS3, T, Accessibility techniques, PWA e SEO
     Software: Visual Code Studio (VS Code)
 
 /* AUTHOR */
-    Name:        Thomas Groch
-    Nickname:    camilasrody
-    Title:       Frontend Software Developer
-    Location:    Curitiba. Paraná, Brazil
-    Site:        https://camilarody.dev/
-    Gitlab:      https://gitlab.com/camilasrody/
+    Name:        Thomas Letsch Groch
+    Nickname:    thgroch
+    Title:       WebDeveloper
+    Location:    Florianópolis. Santa Catarina, Brazil
+    Site:        https://thomasgroch.me/
+    Twitter:     https://twitter.com/thgroch/
+    Github:      https://github.com/thomasgroch/
