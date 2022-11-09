@@ -1,0 +1,396 @@
+{
+  "version": 1,
+  "basics": {
+    "name": "Thomas Letsch Groch",
+    "label": "Web Developer",
+    "picture": "https://thomasgroch.xyz/images/avatar.png",
+    "email": "thomas.groch@gmail.com",
+    "phone": "‭",
+    "website": "https://thomasgroch.xyz/",
+    "summary": "Exercer atividades de desenvolvedor sênior de qualidade:\n• Monitoramento de infraestrutura e saúde da plataformas SaaS;\n• Análise e geração indicadores operacionais e de negócio;\n• Integrações entre sistemas (sincronização, agendamento e fila de processos);\nNo mais serei muito minucioso para que ambos tenhamos uma excelente experiência.",
+    "highlights": null,
+    "location": {
+      "address": "",
+      "postalCode": "",
+      "city": "",
+      "countryCode": "BR",
+      "region": ""
+    },
+    "profiles": [
+      {
+        "network": "Linkedin",
+        "username": "thomasgroch",
+        "url": "https://www.linkedin.com/in/thomasgroch"
+      },
+      {
+        "network": "Skype",
+        "username": "thomas.groch",
+        "url": "skype:thomasgroch?chat"
+      }
+    ]
+  },
+  "work": [
+    {
+      "type": 0,
+      "company": "Hero99",
+      "position": "Senior Web Application Developer",
+      "website": "https://hero99.com.br/",
+      "startDate": "2017-10-01",
+      "summary": "Melhora da disponibilidade usando proxy reverso em docker integrado ao workflow de CI zero-downtime deployment. Solução de automação para agregar em tempo real mensageiros instantâneos  distintos (fb, whatsapp e instagram).",
+      "highlights": [],
+      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
+      "endDate": "2016-07-01"
+    },
+    {
+      "type": 0,
+      "company": "Langowski",
+      "position": "Gerente de Projeto da Tecnologia da Informação",
+      "website": "https://langowski.com.br/",
+      "startDate": "2016-03-01",
+      "summary": "Desenvolvimento de sistema de CRM Multitenancy. Implementação de gerenciador de empreendimentos, pessoas e empresas do projeto.",
+      "highlights": [],
+      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
+      "endDate": "2016-07-01"
+    },
+    {
+      "type": 0,
+      "company": "TagBox",
+      "position": "Analista de Sistemas Web",
+      "website": "",
+      "startDate": "2015-05-01",
+      "summary": "Produção de Marketplace de moda com PHP, Codeigniter, RESTfull, Amazon AWS (EC2, AMIs, Elastic IPs, S3), Vagrant, Git-remote, cURL e XML Parser.",
+      "highlights": [],
+      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
+      "endDate": "2015-08-01"
+    },
+    {
+      "type": 0,
+      "company": "RESERVA",
+      "position": "Analista de Sistemas",
+      "website": "https://www.usereserva.com/",
+      "startDate": "2014-01-01",
+      "summary": "Desenvolvimento de API para integração do e-commerce da Reserva para portal de vendas MercadoLivre e ajudei a lidar com a grande escala de usuários.",
+      "highlights": [],
+      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
+      "endDate": "2014-01-01"
+    },
+    {
+      "type": 0,
+      "company": "Artexpressa",
+      "position": "Desenvolvedor Web",
+      "website": "",
+      "startDate": "2012-01-01",
+      "summary": "Desenvolvimento de sistemas web em PHP/MYSQL. Modelagem de sistema gestão e agendamento de palestras. Implementação de funcionalidade para emissão de certificado digital.",
+      "highlights": [],
+      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
+      "endDate": "2013-01-01"
+    },
+    {
+      "type": 0,
+      "company": "Arquitetura Abstrata",
+      "position": "Desenvolvedor Web",
+      "website": "",
+      "startDate": "2011-01-01",
+      "summary": "Desenvolvimento de sistema de incubadoras de empresas. Implementação de gerenciador de empreendimentos, pessoas e empresas. Desenvolvimento de processo seletivo do empreendimento. Adaptação do módulo de gerenciamento financeiro empresarial.",
+      "highlights": [],
+      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
+      "endDate": "2011-01-01"
+    },
+    {
+      "type": 0,
+      "company": "Forpix",
+      "position": "Desenvolvedor / Analista de Dados",
+      "website": "",
+      "startDate": "2009-01-01",
+      "summary": "Modelagem de sistema de CMS, levantamento de requisitos de acordo com necessidade apresentada pelo cliente. Prestação de serviços de desenvolvimento para experiência intuitiva.",
+      "highlights": [],
+      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
+      "endDate": "2010-01-01"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Criação e Desenvolvimento PSC",
+      "startDate": "2008-12-31",
+      "summary": "Desenvolvimento de um CMS, programação de interface visual, diagramação e montagem do site PHP/MySql/HTML/CSS.",
+      "url": "http://web.archive.org/web/20110817055820/http://site.psc.institucional.ws/",
+      "endDate": "2009-12-31"
+    }
+  ],
+  "additionalWork": [
+    {
+      "company": "",
+      "position": "",
+      "website": "",
+      "startDate": "",
+      "endDate": "",
+      "summary": "",
+      "highlights": [
+        ""
+      ]
+    }
+  ],
+  "workLabel": "",
+  "additionalWorkLabel": "",
+  "education": [
+    {
+      "institution": "Instituto Tecnológico SENAC RJ",
+      "area": "Graduação em Sistemas para Internet ",
+      "studyType": "System Development",
+      "startDate": "2008-12-31",
+      "gpa": "",
+      "courses": [],
+      "endDate": "2011-12-31"
+    },
+    {
+      "institution": "Instituto Tecnológico SENAC RJ",
+      "area": "Tecnologia de Redes de Computadores ",
+      "studyType": "Técnico",
+      "startDate": "2005-02",
+      "endDate": "2008-01",
+      "gpa": "",
+      "courses": [
+        ""
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "name": "",
+      "publisher": "",
+      "releaseDate": "",
+      "website": "",
+      "summary": "",
+      "isbn": ""
+    }
+  ],
+  "additionalPublications": [
+    {
+      "name": "",
+      "publisher": "",
+      "releaseDate": "",
+      "website": "",
+      "summary": "",
+      "isbn": ""
+    }
+  ],
+  "publicationsLabel": "",
+  "additionalPublicationsLabel": "",
+  "skills": [
+    {
+      "name": "PHP 7",
+      "level": "Senior",
+      "keywords": [
+        "Laravel",
+        "TDD",
+        "Web Scraping"
+      ]
+    },
+    {
+      "name": "Comércio eletrônico",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "RESTful API",
+      "level": "Master",
+      "keywords": []
+    },
+    {
+      "name": "Amazon Web Services",
+      "level": "",
+      "keywords": []
+    }
+  ],
+  "languages": [
+    {
+      "language": "Português",
+      "fluency": "Natal"
+    },
+    {
+      "language": "English",
+      "fluency": "Fluent"
+    }
+  ],
+  "stack": {
+    "front": [
+      {
+        "name": "HTML5",
+        "photo": "stack/html-logo.png",
+        "href": "https://www.w3schools.com"
+      },
+      {
+        "name": "CSS3",
+        "photo": "stack/css-logo.png",
+        "href": "https://www.w3schools.com"
+      },
+      {
+        "name": "SASS",
+        "photo": "stack/sass-logo.png",
+        "href": "https://sass-lang.com"
+      },
+      {
+        "name": "Stylus",
+        "photo": "stack/stylus-logo.png",
+        "href": "https://stylus-lang.com"
+      },
+      {
+        "name": "jQuery",
+        "photo": "stack/jquery-logo.png",
+        "href": "https://jquery.com"
+      },
+      {
+        "name": "TailwindCSS",
+        "photo": "stack/tailwindcss-logo.png",
+        "href": "https://tailwindcss.com"
+      },
+      {
+        "name": "Vuetify",
+        "photo": "stack/vuetify-logo.png",
+        "href": "https://vuetifyjs.com"
+      },
+      {
+        "name": "Vite",
+        "photo": "stack/vite-logo.png",
+        "href": "https://vuex.vuejs.org/"
+      },
+      {
+        "name": "VueJS",
+        "photo": "stack/vue-logo.png",
+        "href": "https://vuejs.org"
+      },
+      {
+        "name": "Vuex",
+        "photo": "stack/vue-logo.png",
+        "href": "https://vuex.vuejs.org/"
+      },
+      {
+        "name": "Cypress",
+        "photo": "stack/cypress-logo.png",
+        "href": "https://cypress.io/"
+      },
+      {
+        "name": "Axios",
+        "photo": "stack/axios-logo.png",
+        "href": "https://axios-http.com/docs/intro/"
+      },
+      {
+        "name": "Vue Router",
+        "photo": "stack/vue-logo.png",
+        "href": "https://router.vuejs.org/"
+      }
+    ],
+    "back": [
+      {
+        "name": "Laravel",
+        "photo": "stack/laravel-logo.png",
+        "href": "https://laravel.com"
+      },
+      {
+        "name": "Ruby on rails",
+        "photo": "stack/ruby-logo.png",
+        "href": "https://rubyonrails.org/"
+      }
+    ],
+    "database": [
+      {
+        "name": "Redis",
+        "photo": "stack/redis-logo.png",
+        "href": "https://redis.io"
+      },
+      {
+        "name": "GraphQL",
+        "photo": "stack/graph-logo.png",
+        "href": ""
+      },
+      {
+        "name": "Postgres",
+        "photo": "stack/postgres-logo.png",
+        "href": "https://www.postgresql.org/"
+      }
+    ],
+    "infra": [
+      {
+        "name": "Docker",
+        "photo": "stack/docker-logo.png",
+        "href": "https://docker.com"
+      },
+      {
+        "name": "Heroku",
+        "photo": "stack/heroku-logo.png",
+        "href": "https://heroku.com/"
+      },{
+        "name": "Netlify",
+        "photo": "stack/netlify-logo.png",
+        "href": "https://netlify.com/"
+      },
+      {
+        "name": "AWS",
+        "photo": "stack/aws-logo.png",
+        "href": "https://aws.amazon.com/"
+      }
+    ],
+    "misc": [
+      {
+        "name": "Figma",
+        "photo": "stack/figma-logo.png",
+        "href": "https://www.figma.com/"
+      },
+      {
+        "name": "Zeplin",
+        "photo": "stack/zeplin-logo.png",
+        "href": "https://zeplin.io/"
+      },
+      {
+        "name": "Git",
+        "photo": "stack/git-logo.png",
+        "href": "https://git-scm.com/"
+      },
+      {
+        "name": "Pnpm",
+        "photo": "stack/pnpm-logo.png",
+        "href": "https://pnpm.io/"
+      },
+      {
+        "name": "Yarn",
+        "photo": "stack/yarn-logo.png",
+        "href": "https://yarnpkg.com/"
+      },
+      {
+        "name": "NPM",
+        "photo": "stack/npm-logo.png",
+        "href": "https://www.npmjs.com/"
+      },
+      {
+        "name": "Lint",
+        "photo": "stack/lint-logo.png",
+        "href": ""
+      },
+      {
+        "name": "Arduino",
+        "photo": "stack/arduino-logo.png",
+        "href": "https://www.arduino.cc/"
+      },
+      {
+        "name": "Linux",
+        "photo": "stack/linux-logo.png",
+        "href": "https://www.linux.org/"
+      },
+      {
+        "name": "MacOS",
+        "photo": "stack/macos-logo.png",
+        "href": "https://www.apple.com/macos/monterey/"
+      },
+      {
+        "name": "Windows",
+        "photo": "stack/windows-logo.png",
+        "href": "https://www.microsoft.com/"
+      },
+      {
+        "name": "Terminal",
+        "photo": "stack/terminal-logo.png",
+        "href": ""
+      }
+    ]
+  }
+}

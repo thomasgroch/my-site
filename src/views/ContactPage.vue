@@ -9,12 +9,12 @@ import nprogress from 'nprogress'
     <div v-if="modal.visible" @click.self="modal.visible = false"
          class="absolute z-20 bg-white dark:bg-neutral-800 border dark:border-neutral-700 rounded shadow-lg p-8 m-4 max-h-full text-center">
       <div class="mb-4">
-        <h1 class="dark:text-neutral-200 text-neutral-600">{{ $t('contact.hello') }} <span class="font-bold text-orange-400">{{
+        <h1 class="dark:text-neutral-200 text-neutral-600">{{ $t('contact.hello') }} <span class="font-bold text-green-400">{{
             form.nome
           }}</span></h1>
       </div>
       <div class="mb-8">
-        <div class="flex bg-orange-100 dark:bg-neutral-600 border-t-4 border-orange-400 rounded-b px-4 py-3"
+        <div class="flex bg-green-100 dark:bg-neutral-600 border-t-4 border-green-400 rounded-b px-4 py-3"
              role="alert">
           <div class="py-1">
 
@@ -24,14 +24,14 @@ import nprogress from 'nprogress'
             </svg>
           </div>
           <div class="text-gray-600">
-            <p class="font-bold text-orange-400 dark:text-orange-400">{{ $t('contact.success_msg') }}</p>
+            <p class="font-bold text-green-400 dark:text-green-400">{{ $t('contact.success_msg') }}</p>
             <p class="text-sm text-neutral-600 dark:text-neutral-300">{{ $t('contact.return_msg') }}</p>
           </div>
         </div>
       </div>
       <div class="flex justify-center">
         <button
-          class="bg-neutral-200 shadow dark:bg-neutral-300 dark:text-neutral-500 text-neutral-500 dark:hover:border-transparent dark:hover:text-orange-400 dark:hover:bg-neutral-700 hover:bg-orange-100 hover:text-orange-400 drop-shadow-md hover:shadow-sm-light px-4 py-2 border border-transparent hover:border-orange-100 rounded"
+          class="bg-neutral-200 shadow dark:bg-neutral-300 dark:text-neutral-500 text-neutral-500 dark:hover:border-transparent dark:hover:text-green-400 dark:hover:bg-neutral-700 hover:bg-green-100 hover:text-green-400 drop-shadow-md hover:shadow-sm-light px-4 py-2 border border-transparent hover:border-green-100 rounded"
           @click.self="modal.visible = false">{{ $t('contact.close') }}
         </button>
       </div>
@@ -54,10 +54,10 @@ import nprogress from 'nprogress'
         <div class="flex flex-wrap -mx-3 mb-2">
           <div class="w-full md:w-full px-3 mb-3 md:mb-0">
 
-            <label class="block tracking-wide text-orange-400 text-lg mb-2"
+            <label class="block tracking-wide text-green-400 text-lg mb-2"
                    for="grid-nome">{{ $t('contact.name') }}</label>
             <input
-              class="caret-orange-400 border-transparent dark:focus:border-neutral-500 focus:border-orange-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
+              class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
               :class="{'input': true, 'border-red': errors.has('nome') }"
               name="nome"
               v-model="form.nome"
@@ -75,11 +75,11 @@ import nprogress from 'nprogress'
           <div class="w-full px-3 mb-2 md:mb-0"
                :class="{'input': true, 'md:w-1/2': hasFilled('email') }">
 
-            <label class="block tracking-wide text-orange-400 text-lg  mb-2"
+            <label class="block tracking-wide text-green-400 text-lg  mb-2"
                    for="grid-email">{{ $t('contact.email') }}</label>
             <div class="relative">
               <input
-                class="caret-orange-400 border-transparent dark:focus:border-neutral-500 focus:border-orange-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
+                class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
                 :class="{'input': true, 'border-red': errors.has('email') }"
                 name="email"
                 v-model="form.email"
@@ -94,11 +94,11 @@ import nprogress from 'nprogress'
           <div class="w-full md:w-1/2 px-3 mb-3 md:mb-0"
                v-show="hasFilled('email')">
 
-            <label class="block tracking-wide text-orange-400 text-lg  mb-2"
+            <label class="block tracking-wide text-green-400 text-lg  mb-2"
                    for="grid-telefone">{{ $t('contact.telephone') }}</label>
             <div class="relative">
               <input
-                class="caret-orange-400 border-transparent dark:focus:border-neutral-500 focus:border-orange-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
+                class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
                 :class="{'input': true, 'border-red': errors.has('telefone') }"
                 name="telefone"
                 v-model="form.telefone"
@@ -116,10 +116,10 @@ import nprogress from 'nprogress'
         <div class="flex flex-wrap -mx-3 mb-3">
           <div class="w-full px-3">
 
-            <label class="block tracking-wide text-orange-400 text-lg mb-2"
+            <label class="block tracking-wide text-green-400 text-lg mb-2"
                    for="grid-mensagem">{{ $t('contact.help') }}</label>
             <textarea
-              class="caret-orange-400 border-transparent dark:focus:border-neutral-500 focus:border-orange-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded pt-3 pb-10 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
+              class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded pt-3 pb-10 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
               :class="{'input': true, 'border-red': errors.has('mensagem') }"
               name="mensagem"
               v-model="form.mensagem"
@@ -137,12 +137,12 @@ import nprogress from 'nprogress'
           <div class="w-full px-3 mb-3 md:mb-0"
                :class="{'input': true, 'md:w-1/2': hasFilled('estado') }">
 
-            <label class="block tracking-wide text-orange-400 text-lg mb-2"
+            <label class="block tracking-wide text-green-400 text-lg mb-2"
                    for="grid-estado">{{ $t('contact.state') }}</label>
             <div class="relative">
               <Estados @onEstadoSelected="changeEstado"
                        :class="{'input': true, 'border-red': errors.has('estado') }"
-                       class="caret-orange-400 dark:bg-neutral-600 bg-neutral-200 border-transparent dark:focus:border-neutral-500 focus:border-orange-300 focus:ring-0 dark:focus:bg-neutral-100"
+                       class="caret-green-400 dark:bg-neutral-600 bg-neutral-200 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100"
                        name="estado"
                        v-model="form.estado"
                        id="grid-estado"/>
@@ -154,13 +154,13 @@ import nprogress from 'nprogress'
           <div class="w-full md:w-1/2 px-3 mb-3 md:mb-0"
                v-if="hasFilled('estado')">
 
-            <label class="block tracking-wide text-orange-400 text-lg  mb-2"
+            <label class="block tracking-wide text-green-400 text-lg  mb-2"
                    for="grid-cidade">{{ $t('contact.city') }}</label>
             <p class="text-red-500 text-lg italic"
                v-if="errors.has('estado')">{{ errors.first('estado') }}</p>
             <div class="relative">
               <Cidades
-                class="caret-orange-400 dark:bg-neutral-600 bg-neutral-200 border-transparent dark:focus:border-neutral-500 focus:border-orange-300 focus:ring-0 dark:focus:bg-neutral-100"
+                class="caret-green-400 dark:bg-neutral-600 bg-neutral-200 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100"
                 :class="{'input': true, 'border-red': errors.has('cidade') }"
                 name="cidade"
                 v-model="form.cidade"
@@ -194,7 +194,7 @@ import nprogress from 'nprogress'
 
           <div class="flex items-center justify-center px-3 my-6 md:mb-0 items-center p-5">
             <button
-              class="rounded border-2 font-medium px-8 py-2.5 text-base bg-transparent text-neutral-500 border-orange-300 shadow-xs dark:hover:text-orange-400 dark:shadow-white dark:text-neutral-200 dark:border-neutral-200 dark:hover:bg-neutral-700 dark:hover:border-neutral-700 hover:drop-shadow-lg hover:bg-orange-100 hover:text-orange-400 hover:border-orange-100"
+              class="rounded border-2 font-medium px-8 py-2.5 text-base bg-transparent text-neutral-500 border-green-300 shadow-xs dark:hover:text-green-400 dark:shadow-white dark:text-neutral-200 dark:border-neutral-200 dark:hover:bg-neutral-700 dark:hover:border-neutral-700 hover:drop-shadow-lg hover:bg-green-100 hover:text-green-400 hover:border-green-100"
               type="submit">{{ $t('contact.submit') }}
             </button>
           </div>

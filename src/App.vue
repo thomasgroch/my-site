@@ -102,10 +102,10 @@ export default {
 
 h3::before {
   content: "#"
-  @apply pr-2 text-orange-400 invisible
+  @apply pr-2 text-green-400 invisible
 }
 
 h3:hover:before {
-  @apply pr-2 text-orange-400 visible
+  @apply pr-2 text-green-400 visible
 }
 </style>

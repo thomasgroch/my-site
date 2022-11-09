@@ -10,19 +10,19 @@ const currentPath = computed(() =>route.path)
         v-if="currentPath != '/'">
       <a class="dark:hover:bg-transparent px-2" href="https://linkedin.com/in/camilarody" target="_blank">
         <font-awesome-icon :icon="['fab', 'linkedin']"
-                           class="fa-2x text-neutral-500 hover:text-orange-400 dark:bg-transparent px" />
+                           class="fa-2x text-neutral-500 hover:text-green-400 dark:bg-transparent px" />
       </a>
       <a class="dark:hover:bg-transparent px-2" href="https://gitlab.com/camilasrody" target="_blank">
         <font-awesome-icon :icon="['fab', 'gitlab']"
-                           class="fa-2x text-neutral-500 hover:text-orange-400 dark:bg-transparent" />
+                           class="fa-2x text-neutral-500 hover:text-green-400 dark:bg-transparent" />
       </a>
       <a class="dark:hover:bg-transparent px-2" href="https://github.com/camilasrody" target="_blank">
         <font-awesome-icon :icon="['fab', 'github-alt']"
-                           class="fa-2x text-neutral-500 hover:text-orange-400 " />
+                           class="fa-2x text-neutral-500 hover:text-green-400 " />
       </a>
     </div>
     
-    <p class="text-sm text-neutral-500 text-center">© 2015 - {{ new Date().getFullYear() }} Thomas Groch.</p>
+    <p class="text-sm text-neutral-500 text-center">© 2002 - {{ new Date().getFullYear() }} Thomas Groch.</p>
     <p class="text-sm text-neutral-500 text-center" v-if="commit_ref">
       <span v-if="node_version">Build with node {{ node_version }}<br /></span>
       <a :href="repo_url+'/-/commit/' + commit_ref" target="_blank">#{{ commit_ref.substring(0,7) }}</a>

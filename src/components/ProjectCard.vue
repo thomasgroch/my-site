@@ -1,31 +1,31 @@
 <template>
 
-<div class="p-3 md:max-w-full w-full max-w-full lg:flex md:mt-10 mt-20 rounded-lg border shadow-3xl border-orange-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator">
+<div class="p-3 md:max-w-full w-full max-w-full lg:flex md:mt-10 mt-20 rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator">
   <div class="sm:h-64 h-48 lg:h-auto lg:w-48 flex-none object-cover overflow-hidden bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l lg:rounded-b rounded-b-none rounded-r "
-      :style="'background-image: url(\''+ item.photo +'\'); background-size: 100%; '">
+      :style="'background-image: url(\''+ item.img +'\'); background-size: 100%; '">
   </div>
 
   <div class="p-4 flex flex-col justify-between leading-normal">
       <div class="mb-8">
         <div class="text-neutral-500 flex items-center text-xs">
-          <font-awesome-icon :icon="['fas', typeIcon ]" class="text-orange-500"></font-awesome-icon>
+          <font-awesome-icon :icon="['fas', typeIcon ]" class="text-green-500"></font-awesome-icon>
           <p class="text-sm p-2">{{ $t('general.project.type_'+ item.type) }}</p>
         </div>
         <h3 class="text-center pb-5">
           <a
             :href="item.href"
             target="_blank"
-            class="font-normal text-xl mb-2 text-orange-400 underline decoration-3 underline-offset-8 dark:hover:bg-transparent break-words"
-          >{{item.title }}</a>
+            class="font-normal text-xl mb-2 text-green-400 underline decoration-3 underline-offset-8 dark:hover:bg-transparent break-words"
+          >{{item.company }}</a>
         </h3>
 
-        <p class="text-neutral-500 text-base text-left tracking-wide lg:ml-5 ">{{ $t('general.project.description_'+ $.vnode.key) }}</p>
+        <p class="text-neutral-500 text-base text-left tracking-wide lg:ml-5 ">{{ item.summary }}</p>
       </div>
       
       <div class="flex w-full">
 
         <div class="w-4/5 flex flex-wrap justify-start pl-5">
-          <a v-if="item.business.img"
+          <!-- <a v-if="item.business.img"
              :href="item.business.href"
              target="_blank">
             <img
@@ -34,19 +34,19 @@
               :src="item.business.img"
               alt="business"
               />
-        </a>
+        </a> -->
         </div>
       </div>
 
       <div class="flex w-full">
         <div class="w-4/5 flex pt-3 flex-wrap justify-start">
-          <img
+          <!-- <img
             class="shadow w-9 h-9 rounded-full mr-4 mt-2"
             :src="brand"
             alt="brand"
             v-for="brand in item.techs"
             :key="brand"
-          />
+          /> -->
         </div>
 
         <div class="flex items-end w-1/5">
@@ -74,13 +74,17 @@ export default {
       type: Object,
       default: function() {
         return {
-          type: "",
-          title: "",
-          photo: "",
-          description: "",
-          date: "",
-          techs: "",
-          business:{},
+          type: 1,
+          // photo: "",
+          // techs: "",
+
+          company: "",
+          position: "",
+          website: "",
+          startDate: "",
+          summary: "",
+          highlights: [],
+          endDate: ""
         };
       }
     }

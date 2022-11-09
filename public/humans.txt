@@ -16,6 +16,6 @@ Remembering, we are human beings and not machines.
     Nickname:    thgroch
     Title:       WebDeveloper
     Location:    Florianópolis. Santa Catarina, Brazil
-    Site:        https://thomasgroch.me/
+    Site:        https://thomasgroch.xyz/
     Twitter:     https://twitter.com/thgroch/
     Github:      https://github.com/thomasgroch/

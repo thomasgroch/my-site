@@ -5,9 +5,9 @@
       <div class='_1'>Ops!</div>
       <div class='_2'>{{ $t('general.nothing_here') }}</div>
       <div class="mt-12">
-        <router-link to="/" class="before:content-['\21E0'] before:pr-2  rounded border-2 font-medium px-8 p-3 text-base bg-transparent text-neutral-500 border-orange-300
-shadow-xs dark:hover:text-orange-400 dark:shadow-white dark:text-neutral-200 dark:border-neutral-200 dark:hover:bg-neutral-700
-dark:hover:border-neutral-700 hover:drop-shadow-lg hover:bg-orange-100 hover:text-orange-400 hover:border-orange-100 no-underline">
+        <router-link to="/" class="before:content-['\21E0'] before:pr-2  rounded border-2 font-medium px-8 p-3 text-base bg-transparent text-neutral-500 border-green-300
+shadow-xs dark:hover:text-green-400 dark:shadow-white dark:text-neutral-200 dark:border-neutral-200 dark:hover:bg-neutral-700
+dark:hover:border-neutral-700 hover:drop-shadow-lg hover:bg-green-100 hover:text-green-400 hover:border-green-100 no-underline">
           {{ $t('general.goto_site') }}
         </router-link>
       </div>
@@ -26,7 +26,7 @@ dark:hover:border-neutral-700 hover:drop-shadow-lg hover:bg-orange-100 hover:tex
 /*}*/
 
 body {
-  @apply text-neutral-600 dark:text-orange-400 overflow-x-hidden md:overflow-auto
+  @apply text-neutral-600 dark:text-green-400 overflow-x-hidden md:overflow-auto
 }
 
 ._404 {

@@ -6,14 +6,14 @@ import ProjectCard from '@/components/ProjectCard.vue'
   <div class="md:py-16">
     <ProjectCard
       class="text-gray-700 dark:text-neutral-200"
-      v-for="(project, index) in project.items"
+      v-for="(project, index) in projects"
       :item="project"
       :key="index"></ProjectCard>
   </div>
 </template>
 
 <script>
-import info from "@/info.json";
+import resume from "~/resume.json";
 
 export default {
   name: "ProjectPage",
@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      project: info.project
+      projects: resume.work
     }
   },
   components: {
