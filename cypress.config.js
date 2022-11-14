@@ -6,5 +6,6 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
-  experimentalStudio: true
+  experimentalStudio: true,
+  projectId: "j5r4nw"
 })
