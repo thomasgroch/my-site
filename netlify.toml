@@ -126,7 +126,6 @@ package = "netlify-plugin-cypress"
   [plugins.inputs]
   record = true
 
-61689fb0-c55e-468c-a08b-89d8e7eb1aa1
 package = "netlify-plugin-checklinks"
  
   [plugins.inputs]
