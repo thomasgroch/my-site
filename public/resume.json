@@ -405,21 +405,6 @@
         "href": "http://nobackend.org/"
       },
       {
-        "name": "Pnpm",
-        "photo": "stack/pnpm-logo.png",
-        "href": "https://pnpm.io/"
-      },
-      {
-        "name": "Yarn",
-        "photo": "stack/yarn-logo.png",
-        "href": "https://yarnpkg.com/"
-      },
-      {
-        "name": "NPM",
-        "photo": "stack/npm-logo.png",
-        "href": "https://www.npmjs.com/"
-      },
-      {
         "name": "Linux",
         "photo": "stack/linux-logo.png",
         "href": "https://www.linux.org/"
