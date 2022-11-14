@@ -11,5 +11,5 @@ test("info.json file are present and valid", () => {
 test("default keys are present", () => {
   const defaultKeys = Object.keys(info);
 
-  expect(JSON.stringify(defaultKeys)).eq('["meta","project","techs"]');
+  expect(JSON.stringify(defaultKeys)).eq('["meta"]');
 });

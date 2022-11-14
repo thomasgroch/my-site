@@ -76,9 +76,9 @@ export default {
 
 <style scoped>
 nav .router-link-exact-active.router-link-active {
-  border-color: #ffedd5;
+  border-color: #DEF7DC;
   border-radius: 0.5rem;
-  background-color: #ffedd5;
+  background-color: #DEF7DC;
   @apply text-green-500 dark:bg-neutral-700 dark:border-transparent text-lg
 }
 

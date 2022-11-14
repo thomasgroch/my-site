@@ -1,9 +1,10 @@
 <template>
 
 <div class="p-3 md:max-w-full w-full max-w-full lg:flex md:mt-10 mt-20 rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator">
-  <div class="sm:h-64 h-48 lg:h-auto lg:w-48 flex-none object-cover overflow-hidden bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l lg:rounded-b rounded-b-none rounded-r "
+  <a :href="item.website"
+      target="_blank" class="sm:h-64 h-48 lg:h-auto lg:w-48 flex-none object-cover overflow-hidden bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l lg:rounded-b rounded-b-none rounded-r "
       :style="'background-image: url(\''+ item.img +'\'); background-size: 100%; '">
-  </div>
+</a>
 
   <div class="p-4 flex flex-col justify-between leading-normal">
       <div class="mb-8">
@@ -13,7 +14,7 @@
         </div>
         <h3 class="text-center pb-5">
           <a
-            :href="item.href"
+            :href="item.website"
             target="_blank"
             class="font-normal text-xl mb-2 text-green-400 underline decoration-3 underline-offset-8 dark:hover:bg-transparent break-words"
           >{{item.company }}</a>
@@ -22,36 +23,17 @@
         <p class="text-neutral-500 text-base text-left tracking-wide lg:ml-5 ">{{ item.summary }}</p>
       </div>
       
-      <div class="flex w-full">
-
-        <div class="w-4/5 flex flex-wrap justify-start pl-5">
-          <!-- <a v-if="item.business.img"
-             :href="item.business.href"
-             target="_blank">
-            <img
-              v-if="item.business.img"
-              class="hover:transition hover:ease-in-out hover:delay-50 hover:-translate-y-1 hover:duration-300 hover:shadow-xl hover:shadow w-10 h-10 shadow-md rounded-full mr-4 my-3"
-              :src="item.business.img"
-              alt="business"
-              />
-        </a> -->
-        </div>
-      </div>
-
-      <div class="flex w-full">
-        <div class="w-4/5 flex pt-3 flex-wrap justify-start">
-          <!-- <img
+      <div class="flex justify-between pt-3">
+        <div class="flex flex-wrap">
+          <img
             class="shadow w-9 h-9 rounded-full mr-4 mt-2"
-            :src="brand"
-            alt="brand"
-            v-for="brand in item.techs"
-            :key="brand"
-          /> -->
+            :src="tech"
+            alt="tech"
+            v-for="(tech, key) in item.techs"
+            :key="key"
+          />
         </div>
-
-        <div class="flex items-end w-1/5">
-          <p class="text-neutral-500 text-sm font-medium">{{item.date}}</p>
-        </div>
+        <p class="shrink-0 flex items-end text-neutral-500 text-sm font-medium">{{item.startDate}}</p>
       </div>
     </div>
   </div>
@@ -102,7 +84,7 @@ export default {
 
 <style type="text/css">
   .bg-alternator:nth-child(even){
-    background-color:#ffedd5;
+    background-color:#DEF7DC;
     @apply dark:bg-neutral-800
   }
 

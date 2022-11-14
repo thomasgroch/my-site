@@ -2,11 +2,20 @@
   "name": "my-awesome-portfolio",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "netlify dev",
+    "front:dev": "vite --host 0.0.0.0",
+    "back:dev": "netlify functions:serve",
+    "start": "npm run back:dev",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "test:dev": "cypress --open",
+    "test:dev:": "npx start-server-and-test start 'http://localhost:9999/.netlify/functions/index' test:dev",
+    "test:e2e": "cypress run --e2e",
+    "test:unit": "vitest --environment jsdom",
+    "test:e2e:ci": "npx start-server-and-test preview http://localhost:4173/ 'npx cypress run --e2e'",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint . --ext .vue,.js,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -23,8 +32,11 @@
     "@types/tailwindcss": "^3.0.10",
     "@vitejs/plugin-vue": "^2.3.3",
     "autoprefixer": "^10.4.7",
+    "faunadb": "4.7.1",
     "flowbite": "^1.4.7",
     "mailgun-js": "^0.22.0",
+    "moment": "2.29.4",
+    "netlify-plugin-checklinks": "4.1.1",
     "nprogress": "0.2.0",
     "postcss": "^8.1.0",
     "prettier": "^2.7.1",
@@ -51,6 +63,11 @@
     }
   },
   "devDependencies": {
+    "@vitest/ui": "0.25.1",
+    "c8": "7.12.0",
+    "cypress": "11.0.1",
+    "eslint-plugin-cypress": "2.12.1",
+    "netlify-cli": "12.1.1",
     "vite-plugin-i18n-resources": "^1.0.3"
   }
 }

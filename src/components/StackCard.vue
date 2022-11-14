@@ -1,10 +1,10 @@
 <template>
-  <div class="rounded text-center mx-auto">
+  <div class="text-center mx-auto">
     <a :href="item.href" class="flex flex-col dark:bg-transparent mx-auto text-center hover:underline no-underline underline-offset-8 text-green-400"
     target="_blank"
     rel="noopener noreferrer">
-      <div class="h-20 w-20 rounded-md mx-auto flex justify-center">
-        <img class="object-contain object-center p-2 h-20"
+      <div class="mx-auto flex justify-center w-20">
+        <img class="object-contain object-center p-2 h-20 rounded-full bg-neutral-100 dark:bg-neutral-700"
             :src="item.photo"
             :alt="item.name"/>
       </div>

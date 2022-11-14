@@ -3,7 +3,7 @@
   "basics": {
     "name": "Thomas Letsch Groch",
     "label": "Web Developer",
-    "picture": "https://thomasgroch.xyz/images/avatar.png",
+    "picture": "https://thomasgroch.xyz/avatar.png",
     "email": "thomas.groch@gmail.com",
     "phone": "‭",
     "website": "https://thomasgroch.xyz/",
@@ -12,9 +12,9 @@
     "location": {
       "address": "",
       "postalCode": "",
-      "city": "",
+      "city": "Florianópolis",
       "countryCode": "BR",
-      "region": ""
+      "region": "SC"
     },
     "profiles": [
       {
@@ -30,82 +30,119 @@
     ]
   },
   "work": [
+        {
+      "type": 3,
+      "company": "Workana widget",
+      "position": "Desenvolvedor full stack",
+      "website": "https://github.com/thomasgroch/workana-widget",
+      "startDate": "2018",
+      "summary": "O workana-widget é um widget que permite aos usuários do Workana monitorar os trabalhos mais recentes.",
+      "highlights": [],
+      "img": "https://user-images.githubusercontent.com/67318/68424371-970fe900-0182-11ea-9624-736e455e33e3.gif",
+      "endDate": ""
+    },
+     {
+      "type": 3,
+      "company": "Resource Generator",
+      "position": "Desenvolvedor full stack",
+      "website": "https://github.com/thomasgroch/ResourceGenerator",
+      "startDate": "2017",
+      "summary": "Gere toda a estrutura para um determinado nome de recurso.",
+      "highlights": [],
+      "img": "avatar.png",
+      "endDate": ""
+    },
     {
-      "type": 0,
+      "type": 1,
       "company": "Hero99",
       "position": "Senior Web Application Developer",
       "website": "https://hero99.com.br/",
-      "startDate": "2017-10-01",
+      "startDate": "2017",
       "summary": "Melhora da disponibilidade usando proxy reverso em docker integrado ao workflow de CI zero-downtime deployment. Solução de automação para agregar em tempo real mensageiros instantâneos  distintos (fb, whatsapp e instagram).",
       "highlights": [],
-      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
-      "endDate": "2016-07-01"
+      "techs": [
+        "avatar.png",
+        "avatar.png"
+      ],
+      "img": "projects/hero99.png",
+      "endDate": ""
     },
     {
-      "type": 0,
+      "type": 1,
       "company": "Langowski",
       "position": "Gerente de Projeto da Tecnologia da Informação",
       "website": "https://langowski.com.br/",
-      "startDate": "2016-03-01",
+      "startDate": "2016",
       "summary": "Desenvolvimento de sistema de CRM Multitenancy. Implementação de gerenciador de empreendimentos, pessoas e empresas do projeto.",
       "highlights": [],
-      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
-      "endDate": "2016-07-01"
+      "img": "projects/langowski.png",
+      "endDate": ""
     },
     {
-      "type": 0,
+      "type": 1,
       "company": "TagBox",
       "position": "Analista de Sistemas Web",
       "website": "",
-      "startDate": "2015-05-01",
+      "startDate": "2015",
       "summary": "Produção de Marketplace de moda com PHP, Codeigniter, RESTfull, Amazon AWS (EC2, AMIs, Elastic IPs, S3), Vagrant, Git-remote, cURL e XML Parser.",
       "highlights": [],
-      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
-      "endDate": "2015-08-01"
+      "img": "projects/tagbox.png",
+      "endDate": ""
     },
     {
-      "type": 0,
+      "type": 1,
       "company": "RESERVA",
       "position": "Analista de Sistemas",
       "website": "https://www.usereserva.com/",
-      "startDate": "2014-01-01",
+      "startDate": "2014",
       "summary": "Desenvolvimento de API para integração do e-commerce da Reserva para portal de vendas MercadoLivre e ajudei a lidar com a grande escala de usuários.",
       "highlights": [],
-      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
-      "endDate": "2014-01-01"
+      "img": "projects/reserva.png",
+      "endDate": ""
     },
     {
-      "type": 0,
+      "type": 1,
       "company": "Artexpressa",
-      "position": "Desenvolvedor Web",
+      "position": "Desenvolvedor full stack web",
       "website": "",
-      "startDate": "2012-01-01",
+      "startDate": "2012",
       "summary": "Desenvolvimento de sistemas web em PHP/MYSQL. Modelagem de sistema gestão e agendamento de palestras. Implementação de funcionalidade para emissão de certificado digital.",
       "highlights": [],
-      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
-      "endDate": "2013-01-01"
+      "img": "projects/artexpressa.png",
+      "endDate": ""
     },
     {
-      "type": 0,
+      "type": 1,
       "company": "Arquitetura Abstrata",
-      "position": "Desenvolvedor Web",
-      "website": "",
-      "startDate": "2011-01-01",
+      "position": "Desenvolvedor full stack web",
+      "website": "https://arqabs.com/",
+      "startDate": "2011",
       "summary": "Desenvolvimento de sistema de incubadoras de empresas. Implementação de gerenciador de empreendimentos, pessoas e empresas. Desenvolvimento de processo seletivo do empreendimento. Adaptação do módulo de gerenciamento financeiro empresarial.",
       "highlights": [],
-      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
-      "endDate": "2011-01-01"
+      "img": "projects/arqabs.png",
+      "endDate": ""
     },
     {
-      "type": 0,
+      "type": 1,
+      "company": "Sephora Brasil",
+      "position": "Desenvolvedor PHP / Analista de Dados",
+      "website": "https://pesquisa.sephora.com.br/",
+      "startDate": "2011",
+      "summary": "Rotina de integração bidirecinal do gerenciamento de conteúdo com produtos.",
+      "highlights": [],
+      "img": "https://res.cloudinary.com/tgroch/image/upload/v1572470223/pesquisa-sephora-brasil_wte65i.png",
+      "endDate": ""
+    },
+    {
+      "type": 1,
       "company": "Forpix",
       "position": "Desenvolvedor / Analista de Dados",
-      "website": "",
-      "startDate": "2009-01-01",
+      "website": "http://forpix.com.br/",
+      "startDate": "2009",
       "summary": "Modelagem de sistema de CMS, levantamento de requisitos de acordo com necessidade apresentada pelo cliente. Prestação de serviços de desenvolvimento para experiência intuitiva.",
       "highlights": [],
-      "img": "https://avatars.githubusercontent.com/u/67318?s=400&v=4",
-      "endDate": "2010-01-01"
+      "img": "projects/forpix.png",
+      "endDate": ""
     }
   ],
   "projects": [
@@ -114,7 +151,7 @@
       "startDate": "2008-12-31",
       "summary": "Desenvolvimento de um CMS, programação de interface visual, diagramação e montagem do site PHP/MySql/HTML/CSS.",
       "url": "http://web.archive.org/web/20110817055820/http://site.psc.institucional.ws/",
-      "endDate": "2009-12-31"
+      "endDate": ""
     }
   ],
   "additionalWork": [
@@ -215,16 +252,6 @@
   "stack": {
     "front": [
       {
-        "name": "HTML5",
-        "photo": "stack/html-logo.png",
-        "href": "https://www.w3schools.com"
-      },
-      {
-        "name": "CSS3",
-        "photo": "stack/css-logo.png",
-        "href": "https://www.w3schools.com"
-      },
-      {
         "name": "SASS",
         "photo": "stack/sass-logo.png",
         "href": "https://sass-lang.com"
@@ -245,11 +272,6 @@
         "href": "https://tailwindcss.com"
       },
       {
-        "name": "Vuetify",
-        "photo": "stack/vuetify-logo.png",
-        "href": "https://vuetifyjs.com"
-      },
-      {
         "name": "Vite",
         "photo": "stack/vite-logo.png",
         "href": "https://vuex.vuejs.org/"
@@ -258,16 +280,6 @@
         "name": "VueJS",
         "photo": "stack/vue-logo.png",
         "href": "https://vuejs.org"
-      },
-      {
-        "name": "Vuex",
-        "photo": "stack/vue-logo.png",
-        "href": "https://vuex.vuejs.org/"
-      },
-      {
-        "name": "Cypress",
-        "photo": "stack/cypress-logo.png",
-        "href": "https://cypress.io/"
       },
       {
         "name": "Axios",
@@ -287,12 +299,52 @@
         "href": "https://laravel.com"
       },
       {
-        "name": "Ruby on rails",
+        "name": "Node",
+        "photo": "stack/node-logo.png",
+        "href": "https://nodejs.org/"
+      },
+      {
+        "name": "Nuxt",
+        "photo": "stack/nuxt-logo.png",
+        "href": "https://nuxtjs.org/"
+      },
+      {
+        "name": "PHP",
+        "photo": "stack/php-logo.png",
+        "href": "https://php.net/"
+      },
+      {
+        "name": "AdonisJS",
+        "photo": "stack/adonis-logo.png",
+        "href": "https://adonisjs.com"
+      },
+      {
+        "name": "Bedrock",
+        "photo": "stack/roots-logo.png",
+        "href": "https://roots.io/bedrock/"
+      },
+      {
+        "name": "RoR",
         "photo": "stack/ruby-logo.png",
         "href": "https://rubyonrails.org/"
+      },
+      {
+        "name": "Lambda",
+        "photo": "stack/lambda-logo.png",
+        "href": "https://aws.amazon.com/lambda/"
       }
     ],
     "database": [
+       {
+        "name": "MariaDB",
+        "photo": "stack/mariadb-logo.png",
+        "href": "https://mariadb.com"
+      },
+       {
+        "name": "MongoDB",
+        "photo": "stack/mongo-logo.png",
+        "href": "https://www.mongodb.org/"
+      },
       {
         "name": "Redis",
         "photo": "stack/redis-logo.png",
@@ -301,13 +353,18 @@
       {
         "name": "GraphQL",
         "photo": "stack/graph-logo.png",
-        "href": ""
+        "href": "https://graphql.org/"
       },
       {
         "name": "Postgres",
         "photo": "stack/postgres-logo.png",
         "href": "https://www.postgresql.org/"
-      }
+      },
+      {
+        "name": "FaunaDB",
+        "photo": "stack/fauna-logo.png",
+        "href": "https://faunadb.com/"
+      }   
     ],
     "infra": [
       {
@@ -319,7 +376,8 @@
         "name": "Heroku",
         "photo": "stack/heroku-logo.png",
         "href": "https://heroku.com/"
-      },{
+      },
+      {
         "name": "Netlify",
         "photo": "stack/netlify-logo.png",
         "href": "https://netlify.com/"
@@ -332,19 +390,19 @@
     ],
     "misc": [
       {
-        "name": "Figma",
-        "photo": "stack/figma-logo.png",
-        "href": "https://www.figma.com/"
-      },
-      {
-        "name": "Zeplin",
-        "photo": "stack/zeplin-logo.png",
-        "href": "https://zeplin.io/"
-      },
-      {
         "name": "Git",
         "photo": "stack/git-logo.png",
         "href": "https://git-scm.com/"
+      },
+      {
+        "name": "VisualParadigm",
+        "photo": "stack/vp-logo.png",
+        "href": "https:/www.visual-paradigm.com/"
+      },
+      {
+        "name": "Nobackend",
+        "photo": "stack/nobk-logo.png",
+        "href": "http://nobackend.org/"
       },
       {
         "name": "Pnpm",
@@ -362,16 +420,6 @@
         "href": "https://www.npmjs.com/"
       },
       {
-        "name": "Lint",
-        "photo": "stack/lint-logo.png",
-        "href": ""
-      },
-      {
-        "name": "Arduino",
-        "photo": "stack/arduino-logo.png",
-        "href": "https://www.arduino.cc/"
-      },
-      {
         "name": "Linux",
         "photo": "stack/linux-logo.png",
         "href": "https://www.linux.org/"
@@ -387,8 +435,13 @@
         "href": "https://www.microsoft.com/"
       },
       {
-        "name": "Terminal",
-        "photo": "stack/terminal-logo.png",
+        "name": "WebStorm",
+        "photo": "stack/webstorm-logo.png",
+        "href": "https://www.jetbrains.com/webstorm/"
+      },
+      {
+        "name": "Bash",
+        "photo": "stack/bash-logo.png",
         "href": ""
       }
     ]
