@@ -123,12 +123,11 @@ CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
 [[plugins]]
 # runs Cypress tests against the deployed URL
 package = "netlify-plugin-cypress"
-  [plugins.inputs]
-  record = true
 
 package = "netlify-plugin-checklinks"
- 
   [plugins.inputs]
+  record = true
+ 
   # An array of glob patterns for pages on your site
   # Recursive traversal will start from these
   entryPoints = [
