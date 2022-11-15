@@ -132,7 +132,7 @@ package = "netlify-plugin-cypress"
   # before building it (and testing the built site)
   [plugins.inputs.preBuild]
     enable = true
-    start = 'npm run build:ci'
+    start = 'npm run build:ci22'
     wait-on = 'http://localhost:3000'
     wait-on-timeout = '30' # seconds
     spa = true
