@@ -1,6 +1,6 @@
 [build]
   publish = "dist/"
-  command = "npm install && npm run build"
+  command = "npx cypress info && npm run build"
 #  command = "yarn"
   functions = 'functions/'
   node_bundler = "esbuild"
@@ -128,21 +128,22 @@
 [[plugins]]
 # runs Cypress tests against the deployed URL
 package = "netlify-plugin-cypress"
-  # let's run tests against development server
-  # before building it (and testing the built site)
-  [plugins.inputs.preBuild]
+  # but we do not want to run tests against the deployed site
+  [plugins.inputs]
+    # run E2E tests against the deployed URL
+    enable = false
+    group = 'deployed'
+  [plugins.inputs.postBuild]
+    # run E2E tests against locally built site
     enable = true
     start = 'npm run start-server'
     wait-on = 'http://localhost:3000'
     wait-on-timeout = '30' # seconds
     spa = true
+    # spec = "cypress/integration/2-advanced-examples/w*.js"
     record = true
-    group = '1: testing develop site'
+    group = 'built'
     tag = "nightly,production"
-
-  # but we do not want to run tests against the deployed site
-  [plugins.inputs]
-    enable = false
 
 [[plugins]]
 package = "netlify-plugin-checklinks"
