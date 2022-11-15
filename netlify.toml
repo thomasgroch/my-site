@@ -1,12 +1,16 @@
 [build]
   publish = "dist/"
-  command = "npm install && npx pnpm build"
+  command = "npm ci && npx pnpm build"
 #  command = "yarn"
   functions = 'functions/'
   node_bundler = "esbuild"
 [build.environment]
-  # cache Cypress binary in local "node_modules" folder so Netlify caches it
-  CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
+  # do not show Cypress installation progress messages
+  CI = "1"
+  # cache Cypress binary in local "node_modules" folder
+  # so Netlify caches it
+  CYPRESS_CACHE_FOLDER = "~/.cache/Cypress"
+  # set TERM variable for terminal output
   TERM = "xterm"
 
 [template.environment]
