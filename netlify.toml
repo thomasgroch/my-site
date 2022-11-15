@@ -138,6 +138,7 @@ package = "netlify-plugin-cypress"
     spa = true
     record = true
     group = '1: testing develop site'
+    tag = "nightly,production"
 
   # but we do not want to run tests against the deployed site
   [plugins.inputs]

@@ -11,7 +11,7 @@
     "build:ci22": "npm run start-server",
     "build:ci2": "npm install && npm run build && npm run test:e2e:ci",
     "serve": "vite preview --port 3000",
-    "start-server": "concurrently \"npm run dev:back\" \"npm run serve\"",
+    "start-server": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
     "test:unit": "vitest --environment jsdom",
     "test:e2e": "cypress run --e2e",
     "test:e2e:ci": "start-server-and-test start-server http://localhost:3000 test:e2e",
