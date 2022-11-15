@@ -9,7 +9,7 @@
   CI = "1"
   # cache Cypress binary in local "node_modules" folder
   # so Netlify caches it
-  CYPRESS_CACHE_FOLDER = "~/.cache/Cypress"
+  CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
   # set TERM variable for terminal output
   TERM = "xterm"
 
@@ -128,9 +128,19 @@
 [[plugins]]
 # runs Cypress tests against the deployed URL
 package = "netlify-plugin-cypress"
+  # let's run tests against development server
+  # before building it (and testing the built site)
+  [plugins.inputs.preBuild]
+    enable = true
+    start = 'npm build:ci'
+    wait-on = 'http://localhost:3000'
+    wait-on-timeout = '30' # seconds
+    record = true
+    group = '1: testing develop site'
+
+  # but we do not want to run tests against the deployed site
   [plugins.inputs]
-  enable = true
-  record = true
+    enable = false
 
 [[plugins]]
 package = "netlify-plugin-checklinks"
