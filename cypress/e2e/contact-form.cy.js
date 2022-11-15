@@ -38,7 +38,6 @@ describe('formulario de contato', () => {
     cy.get('#grid-estado').select('AC');
     cy.get('#grid-cidade').select('Assis Brasil');
     cy.get(':nth-child(6) > .flex > .rounded').click();
-
-    cy.get('div[role=alert]').should('not.be.visible')    
+    cy.contains('enviada com sucesso').should('be.visible')
   })
 })

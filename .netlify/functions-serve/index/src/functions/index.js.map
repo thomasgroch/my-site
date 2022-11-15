@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../../../../Users/tg/blog/functions/index.js"],
-  "sourceRoot": "/var/folders/f8/3zs9r8jx7x77fnb5n4hvmc1w0000gn/T/tmp-34960-GYIwhOt4x5Vs",
+  "sourceRoot": "/var/folders/f8/3zs9r8jx7x77fnb5n4hvmc1w0000gn/T/tmp-1993-htv4enADak3P",
   "sourcesContent": ["const headers = {\n\t'Access-Control-Allow-Origin': '*', // better change this for production\n\t'Access-Control-Allow-Methods': 'POST',\n\t'Access-Control-Allow-Headers': 'Content-Type'\n}\n\nexports.handler = async (event, context) => {\n\treturn {\n\t\tstatusCode: 200,\n\t\theaders,\n\t\tbody: JSON.stringify({\n\t\t\tmessage: 'ok',\n\t\t}),\n\t}\n}"],
   "mappings": ";AAAA,IAAM,UAAU;AAAA,EACf,+BAA+B;AAAA,EAC/B,gCAAgC;AAAA,EAChC,gCAAgC;AACjC;AAEA,QAAQ,UAAU,OAAO,OAAO,YAAY;AAC3C,SAAO;AAAA,IACN,YAAY;AAAA,IACZ;AAAA,IACA,MAAM,KAAK,UAAU;AAAA,MACpB,SAAS;AAAA,IACV,CAAC;AAAA,EACF;AACD;",
   "names": []
