@@ -1,6 +1,6 @@
 [build]
   publish = "dist/"
-  command = "npm ci && npx pnpm build"
+  command = "npm ci && npm run build"
 #  command = "yarn"
   functions = 'functions/'
   node_bundler = "esbuild"
