@@ -1,6 +1,6 @@
 [build]
   publish = "dist/"
-  command = "npx cypress info && npm run build"
+  command = "npm run build"
 #  command = "yarn"
   functions = 'functions/'
   node_bundler = "esbuild"
