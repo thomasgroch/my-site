@@ -31,27 +31,27 @@ const currentPath = computed(() =>route.path)
       </span>
     </p>
      <div class="flex justify-center gap-5 py-5 px-1">
-      <Button
+      <button
               @click="$i18n.locale = 'en'"
               class="inline-flex hover:border-trasparent border-neutral-400 shadow-lg border rounded">
        <img class="w-10 cursor-pointer rounded"
             :class="$i18n.locale == 'en' ? 'grayscale-0' : 'grayscale hover:grayscale-0'"
              src="https://flagicons.lipis.dev/flags/4x3/us.svg" />
-      </Button>
-      <Button 
+      </button>
+      <button 
               @click="$i18n.locale = 'pt'"
               class="inline-flex hover:border-trasparent border-neutral-400 shadow-lg border rounded">
         <img class="w-10 cursor-pointer rounded"
             :class="$i18n.locale == 'pt' ? 'grayscale-0' : 'grayscale hover:grayscale-0'"
              src="https://flagicons.lipis.dev/flags/4x3/br.svg" />
-      </Button>
-      <Button 
+      </button>
+      <button 
               @click="$i18n.locale = 'jp'"
               class="inline-flex hover:border-trasparent border-neutral-400 shadow-lg border rounded">
         <img class="w-10 cursor-pointer rounded"
             :class="$i18n.locale == 'jp' ? 'grayscale-0' : 'grayscale hover:grayscale-0'"
              src="https://flagicons.lipis.dev/flags/4x3/jp.svg" />
-      </Button>
+      </button>
     </div>
   </div>
 </template>
