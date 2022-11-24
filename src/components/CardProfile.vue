@@ -1,3 +1,10 @@
+<script setup>
+import {useRoute} from 'vue-router'
+import {computed} from 'vue'
+const route=useRoute();
+const currentPath = computed(() =>route.path)
+</script>
+
 <template>
 
   <div class="md:py-36 py-10 px-auto">
