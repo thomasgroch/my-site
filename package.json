@@ -1,9 +1,9 @@
 {
   "name": "my-awesome-portfolio",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "netlify dev",
-    "dev:front": "vite --host 0.0.0.0",
+    "dev": "vite dev --host 0.0.0.0",
+    "dev:front": "npm run dev",
     "dev:back": "netlify functions:serve",
     "dev:test": "cypress open",
     "build": "vite build",
@@ -14,7 +14,8 @@
     "start-server": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
     "test:unit": "vitest --environment jsdom",
     "test:e2e": "cypress run --e2e",
-    "test:e2e:ci": "start-server-and-test start-server http://localhost:3000 test:e2e",
+    "test": "npm run test:e2e:ci",
+    "test:e2e:ci": "start-server-and-test dev http://localhost:3000 test:e2e",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext .vue,.js,.cjs,.mjs --fix --ignore-path .gitignore"
   },

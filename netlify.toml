@@ -1,9 +1,9 @@
 [build]
   publish = "dist/"
-  command = "npm run build"
-#  command = "yarn"
   functions = 'functions/'
+  command = "npm run build"
   node_bundler = "esbuild"
+
 [build.environment]
   # CI = "1"
   # cache Cypress binary in local "node_modules" folder
@@ -11,6 +11,17 @@
   CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
   # set TERM variable for terminal output
   TERM = "xterm"
+
+# https://answers.netlify.com/t/getting-must-use-import-to-load-es-module-when-using-node-fetch-in-netlify-functions/47230/2
+[functions]
+  node_bundler = "esbuild"
+
+[dev]
+  command = "npm run dev" # Command to start your dev server
+  targetPort = 3000 # The port for your application server, framework or site generator
+  port = 8888 # The port that the netlify dev will be accessible on
+  autoLaunch = true # a Boolean value that determines if Netlify Dev launches the local server address in your browser
+  envFiles = [".env.development.local", ".env.local", ".env.development", ".env"] # The env files to use, ordered by priority (left - highest, right - lowest)
 
 [template.environment]
   NODE_ENV = 'production'
@@ -23,10 +34,6 @@
   VSSUE_REPO = 'github repo'
   VSSUE_CLIENT_ID = 'github application token client id'
   VSSUE_CLIENT_SECRET = 'github application token client secret'
-
-# https://answers.netlify.com/t/getting-must-use-import-to-load-es-module-when-using-node-fetch-in-netlify-functions/47230/2
-[functions]
-  node_bundler = "esbuild"
 
 # [Settings]
 # ID = "Your_Site_ID"
