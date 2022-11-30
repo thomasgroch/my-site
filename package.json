@@ -2,8 +2,8 @@
   "name": "my-awesome-portfolio",
   "version": "0.0.1",
   "scripts": {
-    "dev": "vite dev --host 0.0.0.0",
-    "dev:front": "npm run dev",
+    "dev": "netlify dev",
+    "dev:front": "vite dev --host 0.0.0.0",
     "dev:back": "netlify functions:serve",
     "build": "vite build",
     "build:ci": "npm run serve",
