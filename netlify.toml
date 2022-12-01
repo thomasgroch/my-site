@@ -131,25 +131,16 @@
 #     # to paid accounts
 #     Basic-Auth = "someuser:somepassword anotheruser:anotherpassword"
 
+# run Cypress E2E tests
 [[plugins]]
-# runs Cypress tests against the deployed URL
 package = "netlify-plugin-cypress"
-  # but we do not want to run tests against the deployed site
   [plugins.inputs]
-    # do not test the deployed URL
-    enable = false
-    group = 'deployed'
-  [plugins.inputs.preBuild]
-    # run E2E tests against locally built site
+    # skip the default tests before the deploy
+    skip = true
+  [plugins.inputs.onSuccess]
+    # run tests after the deploy
     enable = true
-    start = 'npx netlify dev'
-    wait-on = 'http://localhost:8888'
-    wait-on-timeout = '30' # seconds
-    spa = true
-    # spec = "cypress/integration/2-advanced-examples/w*.js"
     record = true
-    group = 'built'
-    tag = "nightly,production"
 
 [[plugins]]
 package = "netlify-plugin-checklinks"
