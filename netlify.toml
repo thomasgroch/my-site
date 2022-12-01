@@ -136,12 +136,9 @@
 package = "netlify-plugin-cypress"
   # but we do not want to run tests against the deployed site
   [plugins.inputs]
-    # do not run E2E tests against the deployed URL
+    # do not test the deployed URL
     enable = false
     group = 'deployed'
-  # do not test the deployed URL
-  [plugins.inputs]
-    enable = false
   [plugins.inputs.preBuild]
     # run E2E tests against locally built site
     enable = true
