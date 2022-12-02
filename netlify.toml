@@ -131,16 +131,21 @@
 #     # to paid accounts
 #     Basic-Auth = "someuser:somepassword anotheruser:anotherpassword"
 
-# run Cypress E2E tests
 [[plugins]]
+# runs Cypress tests against the deployed URL
 package = "netlify-plugin-cypress"
-  # tests against the deployed site
   [plugins.inputs]
-    # test the deployed URL
-    enable = true
-    start = 'npx netlify dev'
-    group = 'deployed'
+    # run E2E tests against the deployed URL
     record = true
+    group = 'deployed'
+  [plugins.inputs.postBuild]
+    # run E2E tests against locally built site
+    # before deploying it
+    enable = true
+    record = true
+    group = 'built'
+    # spec = "cypress/integration/2-advanced-examples/w*.js"
+    tag = "nightly,production"
 
 
 [[plugins]]
