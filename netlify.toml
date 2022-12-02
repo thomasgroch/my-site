@@ -134,13 +134,13 @@
 # run Cypress E2E tests
 [[plugins]]
 package = "netlify-plugin-cypress"
+  # tests against the deployed site
   [plugins.inputs]
-    # skip the default tests before the deploy
-    enable = false
-  [plugins.inputs.onPostBuild]
-    # run tests after the deploy
+    # test the deployed URL
     enable = true
+    group = 'deployed'
     record = true
+
 
 [[plugins]]
 package = "netlify-plugin-checklinks"
