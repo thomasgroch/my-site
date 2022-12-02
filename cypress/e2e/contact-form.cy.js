@@ -1,6 +1,6 @@
 describe('formulario de contato', () => {
   // it('it fills and submit the form', () => {
-  //   cy.visit('http://localhost:8000/contato')
+  //   cy.visit('http://localhost:3000/contato')
   //   // cy.get('.todo-list li').should('have.length', 2)
 
   //   cy.get('#grid-nome').type('Teste');
@@ -13,7 +13,7 @@ describe('formulario de contato', () => {
   // })
 
   it('it has a submit button', () => {
-    cy.visit('http://localhost:8000/contato')
+    cy.visit('http://localhost:3000/contato')
     // cy.get('.todo-list li').should('have.length', 2)
 
     cy.get('#grid-nome').type('Teste');
@@ -29,7 +29,7 @@ describe('formulario de contato', () => {
   })
 
   it('and the submit button works', () => {
-    cy.visit('http://localhost:8000/contato')
+    cy.visit('http://localhost:3000/contato')
 
     cy.get('#grid-nome').type('Teste');
     cy.get('#grid-email').type('teste@teste.com');
