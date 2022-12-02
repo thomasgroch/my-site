@@ -143,7 +143,7 @@ package = "netlify-plugin-cypress"
     # run E2E tests against locally built site
     enable = true
     start = 'npm run dev:front'
-    wait-on = 'http://localhost:8888'
+    wait-on = 'http://localhost:3000'
     wait-on-timeout = '30' # seconds
     spa = true
     # spec = "cypress/integration/2-advanced-examples/w*.js"
