@@ -134,23 +134,11 @@
 [[plugins]]
 # runs Cypress tests against the deployed URL
 package = "netlify-plugin-cypress"
-  # but we do not want to run tests against the deployed site
   [plugins.inputs]
-    # do not test the deployed URL
-    enable = false
-    group = 'deployed'
-  [plugins.inputs.preBuild]
-    # run E2E tests against locally built site
+    # test the deployed URL
     enable = true
-    start = 'npm run dev:front'
-    wait-on = 'http://localhost:3000'
-    wait-on-timeout = '30' # seconds
-    spa = true
-    spec = "cypress/e2e/*-front*.js"
     record = true
-    group = 'built'
-    tag = "nightly,production"
-
+    group = 'deployed'
 
 [[plugins]]
 package = "netlify-plugin-checklinks"
