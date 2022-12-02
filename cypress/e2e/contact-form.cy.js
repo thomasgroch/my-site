@@ -1,6 +1,6 @@
 describe('formulario de contato', () => {
   it('and the submit button works', () => {
-    cy.visit('http://localhost:3000/contato')
+    cy.visit('/contato')
 
     cy.get('#grid-nome').type('Teste');
     cy.get('#grid-email').type('teste@teste.com');

@@ -14,9 +14,10 @@
     "test:unit": "vitest run --environment jsdom",
     "test:unit:dev": "vitest --environment jsdom",
     "test:e2e": "cypress run --e2e",
-    "test:e2e:dev": "cypress open",
+    "test:e2e:dev": "cypress open --env CYPRESS_BASE_URL=$DEPLOY_URL",
     "test": "npm run test:e2e:ci",
-    "test:e2e:ci": "start-server-and-test dev http://localhost:3000 test:e2e",
+    "test:e2e:ci": "CYPRESS_BASE_URL=$DEPLOY_URL cypress run --e2e",
+    "test:e2e:ci2": "start-server-and-test dev http://localhost:3000 test:e2e",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext .vue,.js,.cjs,.mjs --fix --ignore-path .gitignore"
   },

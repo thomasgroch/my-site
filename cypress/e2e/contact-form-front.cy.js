@@ -1,6 +1,6 @@
 describe('formulario de contato front', () => {
   // it('it fills and submit the form', () => {
-  //   cy.visit('http://localhost:3000/contato')
+  //   cy.visit('/contato')
   //   // cy.get('.todo-list li').should('have.length', 2)
 
   //   cy.get('#grid-nome').type('Teste');
@@ -13,7 +13,7 @@ describe('formulario de contato front', () => {
   // })
 
   it('it has a submit button', () => {
-    cy.visit('http://localhost:8080/contato')
+    cy.visit('/contato')
     // cy.get('.todo-list li').should('have.length', 2)
 
     cy.get('#grid-nome').type('Teste');
