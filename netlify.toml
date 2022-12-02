@@ -17,9 +17,9 @@
   node_bundler = "esbuild"
 
 [dev]
-  command = "npm run dev" # Command to start your dev server
+  command = "npm run dev:front" # Command to start your dev server
   targetPort = 3000 # The port for your application server, framework or site generator
-  port = 8888 # The port that the netlify dev will be accessible on
+  port = 3000 # The port that the netlify dev will be accessible on
   autoLaunch = true # a Boolean value that determines if Netlify Dev launches the local server address in your browser
   envFiles = [".env.development.local", ".env.local", ".env.development", ".env"] # The env files to use, ordered by priority (left - highest, right - lowest)
 
@@ -137,7 +137,7 @@ package = "netlify-plugin-cypress"
   [plugins.inputs]
     # skip the default tests before the deploy
     enable = false
-  [plugins.inputs.postBuild]
+  [plugins.inputs.onPostBuild]
     # run tests after the deploy
     enable = true
     record = true
