@@ -152,21 +152,6 @@ package = "netlify-plugin-cypress"
     tag = "nightly,production"
 
 
-
-[[plugins]]
-  package = "netlify-plugin-cypress"
-  [plugins.inputs]
-    # run E2E tests against the deployed URL
-    record = true
-    group = 'deployed'
-  [plugins.inputs.postBuild]
-    # run E2E tests against locally built site
-    # before deploying it
-    enable = true
-    record = true
-    group = 'built'
-
-
 [[plugins]]
 package = "netlify-plugin-checklinks"
   [plugins.inputs]
