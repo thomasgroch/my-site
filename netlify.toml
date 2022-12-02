@@ -138,6 +138,7 @@ package = "netlify-plugin-cypress"
   [plugins.inputs]
     # test the deployed URL
     enable = true
+    start = 'npx netlify dev'
     group = 'deployed'
     record = true
 
