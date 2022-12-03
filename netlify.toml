@@ -23,17 +23,50 @@
   autoLaunch = true # a Boolean value that determines if Netlify Dev launches the local server address in your browser
   envFiles = [".env.development.local", ".env.local", ".env.development", ".env"] # The env files to use, ordered by priority (left - highest, right - lowest)
 
-[template.environment]
-  NODE_ENV = 'production'
-  MAILGUN_API_KEY = 'Your MailGun API Key'
-  MAILGUN_DOMAIN = 'example.com'
-  MAILGUN_FROM = 'Full Name <fullname@example.com>'
-  FAUNADB_SERVER_SECRET = 'Your FaunaDB Server Secret'
-  VSSUE_PLATFORM = 'gitlab'
-  VSSUE_OWNER = 'github username'
-  VSSUE_REPO = 'github repo'
-  VSSUE_CLIENT_ID = 'github application token client id'
-  VSSUE_CLIENT_SECRET = 'github application token client secret'
+
+[[plugins]]
+# runs Cypress tests against the deployed URL
+package = "netlify-plugin-cypress"
+  [plugins.inputs]
+    # test the deployed URL
+    enable = true
+    record = true
+    group = 'deployed'
+
+[[plugins]]
+package = "netlify-plugin-checklinks"
+  [plugins.inputs]
+  # An array of glob patterns for pages on your site
+  # Recursive traversal will start from these
+  entryPoints = [
+    "*.html",
+  ]
+ 
+  # Recurse through all the links and asset references on your page, starting
+  # at the entrypoints
+  recursive = true
+ 
+  # Checklinks outputs TAP (https://testanything.org/tap-version-13-specification.html)
+  # by default. Enabling pretty mode makes the output easier on the eyes.
+  pretty = true
+ 
+  # You can mark some check as skipped, which will block checklinks
+  # from ever attempting to execute them.
+  # skipPatterns is an array of strings you can match against failing reports
+  skipPatterns = []
+ 
+  # You can mark some check as todo, which will execute the check, but allow failures.
+  # todoPatterns is an array of strings you can match against failing reports
+  todoPatterns = []
+ 
+  # Report on all broken links to external pages.
+  # Enabling this will make your tests more brittle, since you can't control
+  # external pages.
+  checkExternal = false
+ 
+  # Enable to check references to source maps, source map sources etc.
+  # Many build tools don't emit working references, so this is disabled by default
+  followSourceMaps = false
 
 # [Settings]
 # ID = "Your_Site_ID"
@@ -131,46 +164,14 @@
 #     # to paid accounts
 #     Basic-Auth = "someuser:somepassword anotheruser:anotherpassword"
 
-[[plugins]]
-# runs Cypress tests against the deployed URL
-package = "netlify-plugin-cypress"
-  [plugins.inputs]
-    # test the deployed URL
-    enable = true
-    record = true
-    group = 'deployed'
-
-[[plugins]]
-package = "netlify-plugin-checklinks"
-  [plugins.inputs]
-  # An array of glob patterns for pages on your site
-  # Recursive traversal will start from these
-  entryPoints = [
-    "*.html",
-  ]
- 
-  # Recurse through all the links and asset references on your page, starting
-  # at the entrypoints
-  recursive = true
- 
-  # Checklinks outputs TAP (https://testanything.org/tap-version-13-specification.html)
-  # by default. Enabling pretty mode makes the output easier on the eyes.
-  pretty = true
- 
-  # You can mark some check as skipped, which will block checklinks
-  # from ever attempting to execute them.
-  # skipPatterns is an array of strings you can match against failing reports
-  skipPatterns = []
- 
-  # You can mark some check as todo, which will execute the check, but allow failures.
-  # todoPatterns is an array of strings you can match against failing reports
-  todoPatterns = []
- 
-  # Report on all broken links to external pages.
-  # Enabling this will make your tests more brittle, since you can't control
-  # external pages.
-  checkExternal = false
- 
-  # Enable to check references to source maps, source map sources etc.
-  # Many build tools don't emit working references, so this is disabled by default
-  followSourceMaps = false
+[template.environment]
+  NODE_ENV = 'production'
+  MAILGUN_API_KEY = 'Your MailGun API Key'
+  MAILGUN_DOMAIN = 'example.com'
+  MAILGUN_FROM = 'Full Name <fullname@example.com>'
+  FAUNADB_SERVER_SECRET = 'Your FaunaDB Server Secret'
+  VSSUE_PLATFORM = 'gitlab'
+  VSSUE_OWNER = 'github username'
+  VSSUE_REPO = 'github repo'
+  VSSUE_CLIENT_ID = 'github application token client id'
+  VSSUE_CLIENT_SECRET = 'github application token client secret'
