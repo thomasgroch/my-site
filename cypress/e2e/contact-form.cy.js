@@ -1,5 +1,6 @@
-describe('formulario de contato', () => {
-  // it('it fills and submit the form', () => {
+describe('formulario de contato', function () {
+  // use function instead of arrow syntax to access aliased values on `this`
+  // it('it fills and submit the form', function () {
   //   cy.visit('/contato')
   //   // cy.get('.todo-list li').should('have.length', 2)
 
@@ -12,7 +13,7 @@ describe('formulario de contato', () => {
   //   cy.get(':nth-child(6) > .flex > .rounded').click();
   // })
 
-  it('it has a submit button', () => {
+  it('it has a submit button', function () {
     cy.visit('/contato')
     // cy.get('.todo-list li').should('have.length', 2)
 
@@ -28,7 +29,7 @@ describe('formulario de contato', () => {
     // cy.get('div[role=alert]').should('not.be.visible')
   })
   
-  it('and the submit button works', () => {
+  it('and the submit button works', function () {
     cy.visit('/contato')
 
     cy.get('#grid-nome').type('Teste');
