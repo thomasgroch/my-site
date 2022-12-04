@@ -1,35 +1,44 @@
 <template>
-<div class="max-w-xs bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-    <a :href="item.website">
-        <img class="rounded-t-lg" :src="item.img" alt="" />
-    </a>
-    <div class="p-5">
-        <a :href="item.website" target="_blank">
-            <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{item.company }}</h5>
-        </a>
-        <p class="mb-3 text-gray-700 dark:text-gray-400">{{ item.summary }}</p>
-        <!-- <a href="#" target="_blank" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </a> -->
-        <div class="flex justify-between pt-3">
-          <div class="flex flex-wrap">
-            <img
-              class="shadow w-9 h-9 rounded-full mr-4 mt-2"
-              :src="tech"
-              alt="tech"
-              v-for="(tech, key) in item.techs"
-              :key="key"
-            />
-          </div>
-          <p class="shrink-0 flex items-end text-neutral-500 text-sm font-medium">{{item.startDate}}</p>
-        </div>
+  <div class="max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div class="h-80 justify-center flex">
+      <a :href="item.website">
+        <img class="h-80 rounded-t-lg" :src="item.img" alt="" />
+      </a>
     </div>
-</div>
+    <div class="p-5  flex flex-col">
+      <a :href="item.website" target="_blank">
+        <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ item.company }}</h5>
+      </a>
+      <p class="mb-3 text-gray-700 dark:text-gray-400">{{ item.summary }}</p>
+
+      <div class="flex justify-between py-3">
+        <div class="flex flex-wrap">
+          <img
+            class="shadow w-9 h-9 rounded-full mr-4 mt-2"
+            :src="tech"
+            alt="tech"
+            v-for="(tech, key) in item.techs"
+            :key="key"
+          />
+        </div>
+        <p class="shrink-0 flex items-end text-neutral-500 text-sm font-medium">{{ item.startDate }}</p>
+      </div>
+
+<!--      <div class="flex">-->
+<!--        <a :href="item.website" target="_blank" class="w-1/2 mr-2 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-600 dark:focus:ring-green-800">-->
+<!--          Site-->
+<!--          <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>-->
+<!--        </a>-->
+<!--        <a href="#" target="_blank" class="w-1/2 ml-2 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-600 dark:focus:ring-green-800">-->
+<!--          Repo-->
+<!--          <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>-->
+<!--        </a>-->
+<!--      </div>-->
+    </div>
+  </div>
 
 
-
-<!-- <div class="p-3 md:max-w-full w-full max-w-full lg:flex md:mt-10 mt-20 rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator"> -->
+  <!-- <div class="p-3 md:max-w-full w-full max-w-full lg:flex md:mt-10 mt-20 rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator"> -->
   <!-- <div class="rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator">
     <div>
       <a :href="item.website"
@@ -52,8 +61,8 @@
 
         <p class="text-neutral-500 text-base text-left tracking-wide lg:ml-5 ">{{ item.summary }}</p>
       </div>
-      
-      
+
+
     </div>
   </div> -->
 </template>
