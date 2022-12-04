@@ -1,9 +1,3 @@
-<script setup>
-import {useRoute} from 'vue-router'
-import {computed} from 'vue'
-const route=useRoute();
-const currentPath = computed(() =>route.path)
-</script>
 <template>
   <div class="py-16">
     <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5"
@@ -21,7 +15,7 @@ const currentPath = computed(() =>route.path)
                            class="fa-2x text-neutral-500 hover:text-green-400 " />
       </a>
     </div>
-    
+
     <p class="text-sm text-neutral-500 text-center">© 2002 - {{ new Date().getFullYear() }} Thomas Groch.</p>
     <p class="text-sm text-neutral-500 text-center" v-if="commit_ref">
       <span v-if="node_version">Build with node {{ node_version }}<br /></span>
@@ -32,21 +26,21 @@ const currentPath = computed(() =>route.path)
     </p>
      <div class="flex justify-center gap-5 py-5 px-1">
       <button
-              @click="$i18n.locale = 'en'"
+              @click="setLocale('en')"
               class="inline-flex hover:border-trasparent border-neutral-400 shadow-lg border rounded">
        <img class="w-10 cursor-pointer rounded"
             :class="$i18n.locale == 'en' ? 'grayscale-0' : 'grayscale hover:grayscale-0'"
              src="https://flagicons.lipis.dev/flags/4x3/us.svg" />
       </button>
-      <button 
-              @click="$i18n.locale = 'pt'"
+      <button
+              @click="setLocale('pt')"
               class="inline-flex hover:border-trasparent border-neutral-400 shadow-lg border rounded">
         <img class="w-10 cursor-pointer rounded"
             :class="$i18n.locale == 'pt' ? 'grayscale-0' : 'grayscale hover:grayscale-0'"
              src="https://flagicons.lipis.dev/flags/4x3/br.svg" />
       </button>
-      <button 
-              @click="$i18n.locale = 'jp'"
+      <button
+              @click="setLocale('jp')"
               class="inline-flex hover:border-trasparent border-neutral-400 shadow-lg border rounded">
         <img class="w-10 cursor-pointer rounded"
             :class="$i18n.locale == 'jp' ? 'grayscale-0' : 'grayscale hover:grayscale-0'"
@@ -56,25 +50,24 @@ const currentPath = computed(() =>route.path)
   </div>
 </template>
 
-<script>
-export default {
-  name: "Footer",
-  data(){
-    return {
-      repo_url: 'https://gitlab.com/camilasrody/vite-vue3-tailwind-starter',
-      site_name: import.meta.env.SITE_NAME,
-      url: import.meta.env.URL,
-      node_version: import.meta.env.NODE_VERSION,
-      repository_url: import.meta.env.REPOSITORY_URL, // URL for the linked Git repository.
-      commit_ref: import.meta.env.COMMIT_REF, // Reference of the commit we’re building.
-      branch: import.meta.env.BRANCH, // Reference to check out after fetching changes from the Git repository. useful in split testing https://www.netlify.com/docs/split-testing/#exposing-split-test-information-in-your-site
-      // netlify_images_cdn_domain: import.meta.env.NETLIFY_IMAGES_CDN_DOMAIN,
-      // context: import.meta.env.CONTEXT, // Name of the context a deploy is built around, it can be `production`, `deploy-preview` or `branch-deploy`.
-    }
-  }
-}
+<script setup>
+import { ref, reactive, computed } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute();
+const currentPath = computed(() =>route.path)
+import { useI18n } from "vue3-i18n";
+const i18n = useI18n();
+const setLocale = (lang) => {
+  i18n.setLocale(lang);
+};
 
-methods:{
-
-}
+const repo_url = ref('https://gitlab.com/camilasrody/vite-vue3-tailwind-starter')
+const site_name = ref(import.meta.env.SITE_NAME)
+const url = ref(import.meta.env.URL)
+const node_version = ref(import.meta.env.NODE_VERSION)
+const repository_url = ref(import.meta.env.REPOSITORY_URL) // URL for the linked Git repository.
+const commit_ref = ref(import.meta.env.COMMIT_REF) // Reference of the commit we’re building.
+const branch = ref(import.meta.env.BRANCH) // Reference to check out after fetching changes from the Git repository. useful in split testing https://www.netlify.com/docs/split-testing/#exposing-split-test-information-in-your-site
+const netlify_images_cdn_domain = ref(import.meta.env.NETLIFY_IMAGES_CDN_DOMAIN)
+const context = ref(import.meta.env.CONTEXT) // Name of the context a deploy is built around, it can be `production`, `deploy-preview` or `branch-deploy`.
 </script>
