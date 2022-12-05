@@ -2,17 +2,9 @@
   <div class="py-16">
     <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5"
         v-if="currentPath != '/'">
-      <a class="dark:hover:bg-transparent px-2" href="https://linkedin.com/in/camilarody" target="_blank">
-        <font-awesome-icon :icon="['fab', 'linkedin']"
-                           class="fa-2x text-neutral-500 hover:text-green-400 dark:bg-transparent px" />
-      </a>
-      <a class="dark:hover:bg-transparent px-2" href="https://gitlab.com/camilasrody" target="_blank">
-        <font-awesome-icon :icon="['fab', 'gitlab']"
-                           class="fa-2x text-neutral-500 hover:text-green-400 dark:bg-transparent" />
-      </a>
-      <a class="dark:hover:bg-transparent px-2" href="https://github.com/camilasrody" target="_blank">
-        <font-awesome-icon :icon="['fab', 'github-alt']"
-                           class="fa-2x text-neutral-500 hover:text-green-400 " />
+      <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank">
+        <font-awesome-icon :icon="['fab', n.network]"
+                           class="fa-2x text-neutral-500 hover:text-green-300 dark:bg-transparent px" />
       </a>
     </div>
 
@@ -53,6 +45,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import resume from "~/resume.json";
 const route = useRoute();
 const currentPath = computed(() =>route.path)
 import { useI18n } from "vue3-i18n";
@@ -61,7 +54,7 @@ const setLocale = (lang) => {
   i18n.setLocale(lang);
 };
 
-const repo_url = ref('https://gitlab.com/camilasrody/vite-vue3-tailwind-starter')
+const repo_url = ref('https://github.com/thomasgroch/my-site')
 const site_name = ref(import.meta.env.SITE_NAME)
 const url = ref(import.meta.env.URL)
 const node_version = ref(import.meta.env.NODE_VERSION)
@@ -70,4 +63,6 @@ const commit_ref = ref(import.meta.env.COMMIT_REF) // Reference of the commit we
 const branch = ref(import.meta.env.BRANCH) // Reference to check out after fetching changes from the Git repository. useful in split testing https://www.netlify.com/docs/split-testing/#exposing-split-test-information-in-your-site
 const netlify_images_cdn_domain = ref(import.meta.env.NETLIFY_IMAGES_CDN_DOMAIN)
 const context = ref(import.meta.env.CONTEXT) // Name of the context a deploy is built around, it can be `production`, `deploy-preview` or `branch-deploy`.
+
+const network = computed(() => resume.basics.profiles.filter(n => n.network == 'linkedin'))
 </script>

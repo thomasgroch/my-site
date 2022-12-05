@@ -23,11 +23,11 @@ First-party plugins needed for Tailwind UI:
 
 ### Getting Started
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/camilasrody/vite-vue3-tailwind-starter)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/thomasgroch/my-site)
 
 ```sh
-npx degit camilasrody/vite-vue3-tailwind-starter vvt-app
-cd vvt-app
+npx degit thomasgroch/my-site
+cd my-site
 ```
 
 ```sh
@@ -37,4 +37,4 @@ npm run build
 npm run serve
 ```
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://gitlab.com/camilasrody/vite-vue3-tailwind-starter)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/thomasgroch/my-site)

@@ -7,6 +7,7 @@
     "email": "thomas.groch@gmail.com",
     "phone": "‭",
     "website": "https://thomasgroch.xyz/",
+    "websiteRepo": "https://github.com/thomasgroch/my-site",
     "summary": "Exercer atividades de desenvolvedor sênior de qualidade:\n• Monitoramento de infraestrutura e saúde da plataformas SaaS;\n• Análise e geração indicadores operacionais e de negócio;\n• Integrações entre sistemas (sincronização, agendamento e fila de processos);\nNo mais serei muito minucioso para que ambos tenhamos uma excelente experiência.",
     "highlights": null,
     "location": {
@@ -18,12 +19,12 @@
     },
     "profiles": [
       {
-        "network": "Linkedin",
+        "network": "linkedin",
         "username": "thomasgroch",
         "url": "https://www.linkedin.com/in/thomasgroch"
       },
       {
-        "network": "Skype",
+        "network": "skype",
         "username": "thomas.groch",
         "url": "skype:thomasgroch?chat"
       }
@@ -364,7 +365,7 @@
         "name": "FaunaDB",
         "photo": "stack/fauna-logo.png",
         "href": "https://faunadb.com/"
-      }   
+      }
     ],
     "infra": [
       {
