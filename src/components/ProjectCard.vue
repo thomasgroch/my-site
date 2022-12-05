@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-    <div class="h-80 justify-center flex">
+    <div class="max-h-80 justify-center flex">
       <a :href="item.website">
-        <img class="h-80 rounded-t-lg" :src="item.img" alt="" />
+        <img class="max-h-80 rounded-t-lg" :src="item.img" alt="" />
       </a>
     </div>
     <div class="p-5  flex flex-col">
