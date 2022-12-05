@@ -19,6 +19,16 @@
     },
     "profiles": [
       {
+        "network": "github",
+        "username": "thomasgroch",
+        "url": "https://github.com/thomasgroch"
+      },
+      {
+        "network": "gitlab",
+        "username": "thomas.groch",
+        "url": "https://gitlab.com/thomas.groch"
+      },
+      {
         "network": "linkedin",
         "username": "thomasgroch",
         "url": "https://www.linkedin.com/in/thomasgroch"
