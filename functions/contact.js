@@ -9,12 +9,16 @@ const q = faunadb.query
 const client = new faunadb.Client({
 	secret: process.env.FAUNADB_SERVER_SECRET
 })
-const {MAILGUN_API_KEY: apiKey, MAILGUN_DOMAIN: domain} = process.env
-// const mailgun = Mailgun({
-// 	apiKey,
-// 	domain,
-// 	retry: 3
-// })
+const {
+  MAILGUN_API_KEY: key,
+  MAILGUN_DOMAIN: domain,
+  MAILGUN_API_PUBLIC_KEY: public_key
+} = process.env;
+const mg = mailgun.client({
+  username: 'api',
+  key,
+  public_key
+});
 
 const headers = {
 	'Access-Control-Allow-Origin': '*', // better change this for production
@@ -27,23 +31,6 @@ const headers = {
 // 	const email = {from, to, subject, text}
 //
 // 	return mailgun.messages().send(email)
-// }
-
-
-// const sendEmail = async data => {
-//   const {from, to, subject, text} = data
-//   const email = {from, to, subject, text}
-//
-//   const mailgun = new Mailgun(data);
-//   const mg = mailgun.client({
-//     username: 'api',
-//     key: process.env.MAILGUN_API_KEY,
-//     public_key: process.env.MAILGUN_API_PUBLIC_KEY,
-//   });
-//   const msg = await mg.messages.send(domain, data)
-//   console.log('msg', msg);
-//   return msg
-//   // return mailgun.messages().send(email)
 // }
 
 exports.handler = async (event, context) => {
@@ -94,33 +81,28 @@ exports.handler = async (event, context) => {
 			}
 		}))
 
-    const {
-      MAILGUN_API_KEY: key,
-      MAILGUN_DOMAIN: domain,
-      MAILGUN_API_PUBLIC_KEY: public_key
-    } = process.env;
+    const sendingMail = await mg.messages.create(domain, {
+      from: payload.email,
+      to: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.xyz>',
+      subject: 'Contato do site ' + payload.nome + '.',
+      text: 'site'+JSON.stringify(payload)
+    })
+    const thanksMail = await mg.messages.create(domain, {
+      from: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.xyz>',
+      to: payload.email,
+      subject: 'Obrigado pelo seu interesse ' + payload.nome + '.',
+      text: 'Retorno para você o mais cedo possível!'
+    })
 
-		const payloadMail = {
-			from: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.com>',
-			to: payload.email,
-			subject: 'Obrigado pelo seu interesse ' + payload.nome + '.',
-			text: 'Retorno para você o mais cedo possível!'
+		if (!sendingMail || sendingMail.status != 200) {
+			throw new Error( (sendingMail.details) ? sendingMail.details : sendingMail )
 		}
-    const mg = mailgun.client({
-      username: 'api',
-      key,
-      public_key
-    });
-    const msg = await mg.messages.create(domain, payloadMail)
-    console.log('msg', msg);
-
-		// const result = await sendEmail(payloadMail)
-		// if (!result || !result.message) {
-		// 	throw new Error( (result.message) ? result.message : result )
-		// }
+    if (!thanksMail || thanksMail.status != 200) {
+      throw new Error( (thanksMail.details) ? thanksMail.details : thanksMail )
+    }
 
 	} catch (error) {
-    console.log(error)
+    console.error(error)
 		return {
 			statusCode: 500,
 			headers,
