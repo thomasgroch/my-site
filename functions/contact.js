@@ -82,15 +82,20 @@ exports.handler = async (event, context) => {
 		}))
 
     const sendingMail = await mg.messages.create(domain, {
-      from: payload.email,
-      to: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.xyz>',
-      subject: 'Contato do site ' + payload.nome + '.',
-      text: 'site'+JSON.stringify(payload)
+      from: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
+      to: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
+      subject: `☺️ Você tem um novo interessado: ${payload.nome}.`,
+      html: `nome: ${payload.nome}<br>
+				   email: ${payload.email}<br>
+				   telefone: ${payload.telefone}<br>
+				   estado: ${payload.estado}<br>
+				   cidade: ${payload.cidade}<br>
+				   mensagem: ${payload.mensagem}`
     })
     const thanksMail = await mg.messages.create(domain, {
       from: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.xyz>',
       to: payload.email,
-      subject: 'Obrigado pelo seu interesse ' + payload.nome + '.',
+      subject: `☺ Olá ${payload.nome}. Thomas aqui, Obrigada pelo seu interesse.`,
       text: 'Retorno para você o mais cedo possível!'
     })
 
