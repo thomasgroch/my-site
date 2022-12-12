@@ -1,37 +1,34 @@
-import {parse} from 'querystring'
-
+const path = require('path');
 const faunadb = require('faunadb')
 const moment = require('moment')
 const formData = require('form-data');
-const Mailgun = require('mailgun.js');
-const mailgun = new Mailgun(formData);
 const q = faunadb.query
 const client = new faunadb.Client({
-	secret: process.env.FAUNADB_SERVER_SECRET
+  secret: process.env.FAUNADB_SERVER_SECRET
 })
+const handlebars = require('handlebars');
+const Mailgun = require('mailgun.js');
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
 const {
-  MAILGUN_API_KEY: key,
+  MAILGUN_API_KEY: api_key,
   MAILGUN_DOMAIN: domain,
   MAILGUN_API_PUBLIC_KEY: public_key
 } = process.env;
-const mg = mailgun.client({
-  username: 'api',
-  key,
-  public_key
-});
+const options = {
+  auth: {
+    api_key,
+    domain
+  },
+  // host: 'api.eu.mailgun.net' // e.g. for EU region
+}
+const nodemailerMailgun = nodemailer.createTransport(mg(options));
 
 const headers = {
 	'Access-Control-Allow-Origin': '*', // better change this for production
 	'Access-Control-Allow-Methods': 'POST',
 	'Access-Control-Allow-Headers': 'Content-Type'
 }
-//
-// const sendEmail = data => {
-// 	const {from, to, subject, text} = data
-// 	const email = {from, to, subject, text}
-//
-// 	return mailgun.messages().send(email)
-// }
 
 exports.handler = async (event, context) => {
 	// only allow POST requests
@@ -81,25 +78,29 @@ exports.handler = async (event, context) => {
 			}
 		}))
 
-    const sendingMail = await mg.messages.create(domain, {
+    const sendingMail = await nodemailerMailgun.sendMail({
       from: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
       to: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
-      subject: `☺️ Você tem um novo interessado: ${payload.nome}.`,
-      html: `nome: ${payload.nome}<br>
-				   email: ${payload.email}<br>
-				   telefone: ${payload.telefone}<br>
-				   estado: ${payload.estado}<br>
-				   cidade: ${payload.cidade}<br>
-				   mensagem: ${payload.mensagem}`
+      subject: `🗈️ Novo contato. ${payload.nome}, do site thomasgroch.xyz.`,
+      template: {
+        name:  path.resolve('./functions/emails/base/sending.hbs'),
+        engine: 'handlebars',
+        context: payload
+      }
     })
-    const thanksMail = await mg.messages.create(domain, {
+
+    const thanksMail = await nodemailerMailgun.sendMail({
       from: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.xyz>',
       to: payload.email,
       subject: `☺ Olá ${payload.nome}. Thomas aqui, Obrigada pelo seu interesse.`,
-      text: 'Retorno para você o mais cedo possível!'
+      template: {
+        name:  path.resolve('./functions/emails/base/thanks.hbs'),
+        engine: 'handlebars',
+        context: payload
+      }
     })
 
-		if (!sendingMail || sendingMail.status != 200) {
+    if (!sendingMail || sendingMail.status != 200) {
 			throw new Error( (sendingMail.details) ? sendingMail.details : sendingMail )
 		}
     if (!thanksMail || thanksMail.status != 200) {
