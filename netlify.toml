@@ -17,7 +17,7 @@
   node_bundler = "esbuild"
 
   # Includes all View files inside the "emails/" directory.
-  included_files = ["functions/**.hbs"]
+  included_files = ["**.hbs"]
 
 [dev]
   command = "npm run dev:front" # Command to start your dev server
