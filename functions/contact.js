@@ -83,7 +83,7 @@ exports.handler = async (event, context) => {
       to: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
       subject: `🗈️ Novo contato. ${payload.nome}, do site thomasgroch.xyz.`,
       template: {
-        name:  path.resolve('./emails/base/sending.hbs'),
+        name:  path.resolve('./functions/emails/base/sending.hbs'),
         engine: 'handlebars',
         context: payload
       }
@@ -94,7 +94,7 @@ exports.handler = async (event, context) => {
       to: payload.email,
       subject: `☺ Olá ${payload.nome}. Thomas aqui, Obrigada pelo seu interesse.`,
       template: {
-        name:  path.resolve('./emails/base/thanks.hbs'),
+        name:  path.resolve('./functions/emails/base/thanks.hbs'),
         engine: 'handlebars',
         context: payload
       }
