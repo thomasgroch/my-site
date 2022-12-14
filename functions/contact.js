@@ -22,7 +22,7 @@ const options = {
   },
   // host: 'api.eu.mailgun.net' // e.g. for EU region
 }
-const nodemailerMailgun = nodemailer.createTransport(mg(options));
+const transporter = nodemailer.createTransport(mg(options))
 
 const headers = {
 	'Access-Control-Allow-Origin': '*', // better change this for production
@@ -78,18 +78,17 @@ exports.handler = async (event, context) => {
 			}
 		}))
 
-    const sendingMail = await nodemailerMailgun.sendMail({
+    const sendingMail = await transporter.sendMail({
       from: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
       to: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
-      subject: `🗈️ Novo contato. ${payload.nome}, do site thomasgroch.xyz.`,
+      subject: `🗈️ Novo contato. ${payload.nome}, do site thomasgroch.xyz as ${new Date().toDateString()}.`,
       template: {
         name:  path.resolve('./functions/emails/base/sending.hbs'),
         engine: 'handlebars',
         context: payload
       }
     })
-
-    const thanksMail = await nodemailerMailgun.sendMail({
+    const thanksMail = await transporter.sendMail({
       from: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.xyz>',
       to: payload.email,
       subject: `☺ Olá ${payload.nome}. Thomas aqui, Obrigada pelo seu interesse.`,
