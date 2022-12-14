@@ -16,6 +16,9 @@
 [functions]
   node_bundler = "esbuild"
 
+  # Includes all View files inside the "emails/" directory.
+  included_files = ["emails/*.hbs"]
+
 [dev]
   command = "npm run dev:front" # Command to start your dev server
   targetPort = 3000 # The port for your application server, framework or site generator
