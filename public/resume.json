@@ -41,7 +41,7 @@
     ]
   },
   "work": [
-        {
+    {
       "type": 3,
       "company": "Workana widget",
       "position": "Desenvolvedor full stack",
@@ -52,7 +52,7 @@
       "img": "https://user-images.githubusercontent.com/67318/68424371-970fe900-0182-11ea-9624-736e455e33e3.gif",
       "endDate": ""
     },
-     {
+    {
       "type": 3,
       "company": "Resource Generator",
       "position": "Desenvolvedor full stack",
@@ -71,10 +71,7 @@
       "startDate": "2017",
       "summary": "Melhora da disponibilidade usando proxy reverso em docker integrado ao workflow de CI zero-downtime deployment. Solução de automação para agregar em tempo real mensageiros instantâneos  distintos (fb, whatsapp e instagram).",
       "highlights": [],
-      "techs": [
-        "avatar.png",
-        "avatar.png"
-      ],
+      "techs": ["avatar.png", "avatar.png"],
       "img": "projects/hero99.png",
       "endDate": ""
     },
@@ -173,9 +170,7 @@
       "startDate": "",
       "endDate": "",
       "summary": "",
-      "highlights": [
-        ""
-      ]
+      "highlights": [""]
     }
   ],
   "workLabel": "",
@@ -197,9 +192,7 @@
       "startDate": "2005-02",
       "endDate": "2008-01",
       "gpa": "",
-      "courses": [
-        ""
-      ]
+      "courses": [""]
     }
   ],
   "publications": [
@@ -228,11 +221,7 @@
     {
       "name": "PHP 7",
       "level": "Senior",
-      "keywords": [
-        "Laravel",
-        "TDD",
-        "Web Scraping"
-      ]
+      "keywords": ["Laravel", "TDD", "Web Scraping"]
     },
     {
       "name": "Comércio eletrônico",
@@ -346,12 +335,12 @@
       }
     ],
     "database": [
-       {
+      {
         "name": "MariaDB",
         "photo": "stack/mariadb-logo.png",
         "href": "https://mariadb.com"
       },
-       {
+      {
         "name": "MongoDB",
         "photo": "stack/mongo-logo.png",
         "href": "https://www.mongodb.org/"

@@ -36,7 +36,7 @@ const currentPath = computed(() =>route.path)
       <button @click="open = !open">
         <font-awesome-icon :icon="['fa', !open ? 'angle-down': 'angle-up']"
                            :class="open ? 'animate-none': 'animate-bounce'"
-                           class="fa-3x text-neutral-500 hover:text-green-400 cursor-pointer hover:shadow-green-400 "/>
+                           class="fa-3x text-neutral-500 hover:animate-none hover:text-green-400 cursor-pointer hover:shadow-green-400 "/>
       </button>
         </div>
     </div>
