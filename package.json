@@ -36,7 +36,7 @@
     "@types/tailwindcss": "^3.0.10",
     "@vitejs/plugin-vue": "^2.3.3",
     "autoprefixer": "^10.4.7",
-    "concurrently": "7.5.0",
+    "concurrently": "7.6.0",
     "faunadb": "4.7.1",
     "flowbite": "^1.4.7",
     "mailgun.js": "^8.0.6",
