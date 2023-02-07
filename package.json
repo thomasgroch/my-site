@@ -76,7 +76,7 @@
     "eslint-plugin-cypress": "2.12.1",
     "form-data": "^4.0.0",
     "handlebars": "^4.7.7",
-    "netlify-cli": "^12.2.0",
+    "netlify-cli": "^12.10.0",
     "start-server-and-test": "^1.14.0",
     "vite-plugin-i18n-resources": "^1.0.3"
   }
