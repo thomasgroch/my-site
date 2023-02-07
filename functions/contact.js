@@ -1,30 +1,33 @@
-import {parse} from 'querystring'
-
+const path = require('path');
 const faunadb = require('faunadb')
 const moment = require('moment')
-const Mailgun = require('mailgun-js')
+const formData = require('form-data');
 const q = faunadb.query
 const client = new faunadb.Client({
-	secret: process.env.FAUNADB_SERVER_SECRET
+  secret: process.env.FAUNADB_SERVER_SECRET
 })
-const {MAILGUN_API_KEY: apiKey, MAILGUN_DOMAIN: domain} = process.env
-const mailgun = Mailgun({
-	apiKey,
-	domain,
-	retry: 3
-})
+const handlebars = require('handlebars');
+const Mailgun = require('mailgun.js');
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
+const {
+  MAILGUN_API_KEY: api_key,
+  MAILGUN_DOMAIN: domain,
+  MAILGUN_API_PUBLIC_KEY: public_key
+} = process.env;
+const options = {
+  auth: {
+    api_key,
+    domain
+  },
+  // host: 'api.eu.mailgun.net' // e.g. for EU region
+}
+const transporter = nodemailer.createTransport(mg(options))
 
 const headers = {
 	'Access-Control-Allow-Origin': '*', // better change this for production
 	'Access-Control-Allow-Methods': 'POST',
 	'Access-Control-Allow-Headers': 'Content-Type'
-}
-
-const sendEmail = data => {
-	const {from, to, subject, text} = data
-	const email = {from, to, subject, text}
-
-	return mailgun.messages().send(email)
 }
 
 exports.handler = async (event, context) => {
@@ -75,23 +78,41 @@ exports.handler = async (event, context) => {
 			}
 		}))
 
-		const payloadMail = {
-			from: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.com>',
-			to: payload.email,
-			subject: 'Obrigado pelo seu interesse ' + payload.nome + '.',
-			text: 'Retorno para você o mais cedo possível!'
+    const sendingMail = await transporter.sendMail({
+      from: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
+      to: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
+      subject: `🗈️ Novo contato. ${payload.nome}, do site thomasgroch.xyz as ${new Date().toDateString()}.`,
+      template: {
+        name:  path.resolve('./functions/emails/base/sending.hbs'),
+        engine: 'handlebars',
+        context: payload
+      }
+    })
+    const thanksMail = await transporter.sendMail({
+      from: process.env.MAILGUN_FROM || 'Thomas Groch <contato@thomasgroch.xyz>',
+      to: payload.email,
+      subject: `☺ Olá ${payload.nome}. Thomas aqui, Obrigada pelo seu interesse.`,
+      template: {
+        name:  path.resolve('./functions/emails/base/thanks.hbs'),
+        engine: 'handlebars',
+        context: payload
+      }
+    })
+
+    if (!sendingMail || sendingMail.status != 200) {
+			throw new Error( (sendingMail.details) ? sendingMail.details : sendingMail )
 		}
-		const result = await sendEmail(payloadMail)
-		if (!result || !result.message) {
-			throw new Error( (result.message) ? result.message : result )
-		}
+    if (!thanksMail || thanksMail.status != 200) {
+      throw new Error( (thanksMail.details) ? thanksMail.details : thanksMail )
+    }
 
 	} catch (error) {
+    console.error(error)
 		return {
 			statusCode: 500,
 			headers,
 			body: JSON.stringify({
-				error,
+				error
 			}),
 		}
 	}

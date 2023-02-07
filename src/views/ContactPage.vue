@@ -240,7 +240,7 @@ export default {
   },
   computed: {
     formAction() {
-      return (process.env.NODE_ENV === 'production') ? '/.netlify/functions/contact' : 'http://localhost:9000/.netlify/functions/contact'
+      return (process.env.NODE_ENV === 'production') ? '/.netlify/functions/contact' : 'http://localhost:8888/.netlify/functions/contact'
     }
   },
   methods: {

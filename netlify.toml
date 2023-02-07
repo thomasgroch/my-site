@@ -1,28 +1,75 @@
-[build.environment]
-  NODE_VERSION = "14"
-  NPM_FLAGS = "--version"
 [build]
   publish = "dist/"
-  command = "npx pnpm install --store=node_modules/.pnpm-store && npx pnpm build"
-#  command = "yarn"
   functions = 'functions/'
+  command = "npm run build"
   node_bundler = "esbuild"
 
-[template.environment]
-  NODE_ENV = 'production'
-  MAILGUN_API_KEY = 'Your MailGun API Key'
-  MAILGUN_DOMAIN = 'example.com'
-  MAILGUN_FROM = 'Full Name <fullname@example.com>'
-  FAUNADB_SERVER_SECRET = 'Your FaunaDB Server Secret'
-  VSSUE_PLATFORM = 'gitlab'
-  VSSUE_OWNER = 'github username'
-  VSSUE_REPO = 'github repo'
-  VSSUE_CLIENT_ID = 'github application token client id'
-  VSSUE_CLIENT_SECRET = 'github application token client secret'
+[build.environment]
+  # CI = "1"
+  # cache Cypress binary in local "node_modules" folder
+  # so Netlify caches it
+  CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
+  # set TERM variable for terminal output
+  TERM = "xterm"
 
 # https://answers.netlify.com/t/getting-must-use-import-to-load-es-module-when-using-node-fetch-in-netlify-functions/47230/2
 [functions]
   node_bundler = "esbuild"
+
+  # Includes all View files inside the "emails/" directory.
+  included_files = ["./functions/emails/**/*.hbs"]
+
+[dev]
+  command = "npm run dev:front" # Command to start your dev server
+  targetPort = 3000 # The port for your application server, framework or site generator
+  port = 8888 # The port that the netlify dev will be accessible on
+  autoLaunch = false # a Boolean value that determines if Netlify Dev launches the local server address in your browser
+  envFiles = [".env.development.local", ".env.local", ".env.development", ".env"] # The env files to use, ordered by priority (left - highest, right - lowest)
+
+
+[[plugins]]
+# runs Cypress tests against the deployed URL
+package = "netlify-plugin-cypress"
+[plugins.inputs]
+    # test the deployed URL
+    enable = true
+    record = true
+    group = 'deployed'
+
+[[plugins]]
+package = "netlify-plugin-checklinks"
+[plugins.inputs]
+  # An array of glob patterns for pages on your site
+  # Recursive traversal will start from these
+  entryPoints = [
+    "*.html",
+  ]
+
+  # Recurse through all the links and asset references on your page, starting
+  # at the entrypoints
+  recursive = true
+
+  # Checklinks outputs TAP (https://testanything.org/tap-version-13-specification.html)
+  # by default. Enabling pretty mode makes the output easier on the eyes.
+  pretty = true
+
+  # You can mark some check as skipped, which will block checklinks
+  # from ever attempting to execute them.
+  # skipPatterns is an array of strings you can match against failing reports
+  skipPatterns = []
+
+  # You can mark some check as todo, which will execute the check, but allow failures.
+  # todoPatterns is an array of strings you can match against failing reports
+  todoPatterns = []
+
+  # Report on all broken links to external pages.
+  # Enabling this will make your tests more brittle, since you can't control
+  # external pages.
+  checkExternal = false
+
+  # Enable to check references to source maps, source map sources etc.
+  # Many build tools don't emit working references, so this is disabled by default
+  followSourceMaps = false
 
 # [Settings]
 # ID = "Your_Site_ID"
@@ -120,38 +167,14 @@
 #     # to paid accounts
 #     Basic-Auth = "someuser:somepassword anotheruser:anotherpassword"
 
-[[plugins]]
-package = "netlify-plugin-checklinks"
- 
-  [plugins.inputs]
-  # An array of glob patterns for pages on your site
-  # Recursive traversal will start from these
-  entryPoints = [
-    "*.html",
-  ]
- 
-  # Recurse through all the links and asset references on your page, starting
-  # at the entrypoints
-  recursive = true
- 
-  # Checklinks outputs TAP (https://testanything.org/tap-version-13-specification.html)
-  # by default. Enabling pretty mode makes the output easier on the eyes.
-  pretty = true
- 
-  # You can mark some check as skipped, which will block checklinks
-  # from ever attempting to execute them.
-  # skipPatterns is an array of strings you can match against failing reports
-  skipPatterns = []
- 
-  # You can mark some check as todo, which will execute the check, but allow failures.
-  # todoPatterns is an array of strings you can match against failing reports
-  todoPatterns = []
- 
-  # Report on all broken links to external pages.
-  # Enabling this will make your tests more brittle, since you can't control
-  # external pages.
-  checkExternal = false
- 
-  # Enable to check references to source maps, source map sources etc.
-  # Many build tools don't emit working references, so this is disabled by default
-  followSourceMaps = false
+[template.environment]
+  NODE_ENV = 'production'
+  MAILGUN_API_KEY = 'Your MailGun API Key'
+  MAILGUN_DOMAIN = 'example.com'
+  MAILGUN_FROM = 'Full Name <fullname@example.com>'
+  FAUNADB_SERVER_SECRET = 'Your FaunaDB Server Secret'
+  VSSUE_PLATFORM = 'gitlab'
+  VSSUE_OWNER = 'github username'
+  VSSUE_REPO = 'github repo'
+  VSSUE_CLIENT_ID = 'github application token client id'
+  VSSUE_CLIENT_SECRET = 'github application token client secret'

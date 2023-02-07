@@ -1,3 +1,10 @@
+<script setup>
+import {useRoute} from 'vue-router'
+import {computed} from 'vue'
+const route=useRoute();
+const currentPath = computed(() =>route.path)
+</script>
+
 <template>
 
   <div class="md:py-36 py-10 px-auto">
@@ -10,19 +17,10 @@
     <p class="py-1 text-neutral-500">{{ $t('general.role_profile') }}, <span
       class="dark:bg-neutral-700 bg-green-100 text-green-400 rounded px-1 font-normal">Full Stack</span></p>
 
-    <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5"
-        v-if="currentPath != '/'">
-      <a class="dark:hover:bg-transparent px-2" href="https://linkedin.com/in/thomasgroch" target="_blank">
-        <font-awesome-icon :icon="['fab', 'linkedin']"
-                           class="fa-2x text-neutral-500 hover:text-green-400 dark:bg-transparent px" />
-      </a>
-      <a class="dark:hover:bg-transparent px-2" href="https://gitlab.com/thomas.groch" target="_blank">
-        <font-awesome-icon :icon="['fab', 'gitlab']"
-                           class="fa-2x text-neutral-500 hover:text-green-400 dark:bg-transparent" />
-      </a>
-      <a class="dark:hover:bg-transparent px-2" href="https://github.com/thomasgroch" target="_blank">
-        <font-awesome-icon :icon="['fab', 'github-alt']"
-                           class="fa-2x text-neutral-500 hover:text-green-400 " />
+    <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5">
+      <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank">
+        <font-awesome-icon :icon="['fab', n.network]"
+                           class="fa-2x text-neutral-500 hover:text-green-300 dark:bg-transparent px" />
       </a>
     </div>
 
@@ -38,7 +36,7 @@
       <button @click="open = !open">
         <font-awesome-icon :icon="['fa', !open ? 'angle-down': 'angle-up']"
                            :class="open ? 'animate-none': 'animate-bounce'"
-                           class="fa-3x text-neutral-500 hover:text-green-400 cursor-pointer hover:shadow-green-400 "/>
+                           class="fa-3x text-neutral-500 hover:animate-none hover:text-green-400 cursor-pointer hover:shadow-green-400 "/>
       </button>
         </div>
     </div>
@@ -47,6 +45,9 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import resume from "~/resume.json";
+
 export default {
   name: "CardProfile",
   data() {
@@ -56,5 +57,6 @@ export default {
   }
 }
 
+const network = computed(() => resume.basics.profiles.filter(n => n.network == 'linkedin'))
 </script>
 

@@ -9,7 +9,7 @@ a {
     @apply underline
 }
  p {
-    @apply dark:text-neutral-200 text-lg tracking-wide
+    @apply dark:text-neutral-200 text-base tracking-wide
 }
 h3{
   @apply text-lg
