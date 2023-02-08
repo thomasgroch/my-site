@@ -1,6 +1,7 @@
 # my-site
 
 [![Preview in vscode.dev](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/thomasgroch/my-site)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/thomasgroch/my-site/)
 
 This project uses:
 
@@ -20,6 +21,8 @@ Tailwind UI first-party plugins:
 - [tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
 - [tailwindcss/line-clamp](https://github.com/tailwindlabs/tailwindcss-line-clamp)
 - [tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio)
+
+---
 
 ### To have your own
 
