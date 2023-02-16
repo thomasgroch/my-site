@@ -11,9 +11,9 @@
     <p class="text-sm text-neutral-500 text-center">© 2002 - {{ new Date().getFullYear() }} Thomas Groch.</p>
     <p class="text-sm text-neutral-500 text-center" v-if="commit_ref">
       <span v-if="node_version">Build with node {{ node_version }}<br /></span>
-      <a :href="repo_url+'/-/commit/' + commit_ref" target="_blank">#{{ commit_ref.substring(0,7) }}</a>
+      <a :href="repository_url+'/-/commit/' + commit_ref" target="_blank">#{{ commit_ref.substring(0,7) }}</a>
       <span v-if="branch">
-        on <a :href="repo_url+'/-/tree/' + branch" target="_blank">{{ branch }}</a>.
+        on <a :href="repository_url+'/-/tree/' + branch" target="_blank">{{ branch }}</a>.
       </span>
     </p>
      <div class="flex justify-center gap-5 py-5 px-1">
@@ -54,7 +54,6 @@ const setLocale = (lang) => {
   i18n.setLocale(lang);
 };
 
-const repo_url = ref('https://github.com/thomasgroch/my-site')
 const site_name = ref(import.meta.env.SITE_NAME)
 const url = ref(import.meta.env.URL)
 const node_version = ref(import.meta.env.NODE_VERSION)
