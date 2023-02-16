@@ -11,7 +11,7 @@
     <p class="text-sm text-neutral-500 text-center">© 2002 - {{ new Date().getFullYear() }} Thomas Groch.</p>
     <p class="text-sm text-neutral-500 text-center" v-if="commit_ref">
       <span v-if="node_version">Build with node {{ node_version }}<br /></span>
-      <a :href="repository_url+'/-/commit/' + commit_ref" target="_blank">#{{ commit_ref.substring(0,7) }}</a>
+      <a :href="repository_url+'/commit/' + commit_ref" target="_blank">#{{ commit_ref.substring(0,7) }}</a>
       <span v-if="branch">
         on <a :href="repository_url+'/tree/' + branch" target="_blank">{{ branch }}</a>.
       </span>
