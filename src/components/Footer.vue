@@ -13,7 +13,7 @@
       <span v-if="node_version">Build with node {{ node_version }}<br /></span>
       <a :href="repository_url+'/-/commit/' + commit_ref" target="_blank">#{{ commit_ref.substring(0,7) }}</a>
       <span v-if="branch">
-        on <a :href="repository_url+'/-/tree/' + branch" target="_blank">{{ branch }}</a>.
+        on <a :href="repository_url+'/tree/' + branch" target="_blank">{{ branch }}</a>.
       </span>
     </p>
      <div class="flex justify-center gap-5 py-5 px-1">
