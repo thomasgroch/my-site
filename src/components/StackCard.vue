@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center mx-auto">
+  <div class="rounded p-6 text-center mx-auto">
     <a :href="item.href" class="flex flex-col dark:bg-transparent mx-auto text-center hover:underline no-underline underline-offset-8 text-green-400"
     target="_blank"
     rel="noopener noreferrer">
