@@ -38,7 +38,7 @@
     "autoprefixer": "^10.4.7",
     "concurrently": "7.6.0",
     "faunadb": "4.7.1",
-    "flowbite": "^1.4.7",
+    "flowbite": "^1.6.4",
     "mailgun.js": "^8.0.6",
     "moment": "2.29.4",
     "netlify-plugin-checklinks": "4.1.1",
