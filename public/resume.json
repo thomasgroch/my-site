@@ -13,9 +13,9 @@
     "location": {
       "address": "",
       "postalCode": "",
-      "city": "Florianópolis",
+      "city": "Curitiba",
       "countryCode": "BR",
-      "region": "SC"
+      "region": "PR"
     },
     "profiles": [
       {
@@ -32,11 +32,6 @@
         "network": "linkedin",
         "username": "thomasgroch",
         "url": "https://www.linkedin.com/in/thomasgroch"
-      },
-      {
-        "network": "skype",
-        "username": "thomas.groch",
-        "url": "skype:thomasgroch?chat"
       }
     ]
   },
@@ -290,6 +285,11 @@
         "name": "Vue Router",
         "photo": "stack/vue-logo.png",
         "href": "https://router.vuejs.org/"
+      },
+      {
+        "name": "Playwright",
+        "photo": "stack/playwright-logo.png",
+        "href": "https://playwright.dev/"
       }
     ],
     "back": [
