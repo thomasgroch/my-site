@@ -4,7 +4,6 @@ import About from './views/About.vue'
 import NotFound from './views/NotFound.vue'
 import ProjectPage from './views/ProjectPage.vue'
 import StackPage from './views/StackPage.vue'
-import ContactPage from './views/ContactPage.vue'
 
 /** @type {import('vue-router').RouterOptions['routes']} */
 const routes = [
@@ -30,8 +29,21 @@ const routes = [
   },
   {
     path: '/contato',
-    component: ContactPage,
+    component: import('./views/ContactPage.vue')
   },
+  {
+    path: '/entrevista/:nome',
+    component: import('./views/MeetPage.vue'),
+    props: true,
+    alias: ['/meet/:nome', '/conferencia/:nome']
+  },
+  {
+    path: '/entrevista/:nome/:date',
+    component: import('./views/MeetPage.vue'),
+    props: true,
+    alias: ['/meet/:nome/:date', '/conferencia/:nome/:date']
+  },
+
 
   { path: '/:path(.*)', component: NotFound },
 ]

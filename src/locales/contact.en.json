@@ -12,5 +12,6 @@
   "success_msg": "Your message has been sent successfully!",
   "return_msg": "I will get back to you shortly, check your email 😉",
   "close": "Close",
-  "hello": "Hello"
+  "hello": "Hello",
+  "date": "date"
 }

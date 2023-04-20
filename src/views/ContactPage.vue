@@ -3,7 +3,7 @@ import Estados from '@/components/Estados.vue'
 import Cidades from '@/components/Cidades.vue'
 import nprogress from 'nprogress'
 </script>
-<!---->
+
 <template>
   <main class="mt-5 flex flex-col items-center justify-center">
     <div v-if="modal.visible" @click.self="modal.visible = false"
@@ -205,7 +205,9 @@ import nprogress from 'nprogress'
 </template>
 
 <script>
+import { reactive, ref } from "vue"
 // import VueTextareaAutosize from 'vue-textarea-autosize'
+
 export default {
   name: 'ContatoPage',
   metaInfo: {
@@ -233,9 +235,11 @@ export default {
         telefone: null,
         estado: null,
         cidade: null,
-        mensagem: ''
+        mensagem: '',
+        date: '',
       },
-      status: 'idle'
+      status: 'idle',
+      isEmail: null
     }
   },
   computed: {
