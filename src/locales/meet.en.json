@@ -1,4 +1,7 @@
 {
+  "meet": "Meet",
+  "reunião": "Meet",
+  "entrevista": "Interview",
   "name": "Meet name",
   "email": "E-mail",
   "submit": "Schedule",

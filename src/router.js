@@ -36,19 +36,19 @@ const routes = [
   {
     path: '/entrevista',
     component: MeetPage,
-    alias: ['/meet', '/conferencia']
+    alias: ['/meet', '/interview']
   },
   {
     path: '/entrevista/:nome',
     component: MeetPage,
     props: true,
-    alias: ['/meet/:nome', '/conferencia/:nome']
+    alias: ['/meet/:nome', '/interview/:nome']
   },
   {
     path: '/entrevista/:nome/:date',
     component: MeetPage,
     props: true,
-    alias: ['/meet/:nome/:date', '/conferencia/:nome/:date']
+    alias: ['/meet/:nome/:date', '/interview/:nome/:date']
   },
 
 
