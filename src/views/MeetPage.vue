@@ -1,20 +1,28 @@
 <template>
   <main class="mt-5 flex flex-col items-center justify-center">
-    <h3 class="py-5">{{ $t('meet.'+$route.path.substring(1)) }}</h3>
-    <div v-if="nome">
-      <p>{{ nome }}</p>
-      <p v-if="props.date"> em {{ meetDate }} às {{ meetTime }}</p>
+    <h3 class="py-5">{{ $t('meet.' + $route.path.substring(1).split('/')[0]) }}</h3>
+    <div v-if="nome" class="w-full">
+      
+      <h2 class="text-lg pb-5 px-3">{{ nomeParsed }}. <span class="text-xs italic text-gray-100">({{ meetDate }} às {{ meetTime }})</span></h2>
+
+      <div v-if="props.date && ! itIsTime" class="w-full">
+        Faltam {{ days }} dias, {{ hours }} horas, {{ minutes }} minutos e {{ seconds }} segundos.
+      </div>
+  
       <JitsiMeeting
-        class="flex mb-20 flex-wrap justify-center dark:bg-neutral-800 py-5 px-8 rounded-md"
+        v-if="itIsTime"
+        class="mb-20 justify-center dark:bg-neutral-800 py-5 rounded-md"
         domain="meet.jit.si"
         :room-name="nome"
+        width="100%"
+        height="700px"
       />
     </div>
 
     <form class="w-full max-w-md"
           v-else 
           :action="formAction"
-          @submit.prevent="validateBeforeSubmit"
+          @submit.prevent="submit"
           name="meet"
           method="post"
           data-netlify="true"
@@ -75,8 +83,11 @@
 </template>
 
 <script setup>
-import { reactive, ref, defineProps, computed } from "vue"
+import { reactive, ref, defineProps, computed, onMounted, onUnmounted } from "vue"
 import { JitsiMeeting } from "@jitsi/vue-sdk"
+import nprogress from 'nprogress'
+import { useRouter } from 'vue-router'
+import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInYears, setDefaultOptions, format, differenceInMonths, differenceInDays, addDays, addMonths } from 'date-fns'
 
 const props = defineProps({
   nome: {
@@ -94,6 +105,47 @@ const form = ref({
 const hasFilled = (field) => {
   return (!errors.value.has(field) && form.value[field])
 }
+const nomeParsed = computed(() => props.nome.replace(/-/g, " "))
+const meetDate = computed(() => props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
+const meetTime = computed(() => props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
+
+
+const futureDate = new Date(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()));
+const days = ref(0);
+const hours = ref(0);
+const minutes = ref(0);
+const seconds = ref(0);
+let timer;
+
+const itIsTime = computed(() => {
+  const now = new Date();
+  const timeToCheck = parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date())
+  if (timeToCheck < now) {
+    console.log('The time has passed.');
+    return true
+  } else {
+    console.log('The time has not passed yet.');
+    return false
+  }
+})
+
+onMounted(() => {
+  timer = setInterval(() => {
+    const now = new Date();
+    const timeDifferenceInSeconds = differenceInSeconds(futureDate, now);
+    const timeDifferenceInMinutes = differenceInMinutes(futureDate, now);
+    const timeDifferenceInHours = differenceInHours(futureDate, now);
+    const timeDifferenceInDays = differenceInDays(futureDate, now);
+
+    days.value = Math.floor(timeDifferenceInDays);
+    hours.value = Math.floor(timeDifferenceInHours % 24);
+    minutes.value = Math.floor(timeDifferenceInMinutes % 60);
+    seconds.value = Math.floor(timeDifferenceInSeconds % 60);
+  }, 1000);
+});
+onUnmounted(() => {
+  clearInterval(timer);
+});
 
 const errors = ref({
   has: () => {
@@ -101,8 +153,35 @@ const errors = ref({
   }
 })
 
-const formAction = computed(() => (process.env.NODE_ENV === 'production') ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
+const router = useRouter()
+const currentPath = computed(() => router.path)
 
-const meetDate = computed(() => props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
-const meetTime = computed(() => props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
+const submit = () => {
+  let result = false
+  let response
+  try {
+    nprogress.start()
+    const url = router.currentRoute.value.path.substring(1) + `/${form.value.nome}/${form.value.date}-${form.value.time.replace(/:/g, '-')}` 
+    
+    console.log(url)
+    router.push(url)
+    // response = await fetch(this.formAction, {
+    //   method: 'POST',
+    //   body: JSON.stringify(this.$data.form)
+    // })
+    //   return
+    // }
+  } catch (error) {
+    console.log(error)
+    nprogress.done()
+    return
+  }
+  nprogress.done()
+  return true
+}
+
+const formAction = computed(() => (process.env.NODE_ENV === 'production') ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
 </script>
+
+<style type="text/css" scoped>
+</style>

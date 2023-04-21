@@ -13,7 +13,7 @@ import packageJSON from "../package.json"
 
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
-        <component class="p-5" :is="Component"/>
+        <component :is="Component"/>
       </transition>
     </router-view>
 
