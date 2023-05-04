@@ -6,10 +6,10 @@
       <div class="flex flex-col items-center justify-center">
         <Logo />
         <p class="text-base font-bold pt-5">{{ $t('meet.' + meetType) }} Confirmed</p>
-        <p class="text-base pb-3 pt-2">You are scheduled with Thomas Groch.</p>
+        <!-- <p class="text-base pb-3 pt-2">You are scheduled with Thomas Groch.</p> -->
       </div>
 
-      <hr class="py-3" />
+      <!-- <hr class="py-3" /> -->
 
       <div class="w-2/3 mx-auto">
         <span class="flex font-bold pb-1" v-if="props.date">
@@ -34,7 +34,7 @@
       </div>
 
       <div class="py-3">
-        <p>A confirmation has been sent to your email address.</p>
+        <!-- <p>A confirmation has been sent to your email address.</p> -->
 
         <div v-if="props.date && ! itIsTime" class="w-full">
           Faltam {{ days }} dias, {{ hours }} horas, {{ minutes }} minutos e {{ seconds }} segundos.
