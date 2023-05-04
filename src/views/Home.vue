@@ -4,7 +4,7 @@ import CardProfile from '@/components/CardProfile.vue'
 
 <template>
    <div class="m-auto text-center items-center">
-     <CardProfile></CardProfile>
+     <CardProfile />
   </div>
 </template>
 

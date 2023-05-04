@@ -1,20 +1,51 @@
 <template>
+  <div class="bg-white dark:bg-neutral-500 p-3 my-3 rounded-md drop-shadow-xl">
   <main class="mt-5 flex flex-col items-center justify-center">
-    <h3 class="py-5">{{ $t('meet.' + $route.path.substring(1).split('/')[0]) }}</h3>
     
     <div v-if="props.nome">
-      <h2 class="text-lg pb-5 px-3">{{ nomeParsed }}. <span class="text-xs italic text-gray-100" v-if="props.date">({{ meetDate }} às {{ meetTime }})</span></h2>
-      <div v-if="props.date && ! itIsTime" class="w-full">
-        Faltam {{ days }} dias, {{ hours }} horas, {{ minutes }} minutos e {{ seconds }} segundos.
+      <div class="flex flex-col items-center justify-center">
+        <Logo />
+        <p class="text-base font-bold pt-5">{{ $t('meet.' + meetType) }} Confirmed</p>
+        <p class="text-base pb-3 pt-2">You are scheduled with Thomas Groch.</p>
       </div>
 
-      <div v-if="props.date">
-        <a :href="icsLink" download="evento.ics">Arquivo ICS</a>
+      <hr class="py-3" />
+
+      <div class="w-2/3 mx-auto">
+        <span class="flex font-bold pb-1" v-if="props.date">
+          <ChatBubbleLeftIcon class="h-7 w-7 mr-2 text-blue-500"/>
+          {{ nomeParsed }}
+        </span>
+
+        <span class="flex text-neutral-500 pb-1" v-if="props.date">
+          <CalendarIcon class="h-7 w-7 mr-2 text-blue-500"/>
+          {{ meetDate }} às {{ meetTime }}
+          <a :href="icsLink" download="evento.ics" v-if="props.date">Arquivo ICS</a>
+        </span>
+
+        <span class="flex text-neutral-500 pb-1" v-if="props.date">
+          <GlobeAltIcon class="h-7 w-7 mr-2 text-blue-500"/>
+          {{ $route.path }}
+        </span>
+        <span class="flex text-neutral-500 pb-1" v-if="props.date">
+          <VideoCameraIcon class="h-7 w-7 mr-2 text-blue-500"/>
+          Web conferencing details to follow.
+        </span>
       </div>
+
+      <div class="py-3">
+        <p>A confirmation has been sent to your email address.</p>
+
+        <div v-if="props.date && ! itIsTime" class="w-full">
+          Faltam {{ days }} dias, {{ hours }} horas, {{ minutes }} minutos e {{ seconds }} segundos.
+        </div>
+      </div>
+
+      <hr class="py-3" />
 
       <JitsiMeeting
       v-if="props.date && itIsTime || ! props.date"
-      class="mb-20 justify-center dark:bg-neutral-800 py-5 rounded-md"
+      class="mb-20 w-52 justify-center dark:bg-neutral-800 py-5 rounded-md"
       domain="meet.jit.si"
       :room-name="props.nome"
       height="700px"
@@ -23,15 +54,21 @@
 
     <MeetForm v-else />
 </main>
+</div>
 </template>
 
 <script setup>
+  import Logo from '@/components/Logo.vue'
   import { reactive, ref, defineProps, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
   import nprogress from 'nprogress'
   import { useRouter } from 'vue-router'
   import { parse, formatISO, addHours, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInYears, setDefaultOptions, format, differenceInMonths, differenceInDays, addDays, addMonths } from 'date-fns'
   import MeetForm from '@/components/MeetForm.vue'
+  import { CalendarIcon, ChatBubbleLeftIcon, GlobeAltIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
+
+  const router = useRouter()
+  const currentPath = computed(() => router.path)
 
   const props = defineProps({
     nome: {
@@ -40,6 +77,9 @@
     date: {
       type: String
     }
+  })
+  const meetType = computed(() => {
+    return router.currentRoute.value.path.substring(1).split('/')[0]
   })
   const nomeParsed = computed(() => props.nome.replace(/-/g, " "))
   const meetDate = computed(() => props.date && props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')

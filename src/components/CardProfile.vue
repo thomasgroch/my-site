@@ -1,4 +1,5 @@
 <script setup>
+import Logo from '@/components/Logo.vue'
 import {useRoute} from 'vue-router'
 import {computed} from 'vue'
 const route=useRoute();
@@ -8,9 +9,7 @@ const currentPath = computed(() =>route.path)
 <template>
 
   <div class="md:py-36 py-10 px-auto">
-    <img
-      class="border border-green-200 mx-auto my-auto w-50 h-40 rounded-full shadow-md dark:shadow-lg dark:shadow-black dark:border-neutral-700 shadow-green-200 border border-green-200 border-l-1 border-t-1 border-b-3 border-r-3"
-      src="/avatar.png">
+    <Logo />
     <div class="py-2">
       <h1 class="text-3xl font-semibold text-green-400 rounded p-1">Thomas Groch</h1>
     </div>

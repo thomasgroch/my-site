@@ -8,11 +8,14 @@
 a {
     @apply underline
 }
- p {
-    @apply dark:text-neutral-200 text-base tracking-wide
+p, span {
+    @apply text-neutral-800 dark:text-neutral-200 text-base font-light
 }
-h3{
-  @apply text-lg
+span {
+    @apply text-sm
+}
+h1, h2, h3, h4 {
+  @apply text-lg tracking-wide
 }
 
 
