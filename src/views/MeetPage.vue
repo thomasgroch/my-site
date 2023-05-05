@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white dark:bg-neutral-500 p-3 my-3 rounded-md drop-shadow-xl">
   <main class="mt-5 flex flex-col items-center justify-center">
-    
+
     <div v-if="props.nome">
       <div class="flex flex-col items-center justify-center">
         <Logo />
@@ -20,8 +20,8 @@
         <span class="flex text-neutral-500 pb-1" v-if="props.date">
           <CalendarIcon class="h-7 w-7 mr-2 text-blue-500"/>
           {{ meetDate }} às {{ meetTime }}
-          <a :href="icsLink" download="evento.ics" v-if="props.date" class="pl-2">Arquivo ICS</a>
-          <a href="/evento.ics" download="/evento.ics" class="pl-2">ArquivoTeste ICS</a>
+          <Ics :event="event" />
+          <!-- <a :href="googleCalendarLink" target="_blank">Add to Google Calendar</a> -->
         </span>
 
         <span class="flex text-neutral-500 pb-1" v-if="props.date">
@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+  import Ics from '@/components/Ics.vue'
   import Logo from '@/components/Logo.vue'
   import { reactive, ref, defineProps, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
@@ -89,13 +90,32 @@
   const meetTime = computed(() => props.date && props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
   
   const eventTime = ref(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()))
+  const icsStartDateString = ref(formatISO(new Date(eventTime.value), { representation: "complete" }))
+  const oneHourLaterString = ref(formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" }))
+
   const event = ref({
-    title: props.nome,
-    start: "2023-04-22T09:00:00Z",
-    end: "2023-04-22T10:00:00Z",
-    location: "Local do Evento",
-    description: "Descrição do Evento"
-  });
+    title: nomeCapitalized,
+    start: icsStartDateString.value,
+    end: oneHourLaterString.value,
+    location: 'Localasd do Evento',
+    description: 'Descriçãoasd do Evento',
+  })
+
+  const googleCalendarLink = computed(() => {
+
+    const icsStartDateString = formatISO(new Date(eventTime.value), { representation: "complete" });
+    const oneHourLaterString = formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" });
+
+    const action = `TEMPLATE` // TEMPLATE (required)
+    const text = `${event.value.title}` // Title of the event (URL encoded format).
+    const details = `${event.value.description}` // Event details or description (URL encoded format).
+    const dates = `${encodeURIComponent(icsStartDateString)}/${encodeURIComponent(oneHourLaterString)}` // ISO date format (start_datetime/end_datetime)
+    const location = `${event.value.location}` // Location of the event (URL encoded format).
+
+    return `https://calendar.google.com/calendar/render?action=${action}&text=${text}&details=${details}&dates=${dates}&location=${location}`
+    // return https://calendar.google.com/calendar/render?action=TEMPLATE&text=My Event&details=Event description text&dates=20220305T103000/20220305T184500&location=New York City
+    // return link
+  })
 
   const icsLink = computed(() => {
 
