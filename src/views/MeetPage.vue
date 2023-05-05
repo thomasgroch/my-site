@@ -14,18 +14,18 @@
       <div class="w-2/3 mx-auto">
         <span class="flex font-bold pb-1" v-if="props.date">
           <ChatBubbleLeftIcon class="h-7 w-7 mr-2 text-blue-500"/>
-          {{ nomeParsed }}
+          {{ nomeCapitalized }}
         </span>
 
         <span class="flex text-neutral-500 pb-1" v-if="props.date">
           <CalendarIcon class="h-7 w-7 mr-2 text-blue-500"/>
           {{ meetDate }} às {{ meetTime }}
-          <a :href="icsLink" download="evento.ics" v-if="props.date">Arquivo ICS</a>
+          <a :href="icsLink" download="evento.ics" v-if="props.date" class="pl-2">Arquivo ICS</a>
         </span>
 
         <span class="flex text-neutral-500 pb-1" v-if="props.date">
           <GlobeAltIcon class="h-7 w-7 mr-2 text-blue-500"/>
-          {{ $route.path }}
+          <a :href="$route.path" target="_blank">Website</a>
         </span>
         <span class="flex text-neutral-500 pb-1" v-if="props.date">
           <VideoCameraIcon class="h-7 w-7 mr-2 text-blue-500"/>
@@ -45,10 +45,11 @@
 
       <JitsiMeeting
       v-if="props.date && itIsTime || ! props.date"
-      class="mb-20 w-52 justify-center dark:bg-neutral-800 py-5 rounded-md"
+      class="mb-20 w-full justify-center dark:bg-neutral-800 py-5 rounded-md"
       domain="meet.jit.si"
       :room-name="props.nome"
       height="700px"
+      width="100%"
       />
     </div>
 
@@ -66,7 +67,7 @@
   import { parse, formatISO, addHours, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInYears, setDefaultOptions, format, differenceInMonths, differenceInDays, addDays, addMonths } from 'date-fns'
   import MeetForm from '@/components/MeetForm.vue'
   import { CalendarIcon, ChatBubbleLeftIcon, GlobeAltIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
-
+  
   const router = useRouter()
   const currentPath = computed(() => router.path)
 
@@ -82,6 +83,7 @@
     return router.currentRoute.value.path.substring(1).split('/')[0]
   })
   const nomeParsed = computed(() => props.nome.replace(/-/g, " "))
+  const nomeCapitalized = computed(() => nomeParsed.value.charAt(0).toUpperCase()   + nomeParsed.value.slice(1))
   const meetDate = computed(() => props.date && props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
   const meetTime = computed(() => props.date && props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
   
