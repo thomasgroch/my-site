@@ -21,6 +21,7 @@
           <CalendarIcon class="h-7 w-7 mr-2 text-blue-500"/>
           {{ meetDate }} às {{ meetTime }}
           <a :href="icsLink" download="evento.ics" v-if="props.date" class="pl-2">Arquivo ICS</a>
+          <a href="/evento.ics" download="/evento.ics" class="pl-2">ArquivoTeste ICS</a>
         </span>
 
         <span class="flex text-neutral-500 pb-1" v-if="props.date">
