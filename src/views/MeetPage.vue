@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-white dark:bg-neutral-500 p-3 my-3 rounded-md drop-shadow-xl">
+  <div class="bg-white dark:bg-neutral-700 p-3 my-3 rounded-md drop-shadow-xl">
   <main class="mt-5 flex flex-col items-center justify-center">
 
-    <div v-if="props.nome" class="w-full px-5">
+    <div v-if="props.nome" class="w-full px-5 pb-5">
       <div class="flex flex-col items-center justify-center">
-        <Logo />
+        <Logo class="!h-20" />
         <p class="text-base font-bold pt-5">{{ $t('meet.' + meetType) }} Confirmed</p>
         <!-- <p class="text-base pb-3 pt-2">You are scheduled with Thomas Groch.</p> -->
       </div>
@@ -26,7 +26,7 @@
 
           <span class="flex text-neutral-500 pb-1" v-if="props.date">
             <GlobeAltIcon class="h-7 w-7 mr-2 text-blue-500"/>
-            <a :href="$route.path" target="_blank">Website</a>
+            <a :href="$route.path" target="_blank">Conference link</a>
           </span>
           <span class="flex text-neutral-500 pb-1" v-if="props.date">
             <VideoCameraIcon class="h-7 w-7 mr-2 text-blue-500"/>
@@ -47,7 +47,6 @@
 
       <JitsiMeeting
       v-if="props.date && itIsTime || ! props.date"
-      class="mb-20 w-96 justify-center dark:bg-neutral-800 py-5 rounded-md"
       domain="meet.jit.si"
       :room-name="props.nome"
       height="700px"

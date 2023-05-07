@@ -36,17 +36,20 @@ const routes = [
   {
     path: '/entrevista',
     component: MeetPage,
+    meta: { title: 'Meet' },
     alias: ['/meet', '/reuniao', '/interview']
   },
   {
     path: '/entrevista/:nome',
     component: MeetPage,
+    meta: { title: 'Meet' },
     props: true,
     alias: ['/meet/:nome', '/reuniao/:nome', '/interview/:nome']
   },
   {
     path: '/entrevista/:nome/:date',
     component: MeetPage,
+    meta: { title: 'Meet' },
     props: true,
     alias: ['/meet/:nome/:date', '/interview/:nome/:date']
   },
@@ -64,4 +67,7 @@ const router = createRouter({
   }
 })
 
+router.afterEach((to) => {
+  document.title = document.title + ' - ' + to.meta.title || 'Thomas Groch'
+});
 export default router
