@@ -2,7 +2,7 @@
   <div class="bg-white dark:bg-neutral-500 p-3 my-3 rounded-md drop-shadow-xl">
   <main class="mt-5 flex flex-col items-center justify-center">
 
-    <div v-if="props.nome">
+    <div v-if="props.nome" class="w-full md:w-96 px-5">
       <div class="flex flex-col items-center justify-center">
         <Logo />
         <p class="text-base font-bold pt-5">{{ $t('meet.' + meetType) }} Confirmed</p>
@@ -11,7 +11,7 @@
 
       <!-- <hr class="py-3" /> -->
 
-      <div class="w-full px-5 mx-auto">
+      <div class="px-2 pt-5">
         <span class="flex font-bold pb-1" v-if="props.date">
           <ChatBubbleLeftIcon class="h-7 w-7 mr-2 text-blue-500"/>
           {{ nomeCapitalized }}
@@ -148,10 +148,10 @@ console.log(calendarData)
     const now = new Date();
     const timeToCheck = eventTime.value
     if (timeToCheck < now) {
-      console.log('The time has passed.');
+      // console.log('The time has passed.');
       return true
     } else {
-      console.log('The time has not passed yet.');
+      // console.log('The time has not passed yet.');
       return false
     }
   })
@@ -160,7 +160,7 @@ console.log(calendarData)
     if ( !props.date ) {
       return ''
     }
-    const futureDate = new Date(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()));
+    const futureDate = new Date(eventTime.value);
     timer = setInterval(() => {
       const now = new Date();
       const timeDifferenceInSeconds = differenceInSeconds(futureDate, now);
