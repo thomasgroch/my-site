@@ -11,7 +11,7 @@
 
       <!-- <hr class="py-3" /> -->
 
-      <div class="w-2/3 mx-auto">
+      <div class="w-full px-5 mx-auto">
         <span class="flex font-bold pb-1" v-if="props.date">
           <ChatBubbleLeftIcon class="h-7 w-7 mr-2 text-blue-500"/>
           {{ nomeCapitalized }}
@@ -20,7 +20,7 @@
         <span class="flex text-neutral-500 pb-1" v-if="props.date">
           <CalendarIcon class="h-7 w-7 mr-2 text-blue-500"/>
           {{ meetDate }} às {{ meetTime }}
-          <Ics :event="event" />
+          <!-- <Ics :event="event" /> -->
           <!-- <a :href="googleCalendarLink" target="_blank">Add to Google Calendar</a> -->
         </span>
 
