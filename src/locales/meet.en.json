@@ -6,5 +6,10 @@
   "email": "E-mail",
   "submit": "Schedule",
   "date": "date",
-  "time": "time"
+  "time": "time",
+  "you-are-scheduled-with": "You are scheduled with",
+  "web-conferencing-details-to-follow": "Web conferencing details to follow.",
+  "conference-link": "Conference link",
+  "schedule-a-web-conference": "Schedule a web conference",
+  "confirmed": "Confirmed"
 }

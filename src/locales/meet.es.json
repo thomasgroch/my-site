@@ -6,5 +6,10 @@
   "email": "E-mail",
   "submit": "Agendar",
   "date": "data",
-  "time": "home"
+  "time": "home",
+  "you-are-scheduled-with": "Estás reservado con",
+  "web-conferencing-details-to-follow": "Detalles de la conferencia web a seguir.",
+  "conference-link": "Enlace de la conferencia",
+  "schedule-a-web-conference": "programar una conferencia web",
+  "confirmed": "Confirmado"
 }
