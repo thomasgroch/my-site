@@ -2,7 +2,7 @@
   <div class="bg-white dark:bg-neutral-500 p-3 my-3 rounded-md drop-shadow-xl">
   <main class="mt-5 flex flex-col items-center justify-center">
 
-    <div v-if="props.nome" class="w-full md:w-96 px-5">
+    <div v-if="props.nome" class="w-full px-5">
       <div class="flex flex-col items-center justify-center">
         <Logo />
         <p class="text-base font-bold pt-5">{{ $t('meet.' + meetType) }} Confirmed</p>
@@ -10,35 +10,36 @@
       </div>
 
       <!-- <hr class="py-3" /> -->
+      <div class="px-2 pt-5 w-96 mx-auto">
+        <div>
+          <span class="flex font-bold pb-1" v-if="props.date">
+            <ChatBubbleLeftIcon class="h-7 w-7 mr-2 text-blue-500"/>
+            {{ nomeCapitalized }}
+          </span>
 
-      <div class="px-2 pt-5">
-        <span class="flex font-bold pb-1" v-if="props.date">
-          <ChatBubbleLeftIcon class="h-7 w-7 mr-2 text-blue-500"/>
-          {{ nomeCapitalized }}
-        </span>
+          <span class="flex text-neutral-500 pb-1" v-if="props.date">
+            <CalendarIcon class="h-7 w-7 mr-2 text-blue-500"/>
+            {{ meetDate }} às {{ meetTime }}
+            <!-- <Ics :event="event" /> -->
+            <!-- <a :href="googleCalendarLink" target="_blank">Add to Google Calendar</a> -->
+          </span>
 
-        <span class="flex text-neutral-500 pb-1" v-if="props.date">
-          <CalendarIcon class="h-7 w-7 mr-2 text-blue-500"/>
-          {{ meetDate }} às {{ meetTime }}
-          <!-- <Ics :event="event" /> -->
-          <!-- <a :href="googleCalendarLink" target="_blank">Add to Google Calendar</a> -->
-        </span>
+          <span class="flex text-neutral-500 pb-1" v-if="props.date">
+            <GlobeAltIcon class="h-7 w-7 mr-2 text-blue-500"/>
+            <a :href="$route.path" target="_blank">Website</a>
+          </span>
+          <span class="flex text-neutral-500 pb-1" v-if="props.date">
+            <VideoCameraIcon class="h-7 w-7 mr-2 text-blue-500"/>
+            Web conferencing details to follow.
+          </span>
+        </div>
 
-        <span class="flex text-neutral-500 pb-1" v-if="props.date">
-          <GlobeAltIcon class="h-7 w-7 mr-2 text-blue-500"/>
-          <a :href="$route.path" target="_blank">Website</a>
-        </span>
-        <span class="flex text-neutral-500 pb-1" v-if="props.date">
-          <VideoCameraIcon class="h-7 w-7 mr-2 text-blue-500"/>
-          Web conferencing details to follow.
-        </span>
-      </div>
+        <div class="py-3">
+          <!-- <p>A confirmation has been sent to your email address.</p> -->
 
-      <div class="py-3">
-        <!-- <p>A confirmation has been sent to your email address.</p> -->
-
-        <div v-if="props.date && ! itIsTime" class="w-full">
-          Faltam {{ days }} dias, {{ hours }} horas, {{ minutes }} minutos e {{ seconds }} segundos.
+          <div v-if="props.date && ! itIsTime" class="w-full">
+            Faltam <span v-if="0 !== days">{{ days }} dias, </span>{{ hours }} horas, {{ minutes }} minutos e {{ seconds }} segundos.
+          </div>
         </div>
       </div>
 
@@ -46,7 +47,7 @@
 
       <JitsiMeeting
       v-if="props.date && itIsTime || ! props.date"
-      class="mb-20 w-full justify-center dark:bg-neutral-800 py-5 rounded-md"
+      class="mb-20 w-96 justify-center dark:bg-neutral-800 py-5 rounded-md"
       domain="meet.jit.si"
       :room-name="props.nome"
       height="700px"
