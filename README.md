@@ -1,4 +1,4 @@
-# my-site [![Netlify Status](https://api.netlify.com/api/v1/badges/0e2b53bc-ab0e-4c27-a171-7ecc29f4ca67/deploy-status)]
+# my-site ![Netlify Status](https://api.netlify.com/api/v1/badges/0e2b53bc-ab0e-4c27-a171-7ecc29f4ca67/deploy-status)
 
 [![Preview in vscode.dev](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/thomasgroch/my-site)
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/thomasgroch/my-site/)
