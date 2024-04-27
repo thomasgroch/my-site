@@ -1,5 +1,5 @@
 <template>
-<h2 class="pb-5 pt-2 text-white">{{ $t('meet.schedule-a-web-conference') }}</h2>
+<h2 class="pb-5 pt-2 text-neutral-100">{{ $t('meet.schedule-a-web-conference') }}</h2>
 <form class="flex w-full px-5 md:px-0 md:w-1/2 flex-col justify-center"
 	:action="formAction"
 	@submit.prevent="submit"

@@ -46,7 +46,7 @@
 
       <JitsiMeeting
       v-if="props.date && itIsTime || ! props.date"
-      domain="meet.jit.si"
+      domain="8x8.vc"
       :room-name="props.nome"
       height="700px"
       width="100%"
