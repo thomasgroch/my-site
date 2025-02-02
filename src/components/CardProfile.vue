@@ -14,7 +14,7 @@ const currentPath = computed(() =>route.path)
       <h1 class="text-3xl font-semibold text-green-400 rounded p-1">Thomas Groch</h1>
     </div>
     <p class="py-1 text-neutral-500">{{ $t('general.role_profile') }}, <span
-      class="dark:bg-neutral-700 bg-green-100 text-green-400 rounded px-1 font-normal">Full Stack</span></p>
+      class="dark:bg-neutral-700 bg-green-100 text-green-400 rounded px-1 font-normal">Web Developer</span></p>
 
     <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5">
       <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank">

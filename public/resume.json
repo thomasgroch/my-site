@@ -39,7 +39,7 @@
     {
       "type": 3,
       "company": "Workana widget",
-      "position": "Desenvolvedor full stack",
+    "position": "Web Developer",
       "website": "https://github.com/thomasgroch/workana-widget",
       "startDate": "2018",
       "summary": "O workana-widget é um widget que permite aos usuários do Workana monitorar os trabalhos mais recentes.",
@@ -50,7 +50,7 @@
     {
       "type": 3,
       "company": "Resource Generator",
-      "position": "Desenvolvedor full stack",
+    "position": "Web Developer",
       "website": "https://github.com/thomasgroch/ResourceGenerator",
       "startDate": "2017",
       "summary": "Gere toda a estrutura para um determinado nome de recurso.",
@@ -61,7 +61,7 @@
     {
       "type": 1,
       "company": "Hero99",
-      "position": "Senior Web Application Developer",
+    "position": "Web Developer",
       "website": "https://hero99.com.br/",
       "startDate": "2017",
       "summary": "Melhora da disponibilidade usando proxy reverso em docker integrado ao workflow de CI zero-downtime deployment. Solução de automação para agregar em tempo real mensageiros instantâneos  distintos (fb, whatsapp e instagram).",
@@ -106,7 +106,7 @@
     {
       "type": 1,
       "company": "Artexpressa",
-      "position": "Desenvolvedor full stack web",
+    "position": "Web Developer",
       "website": "",
       "startDate": "2012",
       "summary": "Desenvolvimento de sistemas web em PHP/MYSQL. Modelagem de sistema gestão e agendamento de palestras. Implementação de funcionalidade para emissão de certificado digital.",
@@ -117,7 +117,7 @@
     {
       "type": 1,
       "company": "Arquitetura Abstrata",
-      "position": "Desenvolvedor full stack web",
+    "position": "Web Developer",
       "website": "https://arqabs.com/",
       "startDate": "2011",
       "summary": "Desenvolvimento de sistema de incubadoras de empresas. Implementação de gerenciador de empreendimentos, pessoas e empresas. Desenvolvimento de processo seletivo do empreendimento. Adaptação do módulo de gerenciamento financeiro empresarial.",
@@ -215,22 +215,18 @@
   "skills": [
     {
       "name": "PHP 7",
-      "level": "Senior",
-      "keywords": ["Laravel", "TDD", "Web Scraping"]
+    "keywords": ["Laravel", "TDD", "Web Scraping"]
     },
     {
       "name": "Comércio eletrônico",
-      "level": "",
       "keywords": []
     },
     {
       "name": "RESTful API",
-      "level": "Master",
       "keywords": []
     },
     {
       "name": "Amazon Web Services",
-      "level": "",
       "keywords": []
     }
   ],
