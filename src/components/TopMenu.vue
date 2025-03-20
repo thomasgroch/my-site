@@ -1,9 +1,32 @@
-<script setup>
-import {useRoute} from 'vue-router'
-import {computed} from 'vue'
+<script setup lang="ts">
+import { useRoute, RouteLocationNormalizedLoaded } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const route = useRoute();
-const currentPath = computed(() => route.path)
+// Initialize i18n composable with proper typing and scope configuration
+const { t } = useI18n({
+  useScope: 'global', // Use global scope to access messages from all namespaces
+  inheritLocale: true // Inherit locale from root
+})
+
+// Mobile menu state
+const open = ref<boolean>(false)
+
+// Router-related properties
+const route: RouteLocationNormalizedLoaded = useRoute()
+const currentPath = computed<string>(() => route.path)
+
+/**
+ * Detects if the current device is a mobile device
+ * @returns {boolean} True if the device is mobile, false otherwise
+ */
+function isMobile(): boolean {
+  if (/Android|webOS|iPhone|iPad|iPod|Tablet|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    return true
+  } else {
+    return false
+  }
+}
 </script>
 <template>
   <div class="p-6 flex justify-between items-center visible sm:hidden" :class="{'hidden': !isMobile()}">
@@ -35,43 +58,23 @@ const currentPath = computed(() => route.path)
   <nav v-if="isMobile() && open || !isMobile()" class="text-lg pt-4 pb-5 flex flex-col justify-around sm:flex-row text-center">
     <router-link to="/"
                  class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_about') }}
+      {{ t('general.nav_about') }}
     </router-link>
     <router-link to="/stack"
                  class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_stack') }}
+      {{ t('general.nav_stack') }}
     </router-link>
     <router-link to="/projetos"
                  class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_projects') }}
+      {{ t('general.nav_projects') }}
     </router-link>
     <router-link to="/contato"
                  class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_contact') }}
+      {{ t('general.nav_contact') }}
     </router-link>
   </nav>
 </template>
 
-<script>
-export default {
-  name: "TopMenu",
-  data() {
-    return {
-      open: false
-    }
-  },
-  methods: {
-    isMobile() {
-      if (/Android|webOS|iPhone|iPad|iPod|Tablet|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        return true
-      } else {
-        return false
-      }
-    }
-  }
-
-}
-</script>
 
 
 <style scoped>

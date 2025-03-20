@@ -1,0 +1,28 @@
+{
+  "goto_site": "ir al sitio",
+  "nav_about": "Acerca de",
+  "nav_contact": "Contacto",
+  "nav_projects": "Proyectos",
+  "nav_stack": "Pila",
+  "nothing_here": "No hay nada aquí.",
+  "profile_description": "Estoy motivado y siempre estoy aprendiendo nuevas tecnologías, actualizándome a través de la documentación y los artículos. \nReconozco las compensaciones de los marcos del lado del cliente y analizo y pruebo el código, siempre buscando mejorarlas. \nAspiro al diseño moderno, pero reconozco que el buen diseño también debe satisfacer una necesidad real.",
+  "project": {
+    "description_0": "Sitio web para transacciones de divisas internacionales, habilitando la conversión de divisas. \nConstrucción de las interfaces de acceso, las interfaces internas del sistema y las nuevas características.",
+    "description_1": "Sitio del curso basado en la plataforma Edools. \nCreación de tarjetas para la página de cursos y mantenimiento.",
+    "description_2": "Sitio web de cursos basado en la plataforma Edools. \nMantenimiento de la interfaz y navegación, desarrollo de características e integraciones",
+    "description_3": "Sitio web de métricas sobre datos de Twitter. \nTweetric puede construir métricas diarias sobre los datos públicos de un usuario. \nBackend, frontend y construcción de consumo de API.",
+    "description_4": "Formulario de registro para el foro do feijão, llena los campos utilizando el código postal a través de la API del servicio postal.",
+    "description_5": "Sitio web de automóviles usado y semi nuevo. \nMuestra e informa datos sobre el negocio, utiliza formularios para financiar consultoría y ventas por correo electrónico.",
+    "type_0": "Académico",
+    "type_1": "Profesional",
+    "type_2": "Persona de libre dedicación",
+    "type_3": "Personal"
+  },
+  "role_profile": "Desarrollador web",
+  "stack_description_1": "Mi pila principal está compuesta por herramientas asociadas con VueJS. \nPara manejar la parte de estilo, uso TailWindcss.",
+  "stack_description_2": "Diseño interfaces modernas y resistentes para aplicaciones web. \nTrabajo meticulosamente para diseñar componentes que estén optimizados para la reutilización, la compatibilidad y la ligereza que resulta en una interfaz sólida que reacciona en tiempo real a cada estado del sistema.",
+  "stack_description_3": "Estoy familiarizado con los motores de plantillas utilizados en los marcos de backend.",
+  "stack_description_4": "Tengo conocimiento analítico y operativo de la base de datos.",
+  "stack_description_5": "Puedo orquestar la configuración básica para hacer que una aplicación esté disponible con estas herramientas.",
+  "stack_description_6": "Puede ver el conocimiento anterior adyacente al campo frontal. \nMuchos de ellos fueron adquiridos al involucrarse con toda la pila de aplicaciones, esto me ayuda a comprender cómo las personas en el equipo se conectan."
+}

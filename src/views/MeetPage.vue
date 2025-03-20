@@ -58,10 +58,10 @@
 </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import Ics from '@/components/Ics.vue'
   import Logo from '@/components/Logo.vue'
-  import { reactive, ref, defineProps, computed, onMounted, onUnmounted } from "vue"
+  import { reactive, ref, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
   import nprogress from 'nprogress'
   import { useRouter } from 'vue-router'
@@ -72,14 +72,12 @@
   const router = useRouter()
   const currentPath = computed(() => router.path)
 
-  const props = defineProps({
-    nome: {
-      type: String
-    },
-    date: {
-      type: String
-    }
-  })
+  interface MeetPageProps {
+    nome?: string;
+    date?: string;
+  }
+
+  const props = defineProps<MeetPageProps>()
   const meetType = computed(() => {
     return router.currentRoute.value.path.substring(1).split('/')[0]
   })
@@ -88,7 +86,7 @@
   const meetDate = computed(() => props.date && props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
   const meetTime = computed(() => props.date && props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
   
-  const eventTime = ref(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()))
+  const eventTime = ref<Date>(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()))
   // const icsStartDateString = ref(formatISO(new Date(eventTime.value), { representation: "complete" }))
   // const oneHourLaterString = ref(formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" }))
 
@@ -141,7 +139,7 @@
   const hours = ref(0);
   const minutes = ref(0);
   const seconds = ref(0);
-  let timer;
+  let timer: number | undefined;
 
   const itIsTime = computed(() => {
     const now = new Date();

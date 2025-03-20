@@ -1,16 +1,72 @@
-<script setup>
+<script setup lang="ts">
+import { onMounted, defineComponent } from 'vue'
 import TopMenu from "@/components/TopMenu.vue"
 import Footer from "@/components/Footer.vue"
 import packageJSON from "../package.json"
+import { useMeta } from 'vue-meta'
+
+useMeta({
+  title: 'Thomas Groch',
+  titleTemplate: (title: string) => title ? `${title} | Thomas Groch` : 'Thomas Groch'
+})
+
+// Theme toggle logic (moved from Options API)
+onMounted(() => {
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon') as HTMLElement;
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon') as HTMLElement;
+
+  // Change the icons inside the button based on previous settings
+  if (localStorage.getItem('color-theme') === 'dark' || 
+      (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    themeToggleLightIcon.classList.remove('hidden');
+  } else {
+    themeToggleDarkIcon.classList.remove('hidden');
+  }
+
+  const themeToggleBtn = document.getElementById('theme-toggle') as HTMLElement;
+
+  themeToggleBtn.addEventListener('click', function () {
+    // toggle icons inside button
+    themeToggleDarkIcon.classList.toggle('hidden');
+    themeToggleLightIcon.classList.toggle('hidden');
+
+    // if set via local storage previously
+    if (localStorage.getItem('color-theme')) {
+      if (localStorage.getItem('color-theme') === 'light') {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      }
+
+      // if NOT set via local storage previously
+    } else {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    }
+  });
+});
+
+// Define the component for better type inference
+defineComponent({
+  name: "App",
+  components: {
+    TopMenu,
+    Footer
+  }
+});
 </script>
 <template>
   <div class="container w-full md:max-w-4xl mx-auto font-sans">
     <h1 class="hidden">Thomas Groch</h1>
     <TopMenu></TopMenu>
-    <metainfo>
-      <template v-slot:title="{ content }">{{ content ? `${content} |  Thomas Groch` : ` Thomas Groch` }}</template>
-    </metainfo>
-
+    
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component"/>
@@ -36,57 +92,6 @@ import packageJSON from "../package.json"
     <Footer class="select-none"/>
 </template>
 
-<script>
-export default {
-  name: "App",
-  components: {
-    TopMenu,
-    Footer
-  },
-  async mounted() {
-    var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-    var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-
-// Change the icons inside the button based on previous settings
-    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      themeToggleLightIcon.classList.remove('hidden');
-    } else {
-      themeToggleDarkIcon.classList.remove('hidden');
-    }
-
-    var themeToggleBtn = document.getElementById('theme-toggle');
-
-    themeToggleBtn.addEventListener('click', function () {
-
-      // toggle icons inside button
-      themeToggleDarkIcon.classList.toggle('hidden');
-      themeToggleLightIcon.classList.toggle('hidden');
-
-      // if set via local storage previously
-      if (localStorage.getItem('color-theme')) {
-        if (localStorage.getItem('color-theme') === 'light') {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('color-theme', 'dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem('color-theme', 'light');
-        }
-
-        // if NOT set via local storage previously
-      } else {
-        if (document.documentElement.classList.contains('dark')) {
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem('color-theme', 'light');
-        } else {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('color-theme', 'dark');
-        }
-      }
-
-    });
-  }
-};
-</script>
 
 <style lang="stylus">
 .fade-enter-active,

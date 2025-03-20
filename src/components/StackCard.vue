@@ -15,21 +15,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "StackCard",
+<script setup lang="ts">
+// Define interface for technology stack item
+interface TechnologyItem {
+  name: string;
+  photo: string;
+  href: string;
+}
 
-  props: {
-    item: {
-      type: Object,
-      default: function () {
-        return {
-          name: '',
-          photo: '',
-          href: ''
-        }
-      }
-    },
-  }
-};
+// Define props with TypeScript interface
+withDefaults(defineProps<{
+  item: TechnologyItem;
+}>(), {
+  item: () => ({
+    name: '',
+    photo: '',
+    href: ''
+  })
+});
 </script>
+
