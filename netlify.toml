@@ -1,4 +1,33 @@
 [build]
+  functions = "functions"
+  command = "npm run build"
+  publish = "dist"
+
+[dev]
+  framework = "#custom"
+  command = "npm run dev:front"
+  targetPort = 3000
+  port = 8888
+  publish = "dist"
+  jwtRolePath = "app_metadata.authorization.roles"
+  autoLaunch = true
+
+# Test-specific configuration
+[context.test]
+  command = "npm run test"
+
+[context.test.environment]
+  NODE_ENV = "test"
+
+# Override the contact function for test environment
+[[redirects]]
+  from = "/.netlify/functions/contact"
+  to = "/.netlify/functions/contact.test"
+  status = 200
+  force = true
+  conditions = {environment = ["test"]}
+
+[build]
   publish = "dist/"
   functions = 'functions/'
   command = "npm run build"

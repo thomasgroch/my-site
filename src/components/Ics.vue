@@ -10,18 +10,26 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
-const props = defineProps(['event'])
+const props = defineProps<{
+  event: {
+    title: string;
+    start: string;
+    end: string;
+    description: string;
+    location: string;
+  }
+}>()
 
-const googleUrl = computed(() => {
+const googleUrl = computed((): string => {
   return 'https://www.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(props.event.title) +
     '&dates=' + encodeURIComponent(props.event.start) + '/' + encodeURIComponent(props.event.end) +
     '&details=' + encodeURIComponent(props.event.description) +
     '&location=' + encodeURIComponent(props.event.location);
 });
 
-const outlookUrl = computed(() => {
+const outlookUrl = computed((): string => {
   return 'https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent' +
     '&subject=' + encodeURIComponent(props.event.title) +
     '&startdt=' + encodeURIComponent(props.event.start) +
@@ -30,7 +38,7 @@ const outlookUrl = computed(() => {
     '&location=' + encodeURIComponent(props.event.location);
 });
 
-const appleUrl = computed(() => {
+const appleUrl = computed((): string => {
   return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(
     'BEGIN:VCALENDAR\n' +
     'VERSION:2.0\n' +
@@ -46,7 +54,7 @@ const appleUrl = computed(() => {
   );
 });
 
-const yahooUrl = computed(() => {
+const yahooUrl = computed((): string => {
   return 'http://calendar.yahoo.com/?v=60&view=d&type=20' +
     '&title=' + encodeURIComponent(props.event.title) +
     '&st=' + encodeURIComponent(props.event.start) +
@@ -55,7 +63,7 @@ const yahooUrl = computed(() => {
     '&in_loc=' + encodeURIComponent(props.event.location);
 });
 
-const emailUrl = computed(() => {
+const emailUrl = computed((): string => {
   return 'Title: ' + props.event.title + '%0D%0A' +
     'Description: ' + props.event.description + '%0D%0A' +
     'Location: ' + props.event.location + '%'

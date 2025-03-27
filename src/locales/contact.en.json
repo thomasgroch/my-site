@@ -1,10 +1,12 @@
 {
+  "title": "Contact us",
   "name": "Name",
   "email": "E-mail",
   "help": "How may i help you?",
-  "telephone": "Phone",
+  "phone": "Phone",
   "state": "State",
   "city": "City",
+  "message": "Message",
   "span_message": "Detail as much as you want. Please do not include confidential or sensitive information in your message.",
   "error_msg_1": "something went wrong.",
   "error_msg_2": "Check that the fields are filled in correctly.",

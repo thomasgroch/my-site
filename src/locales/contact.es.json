@@ -1,0 +1,19 @@
+{
+  "title": "Contáctenos",
+  "city": "Ciudad",
+  "close": "Cerca",
+  "date": "fecha",
+  "email": "Correo electrónico",
+  "error_msg_1": "Algo salió mal.",
+  "error_msg_2": "Verifique que los campos se completen correctamente.",
+  "hello": "Hola",
+  "help": "¿Cómo puedo ayudarte?",
+  "name": "Nombre",
+  "return_msg": "Me pondré en contacto con usted en breve, revisaré su correo electrónico 😉",
+  "span_message": "Detalle tanto como quieras. \nNo incluya información confidencial o confidencial en su mensaje.",
+  "state": "Estado",
+  "submit": "Entregar",
+  "success_msg": "¡Su mensaje ha sido enviado con éxito!",
+  "phone": "Teléfono",
+  "message": "Mensaje"
+}

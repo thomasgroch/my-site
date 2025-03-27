@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { RouteRecordRaw } from 'vue-router'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
 import NotFound from './views/NotFound.vue'
@@ -7,31 +7,31 @@ import StackPage from './views/StackPage.vue'
 import ContactPage from './views/ContactPage.vue'
 import MeetPage from './views/MeetPage.vue'
 
-/** @type {import('vue-router').RouterOptions['routes']} */
-const routes = [
-  { path: '/', component: Home, meta: { title: 'Home' } },
+export const routes: RouteRecordRaw[] = [
+  { 
+    path: '/', 
+    component: Home, 
+    meta: { title: 'Home' } 
+  },
   {
     path: '/about',
     meta: { title: 'About' },
     component: About,
-    // example of route level code-splitting
-    // this generates a separate chunk (About.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () => import('./views/About.vue')
   },
   {
-    path:'/projetos',
+    path: '/projetos',
     meta: { title: 'Projetos' },
     component: ProjectPage,
-
   },
   {
     path: '/stack',
     component: StackPage,
+    meta: { title: 'Stack' }
   },
   {
     path: '/contato',
-    component: ContactPage
+    component: ContactPage,
+    meta: { title: 'Contato' }
   },
   {
     path: '/entrevista',
@@ -53,21 +53,10 @@ const routes = [
     props: true,
     alias: ['/meet/:nome/:date', '/interview/:nome/:date']
   },
-
-
-  { path: '/:path(.*)', component: NotFound },
+  { 
+    path: '/:path(.*)', 
+    component: NotFound,
+    meta: { title: '404' }
+  },
 ]
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-    scrollBehavior (to, from, savedPosition) {
-    // return desired position
-
-  }
-})
-
-router.afterEach((to) => {
-  document.title = document.title + ' - ' + to.meta.title || 'Thomas Groch'
-});
-export default router

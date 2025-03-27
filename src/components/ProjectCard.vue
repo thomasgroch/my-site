@@ -67,47 +67,63 @@
   </div> -->
 </template>
 
-<script>
-// import * from 'moment'
+<script setup lang="ts">
+// Import types and data
 import info from "@/info.json";
+import { computed } from 'vue';
 
-export default {
-  name: "ProjectCard",
-    data() {
-      return {
-        types: info.meta.projectTypes
-      }
-  },
-  props: {
-    key: Number,
-    item: {
-      type: Object,
-      default: function() {
-        return {
-          type: 1,
-          // photo: "",
-          // techs: "",
+// Define TypeScript interfaces
+interface Tech {
+  [key: string]: string;
+}
 
-          company: "",
-          position: "",
-          website: "",
-          startDate: "",
-          summary: "",
-          highlights: [],
-          endDate: ""
-        };
-      }
-    }
-  },
-  computed:{
-    typeObject(){
-      return this.types[this.item.type]
-    },
-    typeIcon(){
-      return this.typeObject.icon || ""
-    }
-  }
-};
+interface ProjectType {
+  icon: string;
+  [key: string]: string;
+}
+
+interface ProjectItem {
+  type: number;
+  img?: string;
+  techs?: Tech;
+  company: string;
+  position: string;
+  website: string;
+  startDate: string;
+  summary: string;
+  highlights: string[];
+  endDate: string;
+}
+
+// Props definition
+interface Props {
+  item: ProjectItem;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  item: () => ({
+    type: 1,
+    company: "",
+    position: "",
+    website: "",
+    startDate: "",
+    summary: "",
+    highlights: [],
+    endDate: ""
+  })
+});
+
+// Data
+const types = info.meta.projectTypes as Record<number, ProjectType>;
+
+// Computed properties
+const typeObject = computed<ProjectType>(() => {
+  return types[props.item.type];
+});
+
+const typeIcon = computed<string>(() => {
+  return typeObject.value.icon || "";
+});
 </script>
 
 <style type="text/css">

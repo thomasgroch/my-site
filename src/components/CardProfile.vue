@@ -1,9 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import Logo from '@/components/Logo.vue'
 import {useRoute} from 'vue-router'
-import {computed} from 'vue'
-const route=useRoute();
-const currentPath = computed(() =>route.path)
+import {computed, ref} from 'vue'
+import resume from "~/resume.json"
+
+const route = useRoute();
+const currentPath = computed(() => route.path)
+const open = ref(false)
+
+const network = computed(() => resume.basics.profiles.filter(n => n.network === 'linkedin'))
 </script>
 
 <template>
@@ -42,20 +47,4 @@ const currentPath = computed(() =>route.path)
 
   </div>
 </template>
-
-<script>
-import { computed } from "vue";
-import resume from "~/resume.json";
-
-export default {
-  name: "CardProfile",
-  data() {
-    return {
-      open: false
-    }
-  }
-}
-
-const network = computed(() => resume.basics.profiles.filter(n => n.network == 'linkedin'))
-</script>
 

@@ -1,18 +1,19 @@
 {
+  "title": "Entre em contato",
   "name": "Nome",
   "email": "E-mail",
-  "telephone": "Telefone",
   "help": "Como posso ajudá-lo?",
+  "phone": "Telefone",
   "state": "Estado",
   "city": "Cidade",
-  "error_msg_1": "algo deu errado.",
-  "error_msg_2": "Verifique se os campos estão preenchidos corretamente.",
+  "message": "Mensagem",
   "span_message": "Detalhe o quanto quiser. \nPor favor, não inclua informações confidenciais ou sensíveis em sua mensagem.",
-  "submit": "Enviar",
-  "success_msg": "Sua mensagem foi enviada com sucesso!",
+  "error_msg_1": "Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente.",
+  "error_msg_2": "Verifique se os campos estão preenchidos corretamente.",
+  "submit": "Enviar mensagem",
+  "success_msg": "Sua mensagem foi enviada com sucesso",
   "return_msg": "Retornarei ao seu contato em breve, cheque o seu email 😉",
   "close": "Fechar",
   "hello": "Olá",
   "date": "data"
-
 }

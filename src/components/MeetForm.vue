@@ -58,29 +58,34 @@ for="grid-date">{{ $t('meet.date') }}</label>
 </form>
 </template>
 
-<script setup>
-	import { reactive, ref, defineProps, computed, onMounted, onUnmounted } from "vue"
-	import { JitsiMeeting } from "@jitsi/vue-sdk"
+<script setup lang="ts">
+	import { ref, computed } from "vue"
 	import nprogress from 'nprogress'
 	import { useRouter } from 'vue-router'
-	import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInYears, setDefaultOptions, format, differenceInMonths, differenceInDays, addDays, addMonths } from 'date-fns'
+	import { parse } from 'date-fns'
 
-	const form = ref({
+	interface FormData {
+		nome: string;
+		date: string;
+		time: string;
+	}
+
+	const form = ref<FormData>({
 		nome: '',
 		date: '',
 		time: ''
 	})
-	const hasFilled = (field) => {
+	const hasFilled = (field: keyof FormData): boolean => {
 		return (!errors.value.has(field) && form.value[field])
 	}
+	// These refs might be used for countdown functionality
+	const days = ref<number>(0);
+	const hours = ref<number>(0);
+	const minutes = ref<number>(0);
+	const seconds = ref<number>(0);
+	let timer: number | undefined;
 
-	const days = ref(0);
-	const hours = ref(0);
-	const minutes = ref(0);
-	const seconds = ref(0);
-	let timer;
-
-	const itIsTime = computed(() => {
+	const itIsTime = computed((): boolean => {
 		const now = new Date();
 		const timeToCheck = parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date())
 		if (timeToCheck < now) {
@@ -92,31 +97,54 @@ for="grid-date">{{ $t('meet.date') }}</label>
 		}
 	})
 
-	const errors = ref({
-		has: () => {
+	interface FormErrors {
+		has: (field: string) => boolean;
+		first: (field: string) => string;
+	}
+
+	const errors = ref<FormErrors>({
+		has: (field: string): boolean => {
 			return false
+		},
+		first: (field: string): string => {
+			return ''
 		}
 	})
-
 	const router = useRouter()
-	const currentPath = computed(() => router.path)
-
-	const submit = () => {
+	const currentPath = computed((): string => router.currentRoute.value.path)
+	const submit = (): boolean => {
 		let result = false
-		let response
+		
 		try {
 			nprogress.start()
 			const url = '/' + router.currentRoute.value.path.split('/')[1] + `/${form.value.nome}/${form.value.date}-${form.value.time.replace(/:/g, '-')}` 
 			router.push(url)
-	    	// response = await axios.post(this.formAction, this.$data.form)
-} catch (error) {
-	console.log(error)
-	nprogress.done()
-	return
-}
-nprogress.done()
-return true
-}
+			// response = await axios.post(formAction.value, form.value)
+			nprogress.done()
+			return true
+		} catch (error: unknown) {
+			console.log(error instanceof Error ? error.message : String(error))
+			nprogress.done()
+			return false
+		}
+	}
 
-const formAction = computed(() => (process.env.NODE_ENV === 'production') ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
+const formAction = computed((): string => (process.env.NODE_ENV === 'production') ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
+	// Define variables used in the itIsTime computed property
+	const meetDate = ref<string>('')
+	const meetTime = ref<string>('')
+	
+	// Set meetDate and meetTime values when form.date and form.time change
+	const updateMeetDateTime = computed(() => {
+		if (form.value.date) {
+			const dateObj = new Date(form.value.date)
+			meetDate.value = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`
+		}
+		
+		if (form.value.time) {
+			meetTime.value = form.value.time
+		}
+		
+		return { meetDate: meetDate.value, meetTime: meetTime.value }
+	})
 </script>
