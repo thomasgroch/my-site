@@ -9,6 +9,8 @@
   # cache Cypress binary in local "node_modules" folder
   # so Netlify caches it
   CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
+  # set TERM variable for terminal output
+  TERM = "xterm"
 
 # https://answers.netlify.com/t/getting-must-use-import-to-load-es-module-when-using-node-fetch-in-netlify-functions/47230/2
 [functions]
