@@ -1,40 +1,40 @@
 const path = require('path');
-const faunadb = require('faunadb');
-const moment = require('moment');
+const faunadb = require('faunadb')
+const moment = require('moment')
 const formData = require('form-data');
+const q = faunadb.query
+const client = new faunadb.Client({
+  secret: process.env.FAUNADB_SERVER_SECRET
+})
 const handlebars = require('handlebars');
 const Mailgun = require('mailgun.js');
 const nodemailer = require('nodemailer');
 const mg = require('nodemailer-mailgun-transport');
-
-const q = faunadb.query;
-const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SERVER_SECRET
-});
-
 const {
   MAILGUN_API_KEY: api_key,
   MAILGUN_DOMAIN: domain,
   MAILGUN_API_PUBLIC_KEY: public_key
 } = process.env;
-
 const options = {
   auth: {
     api_key,
     domain
   },
   // host: 'api.eu.mailgun.net' // e.g. for EU region
-};
-
-const transporter = nodemailer.createTransport(mg(options));
+}
+const transporter = nodemailer.createTransport(mg(options))
 
 const headers = {
-  'Access-Control-Allow-Origin': '*', // better change this for production
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type'
-};
+	'Access-Control-Allow-Origin': '*', // better change this for production
+	'Access-Control-Allow-Methods': 'POST',
+	'Access-Control-Allow-Headers': 'Content-Type'
+}
 
 exports.handler = async (event, context) => {
+	// only allow POST requests
+	if (event.httpMethod !== 'POST') {
+		return {
+			statusCode: 410,
 			headers,
 			body: JSON.stringify({
 				error: 'Only POST requests allowed.',
