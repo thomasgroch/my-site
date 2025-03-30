@@ -25,8 +25,9 @@
   envFiles = [".env.development.local", ".env.local", ".env.development", ".env"] # The env files to use, ordered by priority (left - highest, right - lowest)
 
 [[plugins]]
-# runs Cypress tests against the deployed URL
-package = "netlify-plugin-cypress"
+  # runs Cypress tests against the deployed URL
+  package = "netlify-plugin-cypress"
+
 [plugins.inputs]
     # test the deployed URL
     enable = true
@@ -34,7 +35,8 @@ package = "netlify-plugin-cypress"
     group = 'deployed'
 
 [[plugins]]
-package = "netlify-plugin-checklinks"
+  package = "netlify-plugin-checklinks"
+
 [plugins.inputs]
   # An array of glob patterns for pages on your site
   # Recursive traversal will start from these
