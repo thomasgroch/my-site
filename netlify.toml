@@ -31,16 +31,22 @@
   package = "netlify-plugin-cypress"
 
 [plugins.inputs]
-    # Disables tests on deployed (onSuccess)
-    enable = false
-    record = true
-    group = 'deployed'
-    
-  # Add this section:
-  [plugins.inputs.postBuild]
+  # Enable recording test results to Cypress Dashboard
+  record = true
+  # Run tests after deploy
+  group = 'deployed'
+  
+  # Configure when to run tests
+  [plugins.inputs.onSuccess]
     enable = true
     record = true
-    group = 'built site'
+    group = 'after deploy'
+    
+  [plugins.inputs.preBuild]
+    enable = false
+    
+  [plugins.inputs.postBuild]
+    enable = false
 
 [[plugins]]
   package = "netlify-plugin-checklinks"
