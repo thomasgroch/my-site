@@ -1,15 +1,15 @@
-const path = require('path');
-const faunadb = require('faunadb')
-const moment = require('moment')
-const formData = require('form-data');
-const q = faunadb.query
+import path from 'path';
+import faunadb from 'faunadb';
+import moment from 'moment';
+import formData from 'form-data';
+const q = faunadb.query;
 const client = new faunadb.Client({
   secret: process.env.FAUNADB_SERVER_SECRET
-})
-const handlebars = require('handlebars');
-const Mailgun = require('mailgun.js');
-const nodemailer = require('nodemailer');
-const mg = require('nodemailer-mailgun-transport');
+});
+import handlebars from 'handlebars';
+import Mailgun from 'mailgun.js';
+import nodemailer from 'nodemailer';
+import mg from 'nodemailer-mailgun-transport';
 const {
   MAILGUN_API_KEY: api_key,
   MAILGUN_DOMAIN: domain,
@@ -30,7 +30,7 @@ const headers = {
 	'Access-Control-Allow-Headers': 'Content-Type'
 }
 
-exports.handler = async (event, context) => {
+export const handler = async (event, context) => {
 	// only allow POST requests
 	if (event.httpMethod !== 'POST') {
 		return {
