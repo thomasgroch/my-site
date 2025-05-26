@@ -16,6 +16,21 @@
 
   # Includes all View files inside the "emails/" directory.
   included_files = ["./functions/emails/**/*.hbs"]
+  
+  # Configure external modules properly
+  [functions.external]
+  external_node_modules = [
+    "velocityjs",
+    "dustjs-linkedin",
+    "atpl",
+    "liquor",
+    "twig",
+    "ejs",
+    "eco",
+    "jazz",
+    "jqtpl",
+    "hamljs"
+  ]
 
 [dev]
   command = "npm run dev:front" # Command to start your dev server
