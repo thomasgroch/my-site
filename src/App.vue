@@ -1,7 +1,6 @@
 <script setup>
 import TopMenu from "@/components/TopMenu.vue"
 import Footer from "@/components/Footer.vue"
-import packageJSON from "../package.json"
 </script>
 <template>
   <div class="container w-full md:max-w-4xl mx-auto font-sans">

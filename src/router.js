@@ -61,9 +61,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-    scrollBehavior (to, from, savedPosition) {
+    scrollBehavior () {
     // return desired position
-
+    // Parameters were removed since they weren't being used
   }
 })
 

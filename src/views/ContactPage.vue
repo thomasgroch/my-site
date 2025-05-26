@@ -205,7 +205,8 @@ import nprogress from 'nprogress'
 </template>
 
 <script>
-import { reactive, ref } from "vue"
+// These imports are kept for potential future use
+import { /* reactive, ref */ } from "vue"
 // import VueTextareaAutosize from 'vue-textarea-autosize'
 
 export default {
@@ -249,7 +250,6 @@ export default {
   },
   methods: {
     async validateBeforeSubmit() {
-      let result = false
       let response
       try {
         // TODO: Add UX like this
@@ -296,7 +296,7 @@ export default {
     changeCidade(cidade) {
       this.form.cidade = cidade
     },
-    beforeModalClose(event) {
+    beforeModalClose() {
       this.status = 'dismiss'
     }
   },

@@ -59,38 +59,20 @@ for="grid-date">{{ $t('meet.date') }}</label>
 </template>
 
 <script setup>
-	import { reactive, ref, defineProps, computed, onMounted, onUnmounted } from "vue"
-	import { JitsiMeeting } from "@jitsi/vue-sdk"
+	import { ref, computed } from "vue"
 	import nprogress from 'nprogress'
 	import { useRouter } from 'vue-router'
-	import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInYears, setDefaultOptions, format, differenceInMonths, differenceInDays, addDays, addMonths } from 'date-fns'
 
 	const form = ref({
 		nome: '',
 		date: '',
 		time: ''
 	})
-	const hasFilled = (field) => {
-		return (!errors.value.has(field) && form.value[field])
-	}
 
-	const days = ref(0);
-	const hours = ref(0);
-	const minutes = ref(0);
-	const seconds = ref(0);
-	let timer;
-
-	const itIsTime = computed(() => {
-		const now = new Date();
-		const timeToCheck = parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date())
-		if (timeToCheck < now) {
-			console.log('The time has passed.');
-			return true
-		} else {
-			console.log('The time has not passed yet.');
-			return false
-		}
-	})
+	// Function used in the template
+	// const hasFilled = (field) => {
+	// 	return (!errors.value.has(field) && form.value[field])
+	// }
 
 	const errors = ref({
 		has: () => {
@@ -99,24 +81,22 @@ for="grid-date">{{ $t('meet.date') }}</label>
 	})
 
 	const router = useRouter()
-	const currentPath = computed(() => router.path)
 
 	const submit = () => {
-		let result = false
-		let response
 		try {
 			nprogress.start()
 			const url = '/' + router.currentRoute.value.path.split('/')[1] + `/${form.value.nome}/${form.value.date}-${form.value.time.replace(/:/g, '-')}` 
 			router.push(url)
-	    	// response = await axios.post(this.formAction, this.$data.form)
-} catch (error) {
-	console.log(error)
-	nprogress.done()
-	return
-}
-nprogress.done()
-return true
-}
+	    	// Commented out as it seems to be a placeholder for future API call
+			// const response = await axios.post(this.formAction, this.$data.form)
+		} catch (error) {
+			console.log(error)
+			nprogress.done()
+			return
+		}
+		nprogress.done()
+		return true
+	}
 
-const formAction = computed(() => (process.env.NODE_ENV === 'production') ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
+	const formAction = computed(() => (process.env.NODE_ENV === 'production') ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
 </script>

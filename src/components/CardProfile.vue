@@ -1,13 +1,9 @@
 <script setup>
 import Logo from '@/components/Logo.vue'
-import {useRoute} from 'vue-router'
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 import resume from "~/resume.json"
 
-const route = useRoute()
-const currentPath = computed(() => route.path)
 const open = ref(false)
-const network = computed(() => resume.basics.profiles.filter(n => n.network == 'linkedin'))
 
 // Define component name for debugging purposes
 defineOptions({

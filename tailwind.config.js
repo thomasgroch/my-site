@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+// Font customization can be added later if needed
 
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        // sans: ['Noto Sans, ui-sans-serif, system-ui', ...defaultTheme.fontFamily.sans],
+        // sans: ['Noto Sans, ui-sans-serif, system-ui', ...require('tailwindcss/defaultTheme').fontFamily.sans],
       },
       animation: {
         blob: "blob 7s infinite",

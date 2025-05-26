@@ -1,4 +1,4 @@
-<script setup xmlns="http://www.w3.org/1999/html" xmlns:p="http://www.w3.org/1999/html">
+<script setup>
 import StackList from '@/components/StackList.vue'
 </script>
 

@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import resume from "~/resume.json";
 const route = useRoute();
@@ -54,14 +54,9 @@ const setLocale = (lang) => {
   i18n.setLocale(lang);
 };
 
-const site_name = ref(import.meta.env.SITE_NAME)
-const url = ref(import.meta.env.URL)
+// Active environment variables
 const node_version = ref(import.meta.env.NODE_VERSION)
 const repository_url = ref(import.meta.env.REPOSITORY_URL) // URL for the linked Git repository.
-const commit_ref = ref(import.meta.env.COMMIT_REF) // Reference of the commit we’re building.
+const commit_ref = ref(import.meta.env.COMMIT_REF) // Reference of the commit we're building.
 const branch = ref(import.meta.env.BRANCH) // Reference to check out after fetching changes from the Git repository. useful in split testing https://www.netlify.com/docs/split-testing/#exposing-split-test-information-in-your-site
-const netlify_images_cdn_domain = ref(import.meta.env.NETLIFY_IMAGES_CDN_DOMAIN)
-const context = ref(import.meta.env.CONTEXT) // Name of the context a deploy is built around, it can be `production`, `deploy-preview` or `branch-deploy`.
-
-const network = computed(() => resume.basics.profiles.filter(n => n.network == 'linkedin'))
 </script>

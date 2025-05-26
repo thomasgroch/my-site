@@ -59,18 +59,15 @@
 </template>
 
 <script setup>
-  import Ics from '@/components/Ics.vue'
   import Logo from '@/components/Logo.vue'
-  import { reactive, ref, defineProps, computed, onMounted, onUnmounted } from "vue"
+  import { ref, defineProps, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
-  import nprogress from 'nprogress'
   import { useRouter } from 'vue-router'
-  import { parse, formatISO, addHours, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInYears, setDefaultOptions, format, differenceInMonths, differenceInDays, addDays, addMonths } from 'date-fns'
+  import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns'
   import MeetForm from '@/components/MeetForm.vue'
   import { CalendarIcon, ChatBubbleLeftIcon, GlobeAltIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
   
   const router = useRouter()
-  const currentPath = computed(() => router.path)
 
   const props = defineProps({
     nome: {

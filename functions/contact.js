@@ -1,19 +1,22 @@
+ 
 import path from 'path';
 import faunadb from 'faunadb';
 import moment from 'moment';
-import formData from 'form-data';
+// Commented out unused imports
+// import formData from 'form-data';
 const q = faunadb.query;
 const client = new faunadb.Client({
   secret: process.env.FAUNADB_SERVER_SECRET
 });
-import handlebars from 'handlebars';
-import Mailgun from 'mailgun.js';
+// import handlebars from 'handlebars';
+// import Mailgun from 'mailgun.js';
 import nodemailer from 'nodemailer';
 import mg from 'nodemailer-mailgun-transport';
+// Ensure URLSearchParams is available in Node.js environment
+const { URLSearchParams } = require('url');
 const {
   MAILGUN_API_KEY: api_key,
-  MAILGUN_DOMAIN: domain,
-  MAILGUN_API_PUBLIC_KEY: public_key
+  MAILGUN_DOMAIN: domain
 } = process.env;
 const options = {
   auth: {
@@ -30,7 +33,7 @@ const headers = {
 	'Access-Control-Allow-Headers': 'Content-Type'
 }
 
-export const handler = async (event, context) => {
+export const handler = async (event) => {
 	// only allow POST requests
 	if (event.httpMethod !== 'POST') {
 		return {
@@ -47,8 +50,10 @@ export const handler = async (event, context) => {
 	// console.log(event)
 	try {
 		payload = JSON.parse(event.body)
-	} catch (e) {
-		payload = parse(event.body)
+	} catch {
+		// The parse function was not defined, so we're using a simpler fallback
+		// This assumes the body is URL-encoded form data
+		payload = Object.fromEntries(new URLSearchParams(event.body))
 	}
 
 	// validate the form
@@ -71,7 +76,8 @@ export const handler = async (event, context) => {
 
 	// code
 	try {
-		const dbResponse = await client.query(q.Create(q.Ref('classes/contacts'), {
+		// Store in database
+		await client.query(q.Create(q.Ref('classes/contacts'), {
 			data: {
 				...payload,
 				createdAt: moment().format()

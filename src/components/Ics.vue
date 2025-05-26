@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue'
 const props = defineProps(['event'])
 
 const googleUrl = computed(() => {
@@ -21,43 +21,7 @@ const googleUrl = computed(() => {
     '&location=' + encodeURIComponent(props.event.location);
 });
 
-const outlookUrl = computed(() => {
-  return 'https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent' +
-    '&subject=' + encodeURIComponent(props.event.title) +
-    '&startdt=' + encodeURIComponent(props.event.start) +
-    '&enddt=' + encodeURIComponent(props.event.end) +
-    '&body=' + encodeURIComponent(props.event.description) +
-    '&location=' + encodeURIComponent(props.event.location);
-});
-
-const appleUrl = computed(() => {
-  return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(
-    'BEGIN:VCALENDAR\n' +
-    'VERSION:2.0\n' +
-    'BEGIN:VEVENT\n' +
-    'URL:' + document.URL + '\n' +
-    'DTSTART:' + props.event.start.replace(/-/g, '') + 'T' + props.event.start.replace(/:/g, '').substring(11, 15) + '00\n' +
-    'DTEND:' + props.event.end.replace(/-/g, '') + 'T' + props.event.end.replace(/:/g, '').substring(11, 15) + '00\n' +
-    'SUMMARY:' + props.event.title + '\n' +
-    'DESCRIPTION:' + props.event.description + '\n' +
-    'LOCATION:' + props.event.location + '\n' +
-    'END:VEVENT\n' +
-    'END:VCALENDAR\n'
-  );
-});
-
-const yahooUrl = computed(() => {
-  return 'http://calendar.yahoo.com/?v=60&view=d&type=20' +
-    '&title=' + encodeURIComponent(props.event.title) +
-    '&st=' + encodeURIComponent(props.event.start) +
-    '&dur=' + encodeURIComponent('0100') +
-    '&desc=' + encodeURIComponent(props.event.description) +
-    '&in_loc=' + encodeURIComponent(props.event.location);
-});
-
-const emailUrl = computed(() => {
-  return 'Title: ' + props.event.title + '%0D%0A' +
-    'Description: ' + props.event.description + '%0D%0A' +
-    'Location: ' + props.event.location + '%'
-})
+// Removed calendar URL variables that were not being used
+// To re-add support for other calendar providers, uncomment the corresponding
+// template elements and re-implement these computed properties
 </script>
