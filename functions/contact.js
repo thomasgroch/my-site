@@ -1,18 +1,17 @@
- 
-import path from 'path';
-import faunadb from 'faunadb';
-import moment from 'moment';
-import { URLSearchParams } from 'url';
+const path = require('path');
+const faunadb = require('faunadb');
+const moment = require('moment');
+const { URLSearchParams } = require('url');
 // Commented out unused imports
-// import formData from 'form-data';
+// const formData = require('form-data');
 const q = faunadb.query;
 const client = new faunadb.Client({
   secret: process.env.FAUNADB_SERVER_SECRET
 });
-// import handlebars from 'handlebars';
-// import Mailgun from 'mailgun.js';
-import nodemailer from 'nodemailer';
-import mg from 'nodemailer-mailgun-transport';
+// const handlebars = require('handlebars');
+// const Mailgun = require('mailgun.js');
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
 // Ensure URLSearchParams is available in Node.js environment
 const {
   MAILGUN_API_KEY: api_key,
@@ -33,7 +32,7 @@ const headers = {
 	'Access-Control-Allow-Headers': 'Content-Type'
 }
 
-export const handler = async (event) => {
+exports.handler = async (event) => {
 	// only allow POST requests
 	if (event.httpMethod !== 'POST') {
 		return {

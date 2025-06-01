@@ -1,11 +1,11 @@
-// Using ES module syntax as specified by "type": "module" in package.json
+// Using CommonJS syntax for AWS/Netlify Lambda functions
 const headers = {
 	'Access-Control-Allow-Origin': '*', // better change this for production
 	'Access-Control-Allow-Methods': 'POST',
 	'Access-Control-Allow-Headers': 'Content-Type'
 }
 
-export const handler = async () => {
+exports.handler = async () => {
 	return {
 		statusCode: 200,
 		headers,
