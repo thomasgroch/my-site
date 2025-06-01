@@ -2,6 +2,7 @@
 import path from 'path';
 import faunadb from 'faunadb';
 import moment from 'moment';
+import { URLSearchParams } from 'url';
 // Commented out unused imports
 // import formData from 'form-data';
 const q = faunadb.query;
@@ -13,7 +14,6 @@ const client = new faunadb.Client({
 import nodemailer from 'nodemailer';
 import mg from 'nodemailer-mailgun-transport';
 // Ensure URLSearchParams is available in Node.js environment
-const { URLSearchParams } = require('url');
 const {
   MAILGUN_API_KEY: api_key,
   MAILGUN_DOMAIN: domain

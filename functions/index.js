@@ -1,3 +1,4 @@
+// Using ES module syntax as specified by "type": "module" in package.json
 const headers = {
 	'Access-Control-Allow-Origin': '*', // better change this for production
 	'Access-Control-Allow-Methods': 'POST',
