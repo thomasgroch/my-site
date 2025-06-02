@@ -46,11 +46,24 @@ export default {
     var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
-// Change the icons inside the button based on previous settings
-    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      themeToggleLightIcon.classList.remove('hidden');
+    // Change the icons inside the button based on previous settings
+    if (localStorage.getItem('color-theme')) {
+      // Se uma configuração específica foi definida pelo usuário
+      if (localStorage.getItem('color-theme') === 'dark') {
+        themeToggleLightIcon.classList.remove('hidden');
+      } else {
+        themeToggleDarkIcon.classList.remove('hidden');
+      }
     } else {
-      themeToggleDarkIcon.classList.remove('hidden');
+      // Sem configuração, mostrar ícone baseado no horário
+      const horaAtual = new Date().getHours();
+      const ehNoite = horaAtual >= 18 || horaAtual < 6;
+      
+      if (ehNoite) {
+        themeToggleLightIcon.classList.remove('hidden');
+      } else {
+        themeToggleDarkIcon.classList.remove('hidden');
+      }
     }
 
     var themeToggleBtn = document.getElementById('theme-toggle');
