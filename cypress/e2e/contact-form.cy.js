@@ -19,6 +19,6 @@ describe('formulario de contato', function () {
     cy.get('#grid-estado').select('AC');
     cy.get('#grid-cidade').select('Assis Brasil');
     cy.get(':nth-child(6) > .flex > .rounded').click();
-    cy.contains('enviada com sucesso').should('be.visible')
+    cy.contains('Sua mensagem foi enviada com sucesso!').should('be.visible', { timeout: 10000 })
   })
 })

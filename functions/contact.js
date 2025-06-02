@@ -1,13 +1,8 @@
 const path = require('path');
-const faunadb = require('faunadb');
 const moment = require('moment');
 const { URLSearchParams } = require('url');
 // Commented out unused imports
 // const formData = require('form-data');
-const q = faunadb.query;
-const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SERVER_SECRET
-});
 // const handlebars = require('handlebars');
 // const Mailgun = require('mailgun.js');
 const nodemailer = require('nodemailer');
@@ -75,13 +70,7 @@ exports.handler = async (event) => {
 
 	// code
 	try {
-		// Store in database
-		await client.query(q.Create(q.Ref('classes/contacts'), {
-			data: {
-				...payload,
-				createdAt: moment().format()
-			}
-		}))
+		// FaunaDB storage removed to avoid rate limiting
 
     const sendingMail = await transporter.sendMail({
       from: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
