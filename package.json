@@ -91,7 +91,7 @@
     "eslint-plugin-cypress": "2.13.2",
     "eslint-plugin-vue": "^10.1.0",
     "file": "^0.2.2",
-    "form-data": "^4.0.0",
+    "form-data": "^4.0.3",
     "globals": "^16.2.0",
     "hamlet": "^0.3.3",
     "hamljs": "^0.6.2",
