@@ -9,8 +9,6 @@
 
 </template>
 <script>
-	import brasil from '@/brasil.json'
-
 	export default {
 		name: 'Cidades',
 		props: {
@@ -25,13 +23,17 @@
 		},
 		computed: {
 			cidadesList() {
-				return brasil[this.estado].cidades
+				return this.brasil && this.brasil[this.estado] ? this.brasil[this.estado].cidades : []
 			},
+		},
+		async created() {
+			const brasil = await import('@/brasil.json')
+			this.brasil = brasil.default
 		},
 		data() {
 			return {
 				cidade: null,
-				brasil
+				brasil: null
 			}
 		},
 		watch: {
