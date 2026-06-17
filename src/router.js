@@ -1,61 +1,50 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from './views/Home.vue'
-import About from './views/About.vue'
-import NotFound from './views/NotFound.vue'
-import ProjectPage from './views/ProjectPage.vue'
-import StackPage from './views/StackPage.vue'
-import ContactPage from './views/ContactPage.vue'
-import MeetPage from './views/MeetPage.vue'
 
 /** @type {import('vue-router').RouterOptions['routes']} */
 const routes = [
-  { path: '/', component: Home, meta: { title: 'Home' } },
+  { path: '/', component: () => import('./views/Home.vue'), meta: { title: 'Home' } },
   {
     path: '/about',
     meta: { title: 'About' },
-    component: About,
-    // example of route level code-splitting
-    // this generates a separate chunk (About.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () => import('./views/About.vue')
+    component: () => import('./views/About.vue'),
   },
   {
     path:'/projetos',
     meta: { title: 'Projetos' },
-    component: ProjectPage,
+    component: () => import('./views/ProjectPage.vue'),
 
   },
   {
     path: '/stack',
-    component: StackPage,
+    component: () => import('./views/StackPage.vue'),
   },
   {
     path: '/contato',
-    component: ContactPage
+    component: () => import('./views/ContactPage.vue')
   },
   {
     path: '/entrevista',
-    component: MeetPage,
+    component: () => import('./views/MeetPage.vue'),
     meta: { title: 'Meet' },
     alias: ['/meet', '/reuniao', '/interview']
   },
   {
     path: '/entrevista/:nome',
-    component: MeetPage,
+    component: () => import('./views/MeetPage.vue'),
     meta: { title: 'Meet' },
     props: true,
     alias: ['/meet/:nome', '/reuniao/:nome', '/interview/:nome']
   },
   {
     path: '/entrevista/:nome/:date',
-    component: MeetPage,
+    component: () => import('./views/MeetPage.vue'),
     meta: { title: 'Meet' },
     props: true,
     alias: ['/meet/:nome/:date', '/interview/:nome/:date']
   },
 
 
-  { path: '/:path(.*)', component: NotFound },
+  { path: '/:path(.*)', component: () => import('./views/NotFound.vue') },
 ]
 
 const router = createRouter({
