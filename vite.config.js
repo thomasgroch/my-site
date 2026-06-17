@@ -93,40 +93,7 @@ function createI18nResourcesPlugin(options = {}) {
 
 // List of all dependencies that should be marked as external
 const externalDependencies = [
-  // Template engines from consolidate.js
-  'velocityjs',
-  'dustjs-linkedin',
-  'atpl',
-  'liquor',
-  'twig',
-  'ejs',
-  'eco',
-  'jazz',
-  'jqtpl',
-  'hamljs',
-  'hamlet',
-  'whiskers',
-  'haml-coffee',
-  'hogan.js',
-  'templayed',
-  'walrus',
-  'mustache',
-  'just',
-  'ect',
-  'mote',
-  'toffee',
-  'dot',
-  'bracket-template',
-  'ractive',
-  'htmling',
   'babel-core',
-  'plates',
-  'react-dom/server',
-  'react',
-  'vash',
-  'slm',
-  'marko',
-  'teacup/lib/express',
   // Additional paths
   './src/hamlc',
   '@babel/preset-typescript/package.json',
@@ -173,11 +140,7 @@ export default defineConfig({
   optimizeDeps: {
     // Exclude problematic packages from dependency optimization
     exclude: [
-      'consolidate',
-      'haml-coffee',
-      'walrus',
-      'coffee-script',
-      'marko'
+      'consolidate'
     ]
   }
 })
