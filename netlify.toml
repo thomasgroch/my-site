@@ -29,7 +29,11 @@
     "eco",
     "jazz",
     "jqtpl",
-    "hamljs"
+    "hamljs",
+    "haml-coffee",
+    "coffee-script",
+    "marko",
+    "consolidate"
   ]
 
 [dev]
