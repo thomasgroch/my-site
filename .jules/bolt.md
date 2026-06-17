@@ -12,3 +12,13 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2025-10-24 - Substituição de bibliotecas de utilitários por nativo e Pruning massivo
+
+**Aprendizado:**
+1. Bibliotecas de datas como `date-fns` ou `moment` podem ser pesadas (~30KB+ minified/gzipped). Para casos simples de parsing e cálculos de diferença, o objeto `Date` nativo e aritmética simples são suficientes e reduzem o tamanho do chunk da rota significativamente (neste caso, de 45KB para 11KB).
+2. Manter dezenas de dependências de "template engines" (ejs, marko, mustache, etc.) herdadas de boilerplates ou de configurações como `consolidate.js` aumenta o tempo de build e a complexidade do `package.json` sem necessidade.
+
+**Aplicação futura:**
+1. Avaliar se utilitários (dates, strings, arrays) realmente necessitam de bibliotecas externas.
+2. Realizar auditorias periódicas no `package.json` para remover "dead weight" de dependências que não são mais referenciadas no código fonte.
