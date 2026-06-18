@@ -63,7 +63,6 @@
   import { ref, defineProps, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
   import { useRouter } from 'vue-router'
-  import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns'
   import MeetForm from '@/components/MeetForm.vue'
   import { CalendarIcon, ChatBubbleLeftIcon, GlobeAltIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
   
@@ -85,7 +84,13 @@
   const meetDate = computed(() => props.date && props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
   const meetTime = computed(() => props.date && props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
   
-  const eventTime = ref(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()))
+  const eventTime = computed(() => {
+    if (!props.date) return new Date()
+    const parts = props.date.split('-')
+    if (parts.length < 5) return new Date()
+    // format: YYYY-MM-DD-HH-mm
+    return new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4])
+  })
   // const icsStartDateString = ref(formatISO(new Date(eventTime.value), { representation: "complete" }))
   // const oneHourLaterString = ref(formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" }))
 
@@ -159,18 +164,20 @@
     if ( ! props.date ){
       return ''
     }
-    const futureDate = new Date(eventTime.value);
+    const futureDate = eventTime.value;
     timer = setInterval(() => {
       const now = new Date();
-      const timeDifferenceInSeconds = differenceInSeconds(futureDate, now);
-      const timeDifferenceInMinutes = differenceInMinutes(futureDate, now);
-      const timeDifferenceInHours = differenceInHours(futureDate, now);
-      const timeDifferenceInDays = differenceInDays(futureDate, now);
+      const diffInMs = futureDate - now;
+      if (diffInMs <= 0) {
+        days.value = hours.value = minutes.value = seconds.value = 0;
+        return;
+      }
+      const diffInSeconds = Math.floor(diffInMs / 1000);
 
-      days.value = Math.floor(timeDifferenceInDays);
-      hours.value = Math.floor(timeDifferenceInHours % 24);
-      minutes.value = Math.floor(timeDifferenceInMinutes % 60);
-      seconds.value = Math.floor(timeDifferenceInSeconds % 60);
+      days.value = Math.floor(diffInSeconds / 86400);
+      hours.value = Math.floor((diffInSeconds % 86400) / 3600);
+      minutes.value = Math.floor((diffInSeconds % 3600) / 60);
+      seconds.value = diffInSeconds % 60;
     }, 1000);
   });
   onUnmounted(() => {

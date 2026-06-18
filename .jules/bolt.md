@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-18 - Replacing date-fns with native Date arithmetic
+
+**Aprendizado:** Bibliotecas de utilitários de data como `date-fns` podem adicionar um peso significativo a chunks específicos (ex: ~34kB minified). Para operações simples como contagem regressiva e parsing de strings controladas, o objeto nativo `Date` do JavaScript é suficiente e resulta em um bundle muito menor.
+
+**Aplicação futura:** Antes de adicionar ou manter `date-fns` ou `moment` em um componente, avaliar se as operações podem ser feitas nativamente. No caso do `MeetPage`, a redução foi de ~45kB para ~11kB (redução de ~75% no tamanho do chunk).
