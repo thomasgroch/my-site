@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2025-06-21 - Substituição de bibliotecas de data por Date nativo
+
+**Aprendizado:** Bibliotecas como `date-fns` ou `moment` podem adicionar overhead significativo ao bundle quando usadas para operações simples como contagem regressiva. A substituição por aritmética de `Date` nativo em componentes específicos pode reduzir o tamanho do chunk em mais de 75%.
+
+**Aplicação futura:** Avaliar se o uso de bibliotecas de manipulação de data é realmente necessário para operações simples de exibição ou cálculos básicos. Priorizar `Intl.DateTimeFormat` e aritmética de milissegundos nativa para reduzir o footprint da aplicação.
