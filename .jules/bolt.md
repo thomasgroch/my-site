@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-20 - Substituição de bibliotecas de utilitários por métodos nativos
+
+**Learning:** O uso de bibliotecas de utilitários como `date-fns` em componentes individuais pode aumentar significativamente o tamanho do chunk, especialmente se a árvore de dependências for complexa. Para tarefas simples de manipulação de datas e cálculos de diferença de tempo, os métodos nativos da API `Date` do JavaScript são suficientes e eliminam o overhead de importação de bibliotecas externas. Neste caso, a substituição reduziu o chunk do componente de 45kB para 11kB.
+
+**Action:** Sempre avaliar se uma biblioteca de utilitários é estritamente necessária para a tarefa em mãos. Priorizar implementações nativas para lógica simples em componentes que são carregados via lazy loading para manter os chunks leves.
