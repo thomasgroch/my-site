@@ -12,3 +12,11 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-21 - Dependency Pruning: Eliminating `date-fns`
+
+**Aprendizado:** A biblioteca `date-fns`, apesar de modular, pode aumentar significativamente o número de módulos transformados durante o build se não for utilizada com cautela. Substituir cálculos de data simples por aritmética nativa de JavaScript `Date` e propriedades reativas (`computed`) eliminou a dependência totalmente de um dos caminhos críticos.
+
+**Aplicação futura:** Antes de adicionar bibliotecas de data para tarefas simples como contagens regressivas ou formatação básica, avaliar se a API nativa `Date` ou `Intl.DateTimeFormat` é suficiente. Ganhos mensuráveis:
+- Redução de módulos transformados: de 790 para 486 (~38%).
+- Redução de chunk size (`MeetPage`): de 44.97 kB para 10.88 kB (~75%).
