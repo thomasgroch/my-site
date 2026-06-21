@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-21 - Bundle reduction by removing date-fns
+
+**Learning:** Removing a utility library like `date-fns` when only a few basic functions are used can significantly reduce the chunk size of the specific route. Native `Date` arithmetic is often sufficient for countdowns and basic parsing.
+
+**Action:** Before adding or keeping date manipulation libraries, evaluate if native `Date` methods and simple math can solve the problem. This reduced the `MeetPage` chunk size by ~75% (from 44.97 kB to 10.91 kB).
