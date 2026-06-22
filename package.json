@@ -86,7 +86,7 @@
     "eslint-plugin-vue": "^10.1.0",
     "file": "^0.2.2",
     "form-data": "^4.0.4",
-    "globals": "^16.2.0",
+    "globals": "^17.6.0",
     "hamlet": "^0.3.3",
     "hamljs": "^0.6.2",
     "hogan.js": "^3.0.2",
