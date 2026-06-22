@@ -12,3 +12,11 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-22 - Remoção de date-fns e otimização do MeetPage
+
+**Aprendizado:** A substituição da biblioteca `date-fns` por lógica nativa de JavaScript `Date` em componentes que realizam cálculos simples de data (como contagens regressivas) reduz drasticamente o número de módulos transformados pelo Vite e diminui significativamente o tamanho do bundle.
+
+**Aplicação futura:**
+1. Sempre avaliar se bibliotecas utilitárias de data são estritamente necessárias ou se podem ser substituídas por `Intl.DateTimeFormat` ou aritmética simples de `Date`.
+2. Em componentes Vue, usar `computed` properties para inicializar objetos `Date` e funções de atualização no `onMounted` para evitar "flicker" de valores zerados antes do primeiro tick do `setInterval`.
