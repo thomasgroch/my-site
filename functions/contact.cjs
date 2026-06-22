@@ -20,7 +20,7 @@ const options = {
 const transporter = nodemailer.createTransport(mg(options))
 
 const headers = {
-	'Access-Control-Allow-Origin': '*', // better change this for production
+	'Access-Control-Allow-Origin': 'https://thomasgroch.xyz', // better change this for production
 	'Access-Control-Allow-Methods': 'POST',
 	'Access-Control-Allow-Headers': 'Content-Type'
 }
