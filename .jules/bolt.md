@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-23 - Removendo date-fns e pruning de dependências
+
+**Aprendizado:** Substituir bibliotecas de manipulação de datas como `date-fns` por lógica nativa de JavaScript `Date` pode reduzir drasticamente a complexidade de transformação do build e o tamanho dos chunks de rota (no caso do MeetPage, redução de ~75%). Além disso, a remoção de ~30 motores de template não utilizados e dependências desnecessárias do React/React-DOM simplifica o grafo de dependências e acelera a instalação/build.
+
+**Aplicação futura:** Sempre avaliar se bibliotecas externas de utilitários são estritamente necessárias para operações simples. Auditar periodicamente o `package.json` para identificar "dependências fantasmagóricas" ou legadas de boilerplates.
