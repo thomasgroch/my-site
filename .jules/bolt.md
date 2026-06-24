@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2025-05-13 - Remoção de bibliotecas utilitárias em favor de APIs nativas
+
+**Aprendizado:** A biblioteca `date-fns`, embora poderosa, adiciona overhead significativo ao bundle quando apenas funções básicas de parsing e diferença de tempo são necessárias. Substituí-la por logic nativa de `Date` reduziu o chunk de `MeetPage` em ~76% (de 44.97kB para 10.91kB).
+
+**Aplicação futura:** Antes de adicionar ou manter bibliotecas como `date-fns` ou `lodash`, avaliar se as APIs nativas modernas (Date, Intl, Array methods) podem suprir a necessidade com menos custo de bundle.

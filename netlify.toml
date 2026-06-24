@@ -20,20 +20,7 @@
   # Configure external modules properly
   [functions.external]
   external_node_modules = [
-    "velocityjs",
-    "dustjs-linkedin",
-    "atpl",
-    "liquor",
-    "twig",
-    "ejs",
-    "eco",
-    "jazz",
-    "jqtpl",
-    "hamljs",
-    "haml-coffee",
-    "coffee-script",
-    "marko",
-    "consolidate"
+    "handlebars"
   ]
 
 [dev]
