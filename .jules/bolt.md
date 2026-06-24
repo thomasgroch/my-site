@@ -12,3 +12,15 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-24 - Library Removal for Small Utilities
+
+**Learning:** Using a heavy library like  for a simple countdown timer adds significant overhead to the bundle. Replacing it with native `Date` arithmetic can drastically reduce the route chunk size (~76% reduction in this case) and simplify the build process.
+
+**Action:** Before adding a dependency for date manipulation or other common tasks, evaluate if native JavaScript APIs can achieve the same result with minimal effort and much better performance impact. Always measure the bundle impact with `npm run build`.
+
+## 2026-06-24 - Library Removal for Small Utilities
+
+**Learning:** Using a heavy library like `date-fns` for a simple countdown timer adds significant overhead to the bundle. Replacing it with native `Date` arithmetic can drastically reduce the route chunk size (~76% reduction in this case) and simplify the build process.
+
+**Action:** Before adding a dependency for date manipulation or other common tasks, evaluate if native JavaScript APIs can achieve the same result with minimal effort and much better performance impact. Always measure the bundle impact with `npm run build`.
