@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-25 - Dependency Pruning: Removing date-fns for simple arithmetic
+
+**Learning:** Using a library like `date-fns` for simple countdown logic and date parsing significantly bloats the component's bundle size and increases build transformation count. Native JavaScript `Date` arithmetic is sufficient for most countdown and simple formatting needs.
+
+**Action:** Replace date-heavy libraries with native `Date` logic for simple use cases. Always check if a `computed` property can handle the reactive state to avoid "zero-flicker" on initial mount.
