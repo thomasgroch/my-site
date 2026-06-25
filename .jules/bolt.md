@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-25 - Dependency pruning and native Date migration
+
+**Aprendizado:** A substituição de bibliotecas de manipulação de data (`date-fns`) por APIs nativas do JavaScript (`Date`) em componentes isolados reduz o bundle size final sem perda de funcionalidade. Além disso, a auditoria e remoção de dependências não utilizadas (`mailgun.js`, `@headlessui/vue`) mantém o projeto limpo e evita carregamento de código desnecessário.
+
+**Aplicação futura:** Antes de adicionar uma biblioteca para tarefas comuns (datas, manipulação de arrays), avaliar se as APIs nativas modernas são suficientes. Realizar limpezas periódicas no `package.json` baseadas em buscas no código fonte (`grep`).
