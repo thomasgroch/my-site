@@ -63,7 +63,6 @@
   import { ref, defineProps, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
   import { useRouter } from 'vue-router'
-  import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns'
   import MeetForm from '@/components/MeetForm.vue'
   import { CalendarIcon, ChatBubbleLeftIcon, GlobeAltIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
   
@@ -84,8 +83,13 @@
   const nomeCapitalized = computed(() => nomeParsed.value.charAt(0).toUpperCase()   + nomeParsed.value.slice(1))
   const meetDate = computed(() => props.date && props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
   const meetTime = computed(() => props.date && props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
-  
-  const eventTime = ref(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()))
+
+  // Replacing date-fns with native Date arithmetic to reduce bundle size
+  const eventTime = computed(() => {
+    if (!props.date) return new Date()
+    const [year, month, day, hour, minute] = props.date.split('-').map(Number)
+    return new Date(year, month - 1, day, hour, minute)
+  })
   // const icsStartDateString = ref(formatISO(new Date(eventTime.value), { representation: "complete" }))
   // const oneHourLaterString = ref(formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" }))
 
@@ -153,25 +157,30 @@
   })
 
   onMounted(() => {
-    if ( !props.date ) {
-      return ''
+    if (!props.date) {
+      return
     }
-    if ( ! props.date ){
-      return ''
-    }
-    const futureDate = new Date(eventTime.value);
-    timer = setInterval(() => {
-      const now = new Date();
-      const timeDifferenceInSeconds = differenceInSeconds(futureDate, now);
-      const timeDifferenceInMinutes = differenceInMinutes(futureDate, now);
-      const timeDifferenceInHours = differenceInHours(futureDate, now);
-      const timeDifferenceInDays = differenceInDays(futureDate, now);
 
-      days.value = Math.floor(timeDifferenceInDays);
-      hours.value = Math.floor(timeDifferenceInHours % 24);
-      minutes.value = Math.floor(timeDifferenceInMinutes % 60);
-      seconds.value = Math.floor(timeDifferenceInSeconds % 60);
-    }, 1000);
+    const updateCountdown = () => {
+      const now = new Date()
+      const diff = eventTime.value.getTime() - now.getTime()
+
+      if (diff <= 0) {
+        days.value = 0
+        hours.value = 0
+        minutes.value = 0
+        seconds.value = 0
+        return
+      }
+
+      seconds.value = Math.floor((diff / 1000) % 60)
+      minutes.value = Math.floor((diff / (1000 * 60)) % 60)
+      hours.value = Math.floor((diff / (1000 * 60 * 60)) % 24)
+      days.value = Math.floor(diff / (1000 * 60 * 60 * 24))
+    }
+
+    updateCountdown()
+    timer = setInterval(updateCountdown, 1000)
   });
   onUnmounted(() => {
     clearInterval(timer);
