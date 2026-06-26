@@ -12,3 +12,12 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-26 - Substituição de date-fns e Pruning de Dependências Legadas
+
+**Aprendizado:** Bibliotecas de datas como `date-fns` podem ser substituídas por lógica nativa `Date` em casos de uso simples (como contagens regressivas), reduzindo o tamanho do bundle e o número de módulos transformados no build. Além disso, a remoção de dependências legadas de "template engines" (atpl, dot, mustache, etc.) simplifica radicalmente o `vite.config.js` e melhora a velocidade de instalação e build.
+
+**Aplicação futura:**
+1. Sempre avaliar se uma biblioteca de utilitários (como `date-fns` ou `lodash`) é realmente necessária ou se APIs nativas do JS moderno resolvem o problema.
+2. Monitorar o número de módulos transformados no Vite (`transforming...` no log de build); quedas drásticas indicam remoção bem-sucedida de árvores de dependências complexas.
+3. Limpar regularmente o `package.json` de dependências de "boilerplate" ou templates que não estão sendo importadas em lugar nenhum do código fonte.
