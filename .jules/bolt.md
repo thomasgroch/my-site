@@ -12,3 +12,14 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2025-05-14 - Redução de dependências e substituição de bibliotecas de data
+
+**Aprendizado:**
+1. Bibliotecas como `date-fns` podem adicionar overhead desnecessário (40KB+) quando usadas apenas para cálculos simples de data e contagem regressiva. O objeto nativo `Date` do JavaScript é suficiente para a maioria desses casos.
+2. Projetos baseados em templates legados frequentemente acumulam dezenas de `devDependencies` (motores de template como `ejs`, `pug`, `mustache`) que nunca são usados no código fonte, mas aumentam o tempo de `npm install` e a superfície de ataque.
+
+**Aplicação futura:**
+1. Auditar o bundle chunk a chunk para identificar bibliotecas pesadas em rotas específicas.
+2. Limpar agressivamente o `package.json` de qualquer dependência que não possua um `import` ou `require` correspondente no código.
+3. Priorizar APIs nativas do navegador (como `Date`, `fetch`, `Intl`) sobre bibliotecas utilitárias externas.
