@@ -12,3 +12,7 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-27 - Native Date vs date-fns in Vue Components
+**Learning:** Removing a library like `date-fns` for simple countdown logic can reduce specific route chunk sizes by over 75% and total build module count by nearly 40%. In Vue 3, reactivity for time-based features (like countdowns) must be explicitly managed with a reactive ref (e.g., `currentTime`) updated by `setInterval`, as `new Date()` inside a computed property is not reactive.
+**Action:** Always evaluate if small utility libraries can be replaced by native JS features, especially if they are only used in a single component. Use reactive refs for time-dependent logic.
