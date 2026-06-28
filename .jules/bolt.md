@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-28 - Removendo date-fns do MeetPage
+
+**Aprendizado:** Substituir uma biblioteca de manipulação de datas como `date-fns` por aritmética nativa de JavaScript em componentes que usam apenas funções básicas pode reduzir drasticamente o tamanho do chunk e o número de módulos transformados durante o build.
+
+**Aplicação futura:** Antes de adicionar ou manter `date-fns` ou `moment`, avaliar se o uso de `new Date()` e cálculos simples (ex: `diff / 1000`) é suficiente. No Vite, isso ajuda a manter chunks menores e builds mais rápidos.
