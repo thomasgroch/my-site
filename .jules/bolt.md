@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-29 - Bundle optimization by replacing date-fns with native Date
+
+**Learning:** Replacing a utility library like `date-fns` with native JavaScript `Date` arithmetic for simple tasks (like a countdown timer) significantly reduces the component chunk size (from ~45kB to ~11kB in this case). Even if the dependency remains in `package.json` due to policy constraints, modern bundlers like Vite will tree-shake the unused library from the production build, resulting in a cleaner and faster application.
+
+**Action:** Look for small, isolated usages of heavy utility libraries (`date-fns`, `lodash`, etc.) and replace them with native equivalents when possible.
