@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-30 - Otimização de bundle via Dynamic Import de Resume JSON
+
+**Aprendizado:** Arquivos JSON estáticos importados em múltiplos componentes (como `resume.json`) são incluídos no bundle principal. Transformá-los em `import()` dinâmico permite que o Vite os separe em chunks independentes, reduzindo o tamanho do `index.js`.
+
+**Aplicação futura:** Identificar arquivos de dados (JSON, grandes objetos de configuração) que não são necessários para a renderização inicial crítica e convertê-los para carregamento assíncrono nos hooks `onMounted` ou `created`.
