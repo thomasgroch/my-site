@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2025-05-14 - Remoção do date-fns em favor de Date nativo
+
+**Aprendizado:** Bibliotecas de manipulação de data como `date-fns` podem ser pesadas se usadas apenas para cálculos simples. Substituí-las por aritmética nativa de `Date` e `Math.floor` reduz significativamente o bundle size e a complexidade de transformação do build.
+
+**Aplicação futura:** Avaliar se a complexidade dos cálculos de data justifica uma dependência externa. Para contagens regressivas e formatações simples, `Date` nativo é preferível para manter a performance.
