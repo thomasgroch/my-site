@@ -27,8 +27,6 @@ import StackList from '@/components/StackList.vue'
 </template>
 
 <script>
-import resume from "~/resume.json";
-
 export default {
   name: "StackPage",
   metaInfo: {
@@ -36,8 +34,12 @@ export default {
   },
   data() {
     return {
-      stacks: resume.stack
+      stacks: {}
     }
+  },
+  async created() {
+    const resume = (await import('~/resume.json')).default
+    this.stacks = resume.stack
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="py-16">
     <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5"
-        v-if="currentPath != '/'">
+        v-if="currentPath != '/' && resume">
       <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank">
         <font-awesome-icon :icon="['fab', n.network]"
                            class="fa-2x text-neutral-500 hover:text-green-300 dark:bg-transparent px" />
@@ -43,11 +43,17 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import resume from "~/resume.json";
+
 const route = useRoute();
 const currentPath = computed(() =>route.path)
+const resume = ref(null)
+
+onMounted(async () => {
+  resume.value = (await import('~/resume.json')).default
+})
+
 import { useI18n } from "vue3-i18n";
 const i18n = useI18n();
 const setLocale = (lang) => {
