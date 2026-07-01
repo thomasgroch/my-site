@@ -12,3 +12,7 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-07-01 - Dependency Pruning (date-fns) and Reactivity Optimization
+**Learning:** Replacing a heavy library like `date-fns` with native JavaScript `Date` arithmetic for simple countdown logic can drastically reduce bundle size (~75% reduction for the specific route chunk) and build transformation complexity (reduced from 790 to 486 modules). Additionally, consolidating multiple reactive refs into a single timestamp ref with computed properties makes Vue 3 components more efficient and avoids synchronized update issues.
+**Action:** Always evaluate if utility libraries (date-fns, lodash, etc.) are truly necessary for the specific use case or if native JS and framework features (like Vue computed properties) can achieve the same result with less overhead.
