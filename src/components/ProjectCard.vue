@@ -1,12 +1,12 @@
 <template>
   <div class="max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
     <div class="max-h-80 justify-center flex">
-      <a :href="item.website">
-        <img class="max-h-80 rounded-t-lg" :src="item.img" alt="" />
+      <a :href="item.website" target="_blank" rel="noopener noreferrer">
+        <img class="max-h-80 rounded-t-lg" :src="item.img" alt="" loading="lazy" />
       </a>
     </div>
     <div class="p-5  flex flex-col">
-      <a :href="item.website" target="_blank">
+      <a :href="item.website" target="_blank" rel="noopener noreferrer">
         <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ item.company }}</h5>
       </a>
       <p class="mb-3 text-gray-700 dark:text-gray-400">{{ item.summary }}</p>
@@ -19,6 +19,7 @@
             alt="tech"
             v-for="(tech, key) in item.techs"
             :key="key"
+            loading="lazy"
           />
         </div>
         <p class="shrink-0 flex items-end text-neutral-500 text-sm font-medium">{{ item.startDate }}</p>
