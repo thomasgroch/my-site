@@ -12,3 +12,8 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-07-02 - Bundle Pruning: Removing `date-fns` for native Date logic
+**Learning:** Even small utility libraries like `date-fns` can significantly bloat specific route chunks (from 10kB to 45kB in this case) and increase build transformation overhead. Native JavaScript `Date` arithmetic, combined with Vue's computed properties, can provide the same functionality with zero bundle overhead.
+
+**Action:** Before reaching for a date utility library, evaluate if native `Date` methods and basic math suffice. For countdowns and simple formatting, native logic is often more efficient and reduces the module graph complexity.

@@ -63,7 +63,6 @@
   import { ref, defineProps, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
   import { useRouter } from 'vue-router'
-  import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns'
   import MeetForm from '@/components/MeetForm.vue'
   import { CalendarIcon, ChatBubbleLeftIcon, GlobeAltIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
   
@@ -85,92 +84,37 @@
   const meetDate = computed(() => props.date && props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
   const meetTime = computed(() => props.date && props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
   
-  const eventTime = ref(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()))
-  // const icsStartDateString = ref(formatISO(new Date(eventTime.value), { representation: "complete" }))
-  // const oneHourLaterString = ref(formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" }))
+  const eventTime = computed(() => {
+    if (!props.date) return new Date()
+    const parts = props.date.split('-').map(p => parseInt(p, 10))
+    // parts: [year, month, day, hour, minute]
+    // Note: month is 0-indexed in Date constructor
+    return new Date(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0)
+  })
 
-  // const event = ref({
-  //   title: nomeCapitalized,
-  //   start: icsStartDateString.value,
-  //   end: oneHourLaterString.value,
-  //   location: 'Localasd do Evento',
-  //   description: 'Descriçãoasd do Evento',
-  // })
-
-  // const googleCalendarLink = computed(() => {
-
-  //   const icsStartDateString = formatISO(new Date(eventTime.value), { representation: "complete" });
-  //   const oneHourLaterString = formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" });
-
-  //   const action = `TEMPLATE` // TEMPLATE (required)
-  //   const text = `${event.value.title}` // Title of the event (URL encoded format).
-  //   const details = `${event.value.description}` // Event details or description (URL encoded format).
-  //   const dates = `${encodeURIComponent(icsStartDateString)}/${encodeURIComponent(oneHourLaterString)}` // ISO date format (start_datetime/end_datetime)
-  //   const location = `${event.value.location}` // Location of the event (URL encoded format).
-
-  //   return `https://calendar.google.com/calendar/render?action=${action}&text=${text}&details=${details}&dates=${dates}&location=${location}`
-  //   // return https://calendar.google.com/calendar/render?action=TEMPLATE&text=My Event&details=Event description text&dates=20220305T103000/20220305T184500&location=New York City
-  //   // return link
-  // })
-
-//   const icsLink = computed(() => {
-
-//     const icsStartDateString = formatISO(new Date(eventTime.value), { representation: "complete" });
-//     const oneHourLaterString = formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" });
-//     const calendarData = `BEGIN:VCALENDAR
-// VERSION:2.0
-// BEGIN:VEVENT
-// SUMMARY:${event.value.title}
-// DTSTART:${icsStartDateString}
-// DTEND:${oneHourLaterString}
-// LOCATION:${event.value.location}
-// DESCRIPTION:${event.value.description}
-// END:VEVENT
-// END:VCALENDAR`;
-// console.log(calendarData)
-
-//     const encodedData = encodeURIComponent(calendarData);
-//     const link = `data:text/calendar;charset=utf-8,${encodedData}`;
-//     return link
-//   })
-  
-  const days = ref(0);
-  const hours = ref(0);
-  const minutes = ref(0);
-  const seconds = ref(0);
+  const now = ref(new Date())
   let timer;
 
   const itIsTime = computed(() => {
-    const now = new Date();
-    const timeToCheck = eventTime.value
-    if (timeToCheck < now) {
-      // console.log('The time has passed.');
-      return true
-    } else {
-      // console.log('The time has not passed yet.');
-      return false
-    }
+    return eventTime.value <= now.value
   })
+
+  const timeDiff = computed(() => {
+    const diff = eventTime.value - now.value
+    return diff > 0 ? diff : 0
+  })
+
+  const days = computed(() => Math.floor(timeDiff.value / (1000 * 60 * 60 * 24)))
+  const hours = computed(() => Math.floor((timeDiff.value / (1000 * 60 * 60)) % 24))
+  const minutes = computed(() => Math.floor((timeDiff.value / (1000 * 60)) % 60))
+  const seconds = computed(() => Math.floor((timeDiff.value / 1000) % 60))
 
   onMounted(() => {
     if ( !props.date ) {
-      return ''
+      return
     }
-    if ( ! props.date ){
-      return ''
-    }
-    const futureDate = new Date(eventTime.value);
     timer = setInterval(() => {
-      const now = new Date();
-      const timeDifferenceInSeconds = differenceInSeconds(futureDate, now);
-      const timeDifferenceInMinutes = differenceInMinutes(futureDate, now);
-      const timeDifferenceInHours = differenceInHours(futureDate, now);
-      const timeDifferenceInDays = differenceInDays(futureDate, now);
-
-      days.value = Math.floor(timeDifferenceInDays);
-      hours.value = Math.floor(timeDifferenceInHours % 24);
-      minutes.value = Math.floor(timeDifferenceInMinutes % 60);
-      seconds.value = Math.floor(timeDifferenceInSeconds % 60);
+      now.value = new Date()
     }, 1000);
   });
   onUnmounted(() => {
