@@ -1,8 +1,8 @@
 <template>
   <div class="py-16">
     <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5"
-        v-if="currentPath != '/'">
-      <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank">
+        v-if="currentPath != '/' && resume.basics.profiles.length">
+      <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank" rel="noopener noreferrer">
         <font-awesome-icon :icon="['fab', n.network]"
                            class="fa-2x text-neutral-500 hover:text-green-300 dark:bg-transparent px" />
       </a>
@@ -11,9 +11,9 @@
     <p class="text-sm text-neutral-500 text-center">© 2002 - {{ new Date().getFullYear() }} Thomas Groch.</p>
     <p class="text-sm text-neutral-500 text-center" v-if="commit_ref">
       <span v-if="node_version">Build with node {{ node_version }}<br /></span>
-      <a :href="repository_url+'/commit/' + commit_ref" target="_blank">#{{ commit_ref.substring(0,7) }}</a>
+      <a :href="repository_url+'/commit/' + commit_ref" target="_blank" rel="noopener noreferrer">#{{ commit_ref.substring(0,7) }}</a>
       <span v-if="branch">
-        on <a :href="repository_url+'/tree/' + branch" target="_blank">{{ branch }}</a>.
+        on <a :href="repository_url+'/tree/' + branch" target="_blank" rel="noopener noreferrer">{{ branch }}</a>.
       </span>
     </p>
      <div class="flex justify-center gap-5 py-5 px-1">
@@ -43,9 +43,20 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import resume from "~/resume.json";
+
+const resume = ref({
+  basics: {
+    profiles: []
+  }
+})
+
+onMounted(async () => {
+  const data = await import("~/resume.json")
+  resume.value = data.default
+})
+
 const route = useRoute();
 const currentPath = computed(() =>route.path)
 import { useI18n } from "vue3-i18n";
