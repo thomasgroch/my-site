@@ -12,3 +12,15 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2024-05-20 - Substituted date-fns for native Date logic
+
+**Aprendizado:** Bibliotecas de manipulação de data como `date-fns` podem adicionar peso desnecessário quando apenas operações básicas de aritmética de data são necessárias. Substituir por `new Date()` e cálculos nativos reduziu o chunk da rota em ~75%.
+
+**Aplicação futura:** Antes de adicionar ou manter bibliotecas de utilitários de data, avaliar se os requisitos (ex: countdowns, formatação simples) podem ser resolvidos nativamente para economizar bundle size.
+
+## 2024-05-20 - Dynamic import de assets JSON
+
+**Aprendizado:** Importar arquivos JSON estaticamente os inclui no bundle principal. Usar `import()` dinâmico permite o code-splitting desses dados, reduzindo o LCP.
+
+**Aplicação futura:** Mover dados de configuração ou conteúdo (como `resume.json`) para imports dinâmicos em `onMounted` para otimizar o caminho crítico.
