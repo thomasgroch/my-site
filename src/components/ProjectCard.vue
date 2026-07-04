@@ -6,7 +6,7 @@
       </a>
     </div>
     <div class="p-5  flex flex-col">
-      <a :href="item.website" target="_blank">
+      <a :href="item.website" target="_blank" rel="noopener noreferrer">
         <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ item.company }}</h5>
       </a>
       <p class="mb-3 text-gray-700 dark:text-gray-400">{{ item.summary }}</p>

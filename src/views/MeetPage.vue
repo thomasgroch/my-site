@@ -25,7 +25,7 @@
 
           <span class="flex text-neutral-500 pb-1" v-if="props.date">
             <GlobeAltIcon class="h-7 w-7 mr-2 text-blue-500"/>
-            <a :href="$route.path" target="_blank">{{ $t('meet.conference-link') }}</a>
+            <a :href="$route.path" target="_blank" rel="noopener noreferrer">{{ $t('meet.conference-link') }}</a>
           </span>
           <span class="flex text-neutral-500 pb-1" v-if="props.date">
             <VideoCameraIcon class="h-7 w-7 mr-2 text-blue-500"/>
@@ -63,7 +63,6 @@
   import { ref, defineProps, computed, onMounted, onUnmounted } from "vue"
   import { JitsiMeeting } from "@jitsi/vue-sdk"
   import { useRouter } from 'vue-router'
-  import { parse, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns'
   import MeetForm from '@/components/MeetForm.vue'
   import { CalendarIcon, ChatBubbleLeftIcon, GlobeAltIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
   
@@ -85,7 +84,11 @@
   const meetDate = computed(() => props.date && props.date.split('-').length >= 3 ? `${props.date.split('-')[2]}/${props.date.split('-')[1]}/${props.date.split('-')[0]}` : '')
   const meetTime = computed(() => props.date && props.date.split('-').length >= 5 ? `${props.date.split('-')[3]}:${props.date.split('-')[4]}` : '')
   
-  const eventTime = ref(parse(`${meetDate.value} ${meetTime.value}`, 'dd/MM/yyyy HH:mm', new Date()))
+  const eventTime = computed(() => {
+    if (!props.date || props.date.split('-').length < 5) return new Date()
+    const [y, m, d, hh, mm] = props.date.split('-').map(p => parseInt(p, 10))
+    return new Date(y, m - 1, d, hh, mm)
+  })
   // const icsStartDateString = ref(formatISO(new Date(eventTime.value), { representation: "complete" }))
   // const oneHourLaterString = ref(formatISO(addHours(new Date(eventTime.value), 1), { representation: "complete" }))
 
@@ -134,43 +137,29 @@
 //     return link
 //   })
   
-  const days = ref(0);
-  const hours = ref(0);
-  const minutes = ref(0);
-  const seconds = ref(0);
+  const now = ref(new Date());
   let timer;
 
   const itIsTime = computed(() => {
-    const now = new Date();
-    const timeToCheck = eventTime.value
-    if (timeToCheck < now) {
-      // console.log('The time has passed.');
-      return true
-    } else {
-      // console.log('The time has not passed yet.');
-      return false
-    }
+    return eventTime.value <= now.value
   })
 
-  onMounted(() => {
-    if ( !props.date ) {
-      return ''
-    }
-    if ( ! props.date ){
-      return ''
-    }
-    const futureDate = new Date(eventTime.value);
-    timer = setInterval(() => {
-      const now = new Date();
-      const timeDifferenceInSeconds = differenceInSeconds(futureDate, now);
-      const timeDifferenceInMinutes = differenceInMinutes(futureDate, now);
-      const timeDifferenceInHours = differenceInHours(futureDate, now);
-      const timeDifferenceInDays = differenceInDays(futureDate, now);
+  const timeDifferenceInSeconds = computed(() => {
+    return Math.max(0, Math.floor((eventTime.value - now.value) / 1000))
+  })
 
-      days.value = Math.floor(timeDifferenceInDays);
-      hours.value = Math.floor(timeDifferenceInHours % 24);
-      minutes.value = Math.floor(timeDifferenceInMinutes % 60);
-      seconds.value = Math.floor(timeDifferenceInSeconds % 60);
+  const days = computed(() => Math.floor(timeDifferenceInSeconds.value / 86400))
+  const hours = computed(() => Math.floor((timeDifferenceInSeconds.value % 86400) / 3600))
+  const minutes = computed(() => Math.floor((timeDifferenceInSeconds.value % 3600) / 60))
+  const seconds = computed(() => Math.floor(timeDifferenceInSeconds.value % 60))
+
+  onMounted(() => {
+    if (!props.date) {
+      return
+    }
+
+    timer = setInterval(() => {
+      now.value = new Date();
     }, 1000);
   });
   onUnmounted(() => {

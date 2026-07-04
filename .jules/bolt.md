@@ -12,3 +12,15 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-06-16 - Bundle optimization and Security hardening
+
+**Aprendizado:**
+1. Remover `date-fns` em favor de `Date` nativo reduziu drasticamente o número de transformações do Vite (de 790 para 486) e o tamanho do chunk da rota `MeetPage` (de ~45KB para ~11KB).
+2. Converter assets estáticos como `resume.json` para imports dinâmicos (`import()`) retira esse peso do bundle principal, melhorando o tempo de carregamento inicial.
+3. O uso de `rel="noopener noreferrer"` em links `target="_blank"` é uma medida de segurança essencial e de baixo custo para prevenir ataques de tabnabbing.
+
+**Aplicação futura:**
+- Auditar rotas que usam bibliotecas de data pesadas e avaliar se lógica nativa é suficiente.
+- Isolar grandes arquivos JSON em chunks sob demanda.
+- Padronizar segurança de links externos em todos os componentes.
