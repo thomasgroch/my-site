@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-07-04 - Native Date vs date-fns for small features
+
+**Learning:** Replacing a heavy utility library like `date-fns` with native JavaScript `Date` arithmetic for simple features (like a single countdown timer) can lead to massive bundle size reductions (~75% for the specific route chunk in this case). It also simplifies the build process by reducing the number of modules the bundler needs to transform.
+
+**Action:** Before reaching for a date utility library, evaluate if the required logic can be implemented with native `Date` and basic math, especially if the library is only used in a single component.
