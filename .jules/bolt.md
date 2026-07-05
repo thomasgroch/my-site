@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-07-05 - Redução de bundle via pruning de bibliotecas de data
+
+**Aprendizado:** Bibliotecas como `date-fns` podem adicionar peso significativo ao bundle se usadas para operações simples. Substituir `date-fns` por aritmética nativa de JavaScript `Date` e refatorar a lógica para usar propriedades computadas sincronizadas por um único `ref` de tempo reduziu o chunk do `MeetPage` de 44.97 KB para 10.92 KB (~75% de redução).
+
+**Aplicação futura:** Sempre avaliar se bibliotecas utilitárias externas são realmente necessárias para operações básicas. No Vue 3, centralizar a reatividade de tempo em um único `setInterval` que atualiza um `ref` central é mais eficiente do que múltiplos timers ou cálculos pesados em templates.

@@ -21,7 +21,7 @@ defineOptions({
       class="dark:bg-neutral-700 bg-green-100 text-green-400 rounded px-1 font-normal">Web Developer</span></p>
 
     <div class="py-5 flex space-x-3 justify-center text-sm text-center px-5">
-      <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank">
+      <a class="dark:hover:bg-transparent px-2" v-for="n in resume.basics.profiles" :href="n.url" target="_blank" rel="noopener noreferrer">
         <font-awesome-icon :icon="['fab', n.network]"
                            class="fa-2x text-neutral-500 hover:text-green-300 dark:bg-transparent px" />
       </a>
