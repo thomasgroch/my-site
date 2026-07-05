@@ -5,9 +5,11 @@
     rel="noopener noreferrer">
 
       <div class="mx-auto flex justify-center w-20">
+        <!-- Performance: loading="lazy" improves page load speed by deferring off-screen images -->
         <img class="object-contain object-center p-2 h-20 rounded-full bg-neutral-100 dark:bg-neutral-700"
             :src="item.photo"
-            :alt="item.name"/>
+            :alt="item.name"
+            loading="lazy"/>
       </div>
       <span class="mt-2 mb-6 py-2 px-4 text-neutral-500 dark:text-neutral-200 tracking-wide">{{ item.name }}</span>
 

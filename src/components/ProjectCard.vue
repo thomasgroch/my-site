@@ -2,7 +2,8 @@
   <div class="max-w-sm flex flex-col justify-between bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
     <div class="max-h-80 justify-center flex">
       <a :href="item.website">
-        <img class="max-h-80 rounded-t-lg" :src="item.img" alt="" />
+        <!-- Performance: loading="lazy" improves page load speed by deferring off-screen images -->
+        <img class="max-h-80 rounded-t-lg" :src="item.img" alt="" loading="lazy" />
       </a>
     </div>
     <div class="p-5  flex flex-col">
@@ -19,6 +20,7 @@
             alt="tech"
             v-for="(tech, key) in item.techs"
             :key="key"
+            loading="lazy"
           />
         </div>
         <p class="shrink-0 flex items-end text-neutral-500 text-sm font-medium">{{ item.startDate }}</p>

@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-07-05 - Route Chunk Optimization by Dependency Removal
+
+**Learning:** Removing a library like `date-fns` (used only for a countdown on a single route) reduced that route's chunk size from ~45KB to ~11KB (~75% reduction) and reduced the total number of modules transformed by Vite from 790 to 486 (~38% reduction). Native JavaScript `Date` and `toLocaleDateString()` are often sufficient and much lighter for simple tasks.
+
+**Action:** Before reaching for a utility library, evaluate if native JS can do the job, especially if the library would be bundled into a specific route chunk or the main bundle. Audit route chunks in the build output to find "heavy" dependencies that can be replaced by native code.
