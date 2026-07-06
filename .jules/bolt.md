@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-07-06 - Remoção de date-fns e redução de chunk size
+
+**Aprendizado:** Substituir bibliotecas de manipulação de data como `date-fns` por lógica nativa `Date` em componentes que fazem uso simples (como um countdown) pode reduzir o tamanho do chunk daquela rota em mais de 75% (de 45kB para 11kB). O Vite e o Rollup conseguem otimizar muito melhor o código quando não há dependências externas pesadas no caminho crítico de um componente carregado via lazy loading.
+
+**Aplicação futura:** Avaliar se o uso de bibliotecas de data é estritamente necessário para operações simples de exibição ou aritmética básica. Se possível, usar `Intl.DateTimeFormat` e aritmética básica de timestamp para economizar bundle size.

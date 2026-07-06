@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex flex-col">
-      <a :href="googleUrl" target="_blank">Add to Google Calendar</a>
-      <!-- <a :href="outlookUrl" target="_blank">Add to Outlook Calendar</a>
+      <a :href="googleUrl" target="_blank" rel="noopener noreferrer">Add to Google Calendar</a>
+      <!-- <a :href="outlookUrl" target="_blank" rel="noopener noreferrer">Add to Outlook Calendar</a>
       <a :href="appleUrl" target="_blank">Add to Apple Calendar</a>
       <a :href="yahooUrl" target="_blank">Add to Yahoo Calendar</a>
       <a :href="emailUrl" target="_blank">Email Event</a> -->
