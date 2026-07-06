@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2025-07-06 - Removing date-fns for small-scale date logic
+
+**Learning:** Using heavy date libraries like `date-fns` for simple countdowns or date parsing in single components can bloat the specific route chunk significantly. Replacing it with native `Date` arithmetic reduced the `MeetPage` chunk from 45kB to 11kB (~75% reduction) and reduced total build transformations by ~38%.
+
+**Action:** Before adding `date-fns` or `moment`, evaluate if native `Date` API can handle the logic. For simple differences (days, hours, minutes), native math is much more efficient for the bundle.
