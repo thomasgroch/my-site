@@ -6,7 +6,7 @@
       </a>
     </div>
     <div class="p-5  flex flex-col">
-      <a :href="item.website" target="_blank">
+      <a :href="item.website" target="_blank" rel="noopener noreferrer">
         <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ item.company }}</h5>
       </a>
       <p class="mb-3 text-gray-700 dark:text-gray-400">{{ item.summary }}</p>
@@ -25,11 +25,11 @@
       </div>
 
 <!--      <div class="flex">-->
-<!--        <a :href="item.website" target="_blank" class="w-1/2 mr-2 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-600 dark:focus:ring-green-800">-->
+<!--        <a :href="item.website" target="_blank" rel="noopener noreferrer" class="w-1/2 mr-2 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-600 dark:focus:ring-green-800">-->
 <!--          Site-->
 <!--          <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>-->
 <!--        </a>-->
-<!--        <a href="#" target="_blank" class="w-1/2 ml-2 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-600 dark:focus:ring-green-800">-->
+<!--        <a href="#" target="_blank" rel="noopener noreferrer" class="w-1/2 ml-2 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-800 dark:hover:bg-green-600 dark:focus:ring-green-800">-->
 <!--          Repo-->
 <!--          <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>-->
 <!--        </a>-->
@@ -42,7 +42,7 @@
   <!-- <div class="rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator">
     <div>
       <a :href="item.website"
-          target="_blank" class="sm:h-64 h-48 lg:h-auto lg:w-48 flex-none object-cover overflow-hidden bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l lg:rounded-b rounded-b-none rounded-r "
+          target="_blank" rel="noopener noreferrer" class="sm:h-64 h-48 lg:h-auto lg:w-48 flex-none object-cover overflow-hidden bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l lg:rounded-b rounded-b-none rounded-r "
           :style="'background-image: url(\''+ item.img +'\'); background-size: 100%; '"></a>
     </div>
     <div class="p-4 flex flex-col justify-between leading-normal">
@@ -55,6 +55,7 @@
           <a
             :href="item.website"
             target="_blank"
+            rel="noopener noreferrer"
             class="font-normal text-xl mb-2 text-green-400 underline decoration-3 underline-offset-8 dark:hover:bg-transparent break-words"
           >{{item.company }}</a>
         </h3>

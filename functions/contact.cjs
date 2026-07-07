@@ -2,7 +2,7 @@ const path = require('path');
 const { URLSearchParams } = require('url');
 // Commented out unused imports
 // const formData = require('form-data');
-const handlebars = require('handlebars');
+// const handlebars = require('handlebars');
 const nodemailer = require('nodemailer');
 const mg = require('nodemailer-mailgun-transport');
 // Ensure URLSearchParams is available in Node.js environment
