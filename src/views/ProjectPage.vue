@@ -13,8 +13,6 @@ import ProjectCard from '@/components/ProjectCard.vue'
 </template>
 
 <script>
-import resume from "~/resume.json";
-
 export default {
   name: "ProjectPage",
   metaInfo: {
@@ -22,8 +20,13 @@ export default {
   },
   data() {
     return {
-      projects: resume.work
+      projects: []
     }
+  },
+  async created() {
+    // Optimization: Dynamic import of resume.json reduces initial bundle size
+    const data = await import('~/resume.json')
+    this.projects = data.default.work
   },
   components: {
     ProjectCard,

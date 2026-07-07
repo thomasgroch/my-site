@@ -43,9 +43,21 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import resume from "~/resume.json";
+
+const resume = ref({
+  basics: {
+    profiles: []
+  }
+})
+
+onMounted(async () => {
+  // Optimization: Dynamic import of resume.json reduces initial bundle size
+  const data = await import('~/resume.json')
+  resume.value = data.default
+})
+
 const route = useRoute();
 const currentPath = computed(() =>route.path)
 import { useI18n } from "vue3-i18n";

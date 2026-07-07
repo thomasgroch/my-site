@@ -12,3 +12,7 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2026-07-07 - Main bundle reduction via dynamic JSON imports
+**Learning:** Static imports of even moderately sized JSON files (like `resume.json` at 13KB) can bloat the main bundle when used across multiple components. Converting these to dynamic `import()` calls moved the data to a separate chunk and reduced the main JS bundle by ~8.46 kB (from 274.66 kB to 266.20 kB).
+**Action:** Always check for repeated static imports of data files. Use dynamic imports in `onMounted` (Composition API) or `created` (Options API) with safe default reactive states to improve initial load performance without breaking templates.

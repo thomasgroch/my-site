@@ -1,9 +1,19 @@
 <script setup>
 import Logo from '@/components/Logo.vue'
-import {ref} from 'vue'
-import resume from "~/resume.json"
+import { ref, onMounted } from 'vue'
 
 const open = ref(false)
+const resume = ref({
+  basics: {
+    profiles: []
+  }
+})
+
+onMounted(async () => {
+  // Optimization: Dynamic import of resume.json reduces initial bundle size
+  const data = await import('~/resume.json')
+  resume.value = data.default
+})
 
 // Define component name for debugging purposes
 defineOptions({
