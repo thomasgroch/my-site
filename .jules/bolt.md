@@ -12,3 +12,9 @@
 1. Auditar `package.json` para remover bibliotecas obsoletas ou não utilizadas.
 2. Implementar `import()` dinâmico para rotas em `vue-router`.
 3. Mover grandes arquivos estáticos (JSON, grandes constantes) para imports dinâmicos dentro dos componentes que os utilizam, retirando-os do caminho crítico de carregamento.
+
+## 2025-07-08 - Otimização de bundle via Tree-shaking e Native APIs
+
+**Aprendizado:** A remoção do uso da biblioteca `date-fns` em favor de operações nativas com `Date` no componente `MeetPage.vue` reduziu o tamanho do chunk de 44.97 kB para 10.86 kB (~75% de redução). Mesmo quando restrições de projeto impedem a alteração do `package.json`, o benefício de performance é alcançado no bundle final através do tree-shaking do Vite, desde que não restem imports para a biblioteca.
+
+**Aplicação futura:** Identificar bibliotecas de utilitários pesadas usadas de forma pontual. Substituir por implementações nativas sempre que a complexidade for baixa. Validar a eficácia através da comparação de tamanhos de chunks no build de produção.
