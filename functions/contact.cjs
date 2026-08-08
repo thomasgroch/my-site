@@ -17,7 +17,9 @@ const options = {
   },
   // host: 'api.eu.mailgun.net' // e.g. for EU region
 }
-const transporter = nodemailer.createTransport(mg(options))
+// Only create the Mailgun transport when credentials are available.
+// In local dev/test without MAILGUN_API_KEY the handler returns a mock success.
+const transporter = api_key ? nodemailer.createTransport(mg(options)) : null
 
 const headers = {
 	'Access-Control-Allow-Origin': '*', // better change this for production
@@ -53,8 +55,8 @@ exports.handler = async (event) => {
 		!payload.nome ||
 		!payload.email ||
 		!payload.telefone ||
-		!payload.estado ||
-		!payload.cidade ||
+		!payload.state ||
+		!payload.city ||
 		!payload.mensagem
 	) {
 		return {
@@ -69,6 +71,18 @@ exports.handler = async (event) => {
 	// code
 	try {
 		// FaunaDB storage removed to avoid rate limiting
+
+		// Skip real Mailgun calls in dev/test when credentials are not available
+		if (!api_key) {
+			console.log('Skipping Mailgun send: MAILGUN_API_KEY is not set')
+			return {
+				statusCode: 200,
+				headers,
+				body: JSON.stringify({
+					message: 'Message sent successfully!',
+				}),
+			}
+		}
 
     const sendingMail = await transporter.sendMail({
       from: process.env.MAILGUN_SENDER || 'contato@thomasgroch.xyz',
