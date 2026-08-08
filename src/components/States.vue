@@ -1,13 +1,13 @@
 <template>
         <select class="block appearance-none w-full border py-3 px-4 pr-8 bg-gray-300 dark:bg-neutral-900 rounded leading-tight focus:outline-none focus:bg-white dark:focus:bg-white text-gray-700 dark:text-neutral-100  dark:focus:text-neutral-500 tracking-wide"
-                v-model="estado"
+                v-model="state"
                 :id="id">
-            <option v-for="estado in estadosList" :value="estado.value">{{estado.text}}</option>
+            <option v-for="state in statesList" :key="state.value" :value="state.value">{{state.text}}</option>
         </select>
 </template>
 <script>
 	export default {
-		name: 'Estados',
+		name: 'States',
 		props: {
 			id: {
 				type: String,
@@ -16,8 +16,8 @@
 		},
 		data() {
 			return {
-				estado: null,
-				estadosList: [
+				state: null,
+				statesList: [
 					{value: null, text: 'Selecione um estado'},
 					{value: 'AC', text: 'Acre'},
 					{value: 'AL', text: 'Alagoas'},
@@ -50,8 +50,8 @@
 			}
 		},
 		watch: {
-			estado() {
-				this.$emit('onEstadoSelected', this.estado)
+			state() {
+				this.$emit('onStateSelected', this.state)
 			}
 		}
 	}
