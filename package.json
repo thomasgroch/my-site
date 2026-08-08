@@ -29,7 +29,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.9",
-    "autoprefixer": "^10.4.14",
+    "autoprefixer": "^10.5.4",
     "concurrently": "8.0.1",
     "date-fns": "^4.1.0",
     "handlebars": "^4.7.9",
