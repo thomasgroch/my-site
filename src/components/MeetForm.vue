@@ -11,43 +11,34 @@
 <input type="hidden" name="form-name" value="meet" />
 
 <div class="w-full mb-3 md:mb-0">
-
-	<label class="block tracking-wide text-green-400 text-lg mb-2"
-	for="grid-nome">{{ $t('meet.name') }}</label>
-	<input
-	class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-800 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
-	:class="{'input': true, 'border-red': errors.has('nome') }"
-	name="nome"
-	v-model="form.nome"
-	id="grid-nome"
-	type="text">
-	<p class="text-red-500 text-lg italic"
-	v-if="errors.has('nome')">{{ errors.first('nome') }}</p>
-
+	<FormField
+		:label="$t('meet.name')"
+		name="nome"
+		id="grid-nome"
+		v-model="form.nome"
+		:errors="errors"
+	/>
 </div>
 
 <label class="pt-3 pb-2 block tracking-wide text-green-400 text-lg capitalize"
-for="grid-date">{{ $t('meet.date') }}</label>
+	for="grid-date">{{ $t('meet.date') }}</label>
 
 <div class="flex mb-3 md:mb-0">
-
-	<input
-	class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-800 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
-	:class="{'input': true, 'border-red': errors.has('date') }"
-	name="date"
-	v-model="form.date"
-	id="grid-date"
-	type="date">
-	<p class="text-red-500 text-lg italic"
-	v-if="errors.has('date')">{{ errors.first('date') }}</p>
-	<input class="ml-5 caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-800 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
-			:class="{'input': true, 'border-red': errors.has('date') }"
-			name="time"
-			v-model="form.time"
-			id="grid-time"
-			type="time" />
-		<p class="text-red-500 text-lg italic"
-			v-if="errors.has('time')">{{ errors.first('time') }}</p>
+	<FormField
+		name="date"
+		id="grid-date"
+		type="date"
+		v-model="form.date"
+		:errors="errors"
+	/>
+	<FormField
+		class="ml-5"
+		name="time"
+		id="grid-time"
+		type="time"
+		v-model="form.time"
+		:errors="errors"
+	/>
 </div>
 
 <div class="w-full flex items-center justify-center my-6 md:mb-0 p-5">
@@ -62,6 +53,7 @@ for="grid-date">{{ $t('meet.date') }}</label>
 	import { ref, computed } from "vue"
 	import nprogress from 'nprogress'
 	import { useRouter } from 'vue-router'
+	import FormField from '@/components/FormField.vue'
 
 	const form = ref({
 		nome: '',
@@ -69,15 +61,9 @@ for="grid-date">{{ $t('meet.date') }}</label>
 		time: ''
 	})
 
-	// Function used in the template
-	// const hasFilled = (field) => {
-	// 	return (!errors.value.has(field) && form.value[field])
-	// }
-
 	const errors = ref({
-		has: () => {
-			return false
-		}
+		has: () => false,
+		first: () => ''
 	})
 
 	const router = useRouter()
@@ -85,10 +71,8 @@ for="grid-date">{{ $t('meet.date') }}</label>
 	const submit = () => {
 		try {
 			nprogress.start()
-			const url = '/' + router.currentRoute.value.path.split('/')[1] + `/${form.value.nome}/${form.value.date}-${form.value.time.replace(/:/g, '-')}` 
+			const url = '/' + router.currentRoute.value.path.split('/')[1] + `/${form.value.nome}/${form.value.date}-${form.value.time.replace(/:/g, '-')}`
 			router.push(url)
-	    	// Commented out as it seems to be a placeholder for future API call
-			// const response = await axios.post(this.formAction, this.$data.form)
 		} catch (error) {
 			console.log(error)
 			nprogress.done()
@@ -98,5 +82,5 @@ for="grid-date">{{ $t('meet.date') }}</label>
 		return true
 	}
 
-	const formAction = computed(() => (process.env.NODE_ENV === 'production') ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
+	const formAction = computed(() => import.meta.env.PROD ? '/.netlify/functions/meet' : 'http://localhost:8888/.netlify/functions/meet')
 </script>

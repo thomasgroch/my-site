@@ -1,6 +1,7 @@
 <script setup>
-import Estados from '@/components/Estados.vue'
-import Cidades from '@/components/Cidades.vue'
+import States from '@/components/States.vue'
+import Cities from '@/components/Cities.vue'
+import FormField from '@/components/FormField.vue'
 import nprogress from 'nprogress'
 </script>
 
@@ -53,19 +54,13 @@ import nprogress from 'nprogress'
         <input type="hidden" name="form-name" value="contact"/>
         <div class="flex flex-wrap -mx-3 mb-2">
           <div class="w-full md:w-full px-3 mb-3 md:mb-0">
-
-            <label class="block tracking-wide text-green-400 text-lg mb-2"
-                   for="grid-nome">{{ $t('contact.name') }}</label>
-            <input
-              class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
-              :class="{'input': true, 'border-red': errors.has('nome') }"
+            <FormField
+              :label="$t('contact.name')"
               name="nome"
-              v-model="form.nome"
               id="grid-nome"
-              type="text">
-            <p class="text-red-500 text-lg italic"
-               v-if="errors.has('nome')">{{ errors.first('nome') }}</p>
-
+              v-model="form.nome"
+              :errors="errors"
+            />
           </div>
         </div>
 
@@ -74,101 +69,80 @@ import nprogress from 'nprogress'
              v-show="hasFilled('nome')">
           <div class="w-full px-3 mb-2 md:mb-0"
                :class="{'input': true, 'md:w-1/2': hasFilled('email') }">
-
-            <label class="block tracking-wide text-green-400 text-lg  mb-2"
-                   for="grid-email">{{ $t('contact.email') }}</label>
-            <div class="relative">
-              <input
-                class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
-                :class="{'input': true, 'border-red': errors.has('email') }"
-                name="email"
-                v-model="form.email"
-                id="grid-email"
-                type="text">
-              <p class="text-red-500 text-lg italic"
-                 v-if="errors.has('email')">{{ errors.first('email') }}</p>
-            </div>
-
+            <FormField
+              :label="$t('contact.email')"
+              name="email"
+              id="grid-email"
+              v-model="form.email"
+              :errors="errors"
+            />
           </div>
 
           <div class="w-full md:w-1/2 px-3 mb-3 md:mb-0"
                v-show="hasFilled('email')">
-
-            <label class="block tracking-wide text-green-400 text-lg  mb-2"
-                   for="grid-telefone">{{ $t('contact.telephone') }}</label>
-            <div class="relative">
-              <input
-                class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white  text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
-                :class="{'input': true, 'border-red': errors.has('telefone') }"
-                name="telefone"
-                v-model="form.telefone"
-                id="grid-telefone"
-                type="text">
-              <p class="text-red-500 text-lg italic"
-                 v-if="errors.has('telefone')">{{ errors.first('telefone') }}</p>
-            </div>
-
-
+            <FormField
+              :label="$t('contact.telephone')"
+              name="telefone"
+              id="grid-telefone"
+              v-model="form.telefone"
+              :errors="errors"
+            />
           </div>
         </div>
 
 
         <div class="flex flex-wrap -mx-3 mb-3">
           <div class="w-full px-3">
-
-            <label class="block tracking-wide text-green-400 text-lg mb-2"
-                   for="grid-mensagem">{{ $t('contact.help') }}</label>
-            <textarea
-              class="caret-green-400 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100 block w-full dark:bg-neutral-700 bg-neutral-200 rounded pt-3 pb-10 px-4 mb-3 leading-tight focus:outline-none focus:bg-white dark:focus:outline-none dark:focus:bg-white text-gray-700 dark:text-neutral-100 dark:focus:text-black tracking-wide"
-              :class="{'input': true, 'border-red': errors.has('mensagem') }"
+            <FormField
+              :label="$t('contact.help')"
               name="mensagem"
+              id="grid-mensagem"
+              type="textarea"
               v-model="form.mensagem"
-              @input="textareaResize" ref="textarea" rows="3"
-              id="grid-mensagem"/>
-            <p class="text-red-500 text-lg italic"
-               v-if="errors.has('mensagem')">{{ errors.first('mensagem') }}</p>
+              :errors="errors"
+              inputClass="pt-3 pb-10"
+            />
             <span class="text-neutral-400 text-xs italic">{{ $t('contact.span_message') }}</span>
-
           </div>
         </div>
 
         <div class="flex flex-wrap -mx-3 mb-2"
              v-show="hasFilled('mensagem')">
           <div class="w-full px-3 mb-3 md:mb-0"
-               :class="{'input': true, 'md:w-1/2': hasFilled('estado') }">
+               :class="{'input': true, 'md:w-1/2': hasFilled('state') }">
 
             <label class="block tracking-wide text-green-400 text-lg mb-2"
-                   for="grid-estado">{{ $t('contact.state') }}</label>
+                   for="grid-state">{{ $t('contact.state') }}</label>
             <div class="relative">
-              <Estados @onEstadoSelected="changeEstado"
-                       :class="{'input': true, 'border-red': errors.has('estado') }"
+              <States @onStateSelected="changeState"
+                       :class="{'input': true, 'border-red': errors.has('state') }"
                        class="caret-green-400 dark:bg-neutral-600 bg-neutral-200 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100"
-                       name="estado"
-                       v-model="form.estado"
-                       id="grid-estado"/>
+                       name="state"
+                       v-model="form.state"
+                       id="grid-state"/>
               <p class="text-red-500 text-lg italic"
-                 v-if="errors.has('estado')">{{ errors.first('estado') }}</p>
+                 v-if="errors.has('state')">{{ errors.first('state') }}</p>
             </div>
 
           </div>
           <div class="w-full md:w-1/2 px-3 mb-3 md:mb-0"
-               v-if="hasFilled('estado')">
+               v-if="hasFilled('state')">
 
             <label class="block tracking-wide text-green-400 text-lg  mb-2"
-                   for="grid-cidade">{{ $t('contact.city') }}</label>
+                   for="grid-city">{{ $t('contact.city') }}</label>
             <p class="text-red-500 text-lg italic"
-               v-if="errors.has('estado')">{{ errors.first('estado') }}</p>
+               v-if="errors.has('state')">{{ errors.first('state') }}</p>
             <div class="relative">
-              <Cidades
+              <Cities
                 class="caret-green-400 dark:bg-neutral-600 bg-neutral-200 border-transparent dark:focus:border-neutral-500 focus:border-green-300 focus:ring-0 dark:focus:bg-neutral-100"
-                :class="{'input': true, 'border-red': errors.has('cidade') }"
-                name="cidade"
-                v-model="form.cidade"
-                :estado="form.estado"
-                @onCidadeSelected="changeCidade"
-                id="grid-cidade"/>
+                :class="{'input': true, 'border-red': errors.has('city') }"
+                name="city"
+                v-model="form.city"
+                :state="form.state"
+                @onCitySelected="changeCity"
+                id="grid-city"/>
               <p class="text-red-500 text-lg italic"
-                 v-if="errors.has('cidade')">{{ errors.first('cidade') }}</p>
+                 v-if="errors.has('city')">{{ errors.first('city') }}</p>
             </div>
 
           </div>
@@ -185,7 +159,7 @@ import nprogress from 'nprogress'
                   @click="status = 'idle'">
                             <svg class="fill-current h-6 w-6 text-red-500" Contarole="button"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <title>Close</title>
+                                <title>{{ $t('contact.close') }}</title>
                                 <path
                                   d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
                             </svg>
@@ -216,7 +190,7 @@ export default {
   },
   components: {
     // VueTextareaAutosize,
-    Estados, Cidades
+    States, Cities
   },
   props: {},
   data() {
@@ -234,8 +208,8 @@ export default {
         nome: null,
         email: null,
         telefone: null,
-        estado: null,
-        cidade: null,
+        state: null,
+        city: null,
         mensagem: '',
         date: '',
       },
@@ -245,7 +219,7 @@ export default {
   },
   computed: {
     formAction() {
-      return (process.env.NODE_ENV === 'production') ? '/.netlify/functions/contact' : 'http://localhost:8888/.netlify/functions/contact'
+      return import.meta.env.PROD ? '/.netlify/functions/contact' : 'http://localhost:8888/.netlify/functions/contact'
     }
   },
   methods: {
@@ -287,22 +261,16 @@ export default {
     hasFilled(field) {
       return (!this.errors.has(field) && this.form[field])
     },
-    // textareaResize() {
-    // 	this.$refs.textarea.style.minHeight = this.$refs.textarea.scrollHeight + 'px'
-    // },
-    changeEstado(estado) {
-      this.form.estado = estado
+    changeState(state) {
+      this.form.state = state
     },
-    changeCidade(cidade) {
-      this.form.cidade = cidade
+    changeCity(city) {
+      this.form.city = city
     },
     beforeModalClose() {
       this.status = 'dismiss'
     }
-  },
-  // mounted() {
-  // 	this.$refs.textarea.style.minHeight = this.$refs.textarea.scrollHeight + 'px'
-  // }
+  }
 }
 </script>
 

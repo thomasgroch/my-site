@@ -22,7 +22,11 @@
   "nav_stack": "Stack",
   "nav_projects": "Projects",
   "nav_contact": "Contact",
+  "nav_open_menu": "Open menu",
   "role_profile": "Web developer",
   "nothing_here": "There is nothing here.",
-  "goto_site":"go to site"
+  "goto_site":"go to site",
+  "about_title": "About",
+  "about_back_home": "Back home",
+  "footer_build_with_node": "Build with node"
 }

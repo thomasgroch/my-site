@@ -22,9 +22,13 @@
   "nav_stack": "Stack",
   "nav_projects": "Projetos",
   "nav_contact": "Contato",
+  "nav_open_menu": "Abrir menu",
   "role_profile": "Desenvolvedor web",
   "nothing_here": "Não há nada aqui.",
-  "goto_site":"ir para o site"
+  "goto_site":"ir para o site",
+  "about_title": "Sobre",
+  "about_back_home": "Voltar",
+  "footer_build_with_node": "Compilado com node"
 }
 
 

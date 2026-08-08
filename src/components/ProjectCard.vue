@@ -38,48 +38,12 @@
   </div>
 
 
-  <!-- <div class="p-3 md:max-w-full w-full max-w-full lg:flex md:mt-10 mt-20 rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator"> -->
-  <!-- <div class="rounded-lg border shadow-3xl border-green-300 dark:border-neutral-200 dark:bg-neutral-700 bg-alternator">
-    <div>
-      <a :href="item.website"
-          target="_blank" class="sm:h-64 h-48 lg:h-auto lg:w-48 flex-none object-cover overflow-hidden bg-no-repeat bg-center rounded-t lg:rounded-t-none lg:rounded-l lg:rounded-b rounded-b-none rounded-r "
-          :style="'background-image: url(\''+ item.img +'\'); background-size: 100%; '"></a>
-    </div>
-    <div class="p-4 flex flex-col justify-between leading-normal">
-      <div class="mb-8">
-        <div class="text-neutral-500 flex items-center text-xs">
-          <font-awesome-icon :icon="['fas', typeIcon ]" class="text-green-500"></font-awesome-icon>
-          <p class="text-sm p-2">{{ $t('general.project.type_'+ item.type) }}</p>
-        </div>
-        <h3 class="text-center pb-5">
-          <a
-            :href="item.website"
-            target="_blank"
-            class="font-normal text-xl mb-2 text-green-400 underline decoration-3 underline-offset-8 dark:hover:bg-transparent break-words"
-          >{{item.company }}</a>
-        </h3>
-
-        <p class="text-neutral-500 text-base text-left tracking-wide lg:ml-5 ">{{ item.summary }}</p>
-      </div>
-
-
-    </div>
-  </div> -->
 </template>
 
 <script>
-// import * from 'moment'
-import info from "@/info.json";
-
 export default {
   name: "ProjectCard",
-    data() {
-      return {
-        types: info.meta.projectTypes
-      }
-  },
   props: {
-    key: Number,
     item: {
       type: Object,
       default: function() {
@@ -97,14 +61,6 @@ export default {
           endDate: ""
         };
       }
-    }
-  },
-  computed:{
-    typeObject(){
-      return this.types[this.item.type]
-    },
-    typeIcon(){
-      return this.typeObject.icon || ""
     }
   }
 };

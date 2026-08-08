@@ -1,7 +1,3 @@
-<script setup>
-import ButtonRepo from '@/components/ButtonRepo.vue'
-</script>
-
 <template>
   <div class="bg-gray-50">
     <div
@@ -10,7 +6,7 @@ import ButtonRepo from '@/components/ButtonRepo.vue'
       <h2
         class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 sm:text-4xl sm:leading-10"
       >
-        About Page
+        {{ $t('general.about_title') }}
         <br />
         <span class="text-indigo-600">Vite + Vue 3 + Tailwind CSS</span>
       </h2>
@@ -19,10 +15,9 @@ import ButtonRepo from '@/components/ButtonRepo.vue'
           <router-link
             to="/"
             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-lg font-medium leading-6 text-white transition duration-150 ease-in-out hover:bg-indigo-500 focus:outline-none"
-            >Back Home</router-link
+            >{{ $t('general.about_back_home') }}</router-link
           >
         </div>
-        <ButtonRepo />
       </div>
     </div>
   </div>

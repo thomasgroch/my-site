@@ -1,0 +1,15 @@
+{
+  "meet": "ミーティング",
+  "reunião": "ミーティング",
+  "entrevista": "面接",
+  "name": "ミーティング名",
+  "email": "メール",
+  "submit": "予約",
+  "date": "日付",
+  "time": "時間",
+  "you-are-scheduled-with": "予約済み:",
+  "web-conferencing-details-to-follow": "Web会議の詳細は追ってお送りします。",
+  "conference-link": "会議リンク",
+  "schedule-a-web-conference": "Web会議を予約する",
+  "confirmed": "確認済み"
+}

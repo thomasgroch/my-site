@@ -17,8 +17,8 @@ module.exports = {
       '3xl': '3rem',
       '4xl': '4rem',
       '5xl': '5rem',
-      '6xl': '',
-      '7xl': '',
+      '6xl': '6rem',
+      '7xl': '7rem',
     },
     extend: {
       fontFamily: {

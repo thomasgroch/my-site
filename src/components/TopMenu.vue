@@ -4,6 +4,13 @@ import {computed} from 'vue'
 
 const route = useRoute();
 const currentPath = computed(() => route.path)
+
+const menuItems = [
+  { to: '/', labelKey: 'general.nav_about' },
+  { to: '/stack', labelKey: 'general.nav_stack' },
+  { to: '/projetos', labelKey: 'general.nav_projects' },
+  { to: '/contato', labelKey: 'general.nav_contact' },
+]
 </script>
 <template>
   <div class="p-6 flex justify-between items-center visible sm:hidden" :class="{'hidden': !isMobile()}">
@@ -16,7 +23,7 @@ const currentPath = computed(() => route.path)
       </span>
     </div>
     <button class="text-green-400 w-10 h-10 relative focus:outline-none" @click="open = !open">
-      <span class="sr-only">Abrir menu</span>
+      <span class="sr-only">{{ $t('general.nav_open_menu') }}</span>
       <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <span aria-hidden="true"
               class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
@@ -30,24 +37,14 @@ const currentPath = computed(() => route.path)
       </div>
     </button>
   </div>
-<!-- {{isMobile()}}
-{{open}} -->
   <nav v-if="isMobile() && open || !isMobile()" class="text-lg pt-4 pb-5 flex flex-col justify-around sm:flex-row text-center">
-    <router-link to="/"
-                 class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_about') }}
-    </router-link>
-    <router-link to="/stack"
-                 class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_stack') }}
-    </router-link>
-    <router-link to="/projetos"
-                 class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_projects') }}
-    </router-link>
-    <router-link to="/contato"
-                 class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none">
-      {{ $t('general.nav_contact') }}
+    <router-link
+      v-for="item in menuItems"
+      :key="item.to"
+      :to="item.to"
+      class="text-neutral-500 dark:text-neutral-200 py-5 sm:py-2 px-5 mx-3 hover:text-green-400 rounded-md border-2 border-transparent hover:border-green-200 dark:hover:bg-transparent dark:hover:border-neutral-200 focus:outline-none"
+    >
+      {{ $t(item.labelKey) }}
     </router-link>
   </nav>
 </template>

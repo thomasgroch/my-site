@@ -6,13 +6,8 @@ import router from './router.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
-  faWindowClose,
   faAngleDown,
-  faAngleUp,
-  faGraduationCap,
-  faBriefcase,
-  faHandshake,
-  faRobot
+  faAngleUp
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faGithub,
@@ -21,17 +16,10 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import i18n from "./i18n";
 
-
-import 'flowbite';
 // import { ValidationProvider } from 'vee-validate';
 library.add(
-  faWindowClose,
   faAngleDown,
   faAngleUp,
-  faGraduationCap,
-  faBriefcase,
-  faHandshake,
-  faRobot,
   faGithub,
   faGitlab,
   faLinkedin
