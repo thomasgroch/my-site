@@ -34,9 +34,14 @@ const rows = walk(DIST)
     const css = pick(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/g)
     const js = pick(/<script[^>]+src="([^"]+)"/g)
     const img = pick(/<img[^>]+src="([^"]+)"/g)
+    // O navegador baixa um ícone por site; conta o maior declarado, que é o
+    // pior caso, para o orçamento nunca subestimar.
+    const icons = pick(/<link[^>]+rel="(?:icon|apple-touch-icon)"[^>]*href="([^"]+)"/g)
+      .concat(pick(/<link[^>]+href="([^"]+)"[^>]*rel="(?:icon|apple-touch-icon)"/g))
     const external = [...css, ...js, ...img].filter((u) => /^https?:\/\//.test(u))
     const sum = (urls) => [...new Set(urls)].map(localPath).filter(Boolean).reduce((acc, p) => acc + size(p), 0)
-    const parts = { html: size(file), css: sum(css), js: sum(js), img: sum(img) }
+    const icon = Math.max(0, ...[...new Set(icons)].map(localPath).filter(Boolean).map(size))
+    const parts = { html: size(file), css: sum(css), js: sum(js), img: sum(img) + icon }
     const total = Object.values(parts).reduce((a, b) => a + b, 0)
     const page = '/' + relative(DIST, file).replace(/index\.html$/, '').replace(/\.html$/, '')
     return { page, ...parts, total, external: external.length }
@@ -49,6 +54,11 @@ for (const r of rows) {
   const tier = TIERS.find(([max]) => r.total <= max * 1024)?.[1] ?? 'ACIMA DO LIMITE'
   const ext = r.external ? ` (+${r.external} externo)` : ''
   console.log(`${r.page.padEnd(16)} ${kb(r.html)} ${kb(r.css)} ${kb(r.js)} ${kb(r.img)} ${kb(r.total)}  ${tier}${ext}`)
+}
+
+const externos = rows.reduce((acc, r) => Math.max(acc, r.external), 0)
+if (externos) {
+  console.log('\nNão contabilizado: o script de analytics do Umami, 4.6KB, carregado de cloud.umami.is.')
 }
 
 const over = rows.filter((r) => r.total > LIMIT)

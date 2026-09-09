@@ -54,16 +54,19 @@ Veja `.env.example`. A função de contato usa `MAILGUN_API_KEY`, `MAILGUN_DOMAI
 
 ## Peso
 
-Medido com `npm run measure`, sem compressão:
+Medido com `npm run measure`, sem compressão, que é como o [512KB Club](https://512kb.club/) conta. Inclui HTML, CSS, JavaScript, imagens e o maior ícone declarado:
 
 | Página | Peso | Faixa |
 |---|---|---|
-| Home | 41 KB | verde |
-| Contato | 78 KB | verde |
-| Stack | 110 KB | laranja |
-| Projetos | 135 KB | laranja |
+| Home | 47 KB | verde |
+| 404 | 46 KB | verde |
+| Contato | 84 KB | verde |
+| Stack | 116 KB | laranja |
+| Projetos | 141 KB | laranja |
 
-Cada página carrega ainda o script do Umami (analytics, ~2KB) de `cloud.umami.is`.
+Some 4,6 KB de analytics do Umami, carregado de `cloud.umami.is` e não contabilizado acima. A home aferida no navegador em produção fica em torno de 51 KB com tudo somado, dentro da faixa verde do clube, que é o limite de 100 KB.
+
+O `measure` falha acima de 512 KB, então o orçamento é obrigatório e não uma recomendação.
 
 ## Histórico
 
