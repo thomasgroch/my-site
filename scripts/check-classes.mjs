@@ -4,18 +4,37 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
-const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(d, e.name)) : [join(d, e.name)]))
+// Classes que existem só como gancho de JS/teste e nunca são estilizadas.
+const HOOKS = new Set(['locale-link'])
+// Um nome de classe começa com letra/dígito; descarta caminhos e operadores
+// que aparecem dentro de expressões em `class:list`.
+const CLASS_NAME = /^[a-zA-Z0-9][\w:./[\]#()%,!-]*$/
+
+const walk = (dir) =>
+  readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]))
 const files = walk('src').filter((f) => /\.(astro|mjs)$/.test(f))
-const css = readdirSync('dist/_astro').filter((f) => f.endsWith('.css')).map((f) => readFileSync(join('dist/_astro', f), 'utf8')).join('\n')
+const css = readdirSync('dist/_astro')
+  .filter((f) => f.endsWith('.css'))
+  .map((f) => readFileSync(join('dist/_astro', f), 'utf8'))
+  .join('\n')
 
 const tokens = new Set()
-const add = (s) => s.split(/\s+/).forEach((t) => t && !/[{}$]/.test(t) && tokens.add(t))
-for (const f of files) {
-  const src = readFileSync(f, 'utf8')
+const add = (value) =>
+  String(value)
+    .split(/\s+/)
+    .forEach((t) => t && !HOOKS.has(t) && CLASS_NAME.test(t) && tokens.add(t))
+
+for (const file of files) {
+  const src = readFileSync(file, 'utf8')
   for (const m of src.matchAll(/class="([^"]+)"/g)) add(m[1])
-  for (const m of src.matchAll(/class:list=\{\[([\s\S]*?)\]\}/g)) for (const q of m[1].matchAll(/'([^']+)'/g)) add(q[1])
   for (const m of src.matchAll(/@apply ([^;]+);/g)) add(m[1])
+  // class:list={[ 'a b', { 'c d': cond, invisible: cond } ]}
+  for (const m of src.matchAll(/class:list=\{\[([\s\S]*?)\]\}/g)) {
+    for (const q of m[1].matchAll(/'([^']+)'\s*(:?)/g)) if (!q[1].startsWith('/')) add(q[1])
+    for (const k of m[1].matchAll(/[{,]\s*([A-Za-z][\w-]*)\s*:/g)) add(k[1])
+  }
 }
+
 const escape = (t) => t.replace(/([:/[\]#.()%,!])/g, '\\$1')
 const missing = [...tokens].filter((t) => !css.includes('.' + escape(t)))
 console.log(`classes usadas: ${tokens.size} | ausentes no CSS: ${missing.length}`)
