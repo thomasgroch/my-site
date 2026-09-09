@@ -70,3 +70,9 @@ O plugin `netlify-plugin-checklinks` foi substituído por `scripts/check-links.m
 Tudo isso ficou atrás de um comando só, `npm run verify`, usado no terminal, no hook de `pre-push` e como comando de build do Netlify. Ele encadeia lint, build, testes, checagem de links, checagem de classes de CSS e o orçamento de peso; qualquer falha cancela a publicação e mantém o deploy anterior no ar. Cada portão foi testado com um defeito real para confirmar que barra de verdade. O `[build.ignore]` evita gastar build quando o commit só mexe em documentação.
 
 O primeiro `verify` já encontrou um problema: a página 404 não tinha `h1`. O "404" virou o título da página, fora da troca de idioma, já que é igual em qualquer língua.
+
+## Página /meta, 2026-09-09
+
+Rota nova, fora do menu, listando tudo que constrói, testa e serve o site, agrupado por função: o que chega ao navegador, a geração do site, o backend do formulário, testes e infraestrutura. Existe em português e inglês, entra no sitemap e é encontrável, só não ocupa espaço na navegação.
+
+O conteúdo fica em `src/data/meta.js`, e não em `src/locales/`, porque cada nota é inseparável do item que descreve. As versões não são escritas à mão: saem do `package-lock.json` durante o build, então a página não envelhece sozinha quando uma dependência é atualizada.

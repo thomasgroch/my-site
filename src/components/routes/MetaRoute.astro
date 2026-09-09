@@ -1,0 +1,45 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { groups } from '@/data/meta.js'
+import { createTranslator } from '@/i18n'
+import lockfile from '../../../package-lock.json'
+
+const { locale } = Astro.props
+const t = createTranslator(locale)
+
+// Versão exata do que está instalado, direto do lockfile. Evita a lista
+// envelhecer em silêncio quando uma dependência é atualizada.
+const version = (item) => item.version ?? lockfile.packages?.[`node_modules/${item.pkg}`]?.version ?? null
+const label = (item) => (locale === 'en' && item.nameEn ? item.nameEn : item.name)
+---
+<Layout locale={locale} path="/meta" title={t('general.meta_title')} description={t('general.meta_description_meta')}>
+  <section class="py-8">
+    <h1 class="text-2xl font-semibold text-green-400">{t('general.meta_title')}</h1>
+    <p class="mt-4 max-w-2xl text-neutral-600 dark:text-neutral-300">{t('general.meta_intro')}</p>
+
+    {groups.map((group) => (
+      <section class="mt-12">
+        <h2 class="text-lg font-semibold text-neutral-500 dark:text-neutral-200">{group.title[locale]}</h2>
+        <p class="mt-1 mb-5 text-sm text-neutral-500 dark:text-neutral-400">{group.intro[locale]}</p>
+
+        <ul class="space-y-4">
+          {group.items.map((item) => (
+            <li class="border-l-2 border-green-300 pl-4 dark:border-neutral-600">
+              <p class="flex flex-wrap items-baseline gap-2">
+                <a href={item.url} target="_blank" rel="noopener noreferrer" class="font-medium text-green-500 dark:text-green-400">
+                  {label(item)}
+                </a>
+                {version(item) && (
+                  <span class="rounded-sm bg-neutral-200 px-1.5 text-sm text-neutral-500 dark:bg-neutral-700 dark:text-neutral-300">
+                    {version(item)}
+                  </span>
+                )}
+              </p>
+              <p class="mt-1 text-neutral-600 dark:text-neutral-300">{item.note[locale]}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </section>
+</Layout>

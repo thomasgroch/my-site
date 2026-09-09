@@ -123,7 +123,7 @@ describe('detecção de idioma no primeiro acesso', () => {
 })
 
 describe('orçamento e higiene das páginas', () => {
-  const rotas = ['/index.html', '/en/index.html', '/stack/index.html', '/projetos/index.html', '/contato/index.html', '/404.html']
+  const rotas = ['/index.html', '/en/index.html', '/stack/index.html', '/projetos/index.html', '/contato/index.html', '/meta/index.html', '/404.html']
 
   it('nenhuma página carrega framework de JavaScript', () => {
     for (const rota of rotas) {

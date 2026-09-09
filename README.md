@@ -10,6 +10,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 - **[Tailwind CSS 4](https://tailwindcss.com/)** pelo plugin do Vite, configurado em `src/tailwind.css`. Tema claro/escuro por classe, com a preferência do sistema como padrão.
 - **[htmx 4](https://htmx.org/)** envia o formulário de contato e troca a resposta HTML da função no lugar. Sem JavaScript o formulário continua funcionando por redirect.
 - **Netlify Functions** (`functions/contact.mjs`, API v2, zero dependências) valida, aplica honeypot e envia os e-mails pela API REST do Mailgun.
+- **Rotas**: `/`, `/stack`, `/projetos` e `/contato` no menu, mais `/meta`, que documenta o que constrói o site e fica fora da navegação.
 - **i18n por prefixo de URL**: `/` é pt-BR e `/en/` inglês. Textos em `src/locales/`, tradutor em `src/i18n/`. A primeira visita segue o idioma do navegador. `/jp/*` redireciona para `/en/*`.
 
 ## Onde cada coisa fica
@@ -20,6 +21,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 | Textos do formulário e dos e-mails | `src/lib/contact-messages.mjs` (compartilhado com a função) |
 | Páginas | `src/pages/` (wrappers por idioma) e `src/components/routes/` (conteúdo) |
 | Imagens | `src/assets/` (otimizadas pelo Astro no build) |
+| Colofão em `/meta` | `src/data/meta.js`, com as versões lidas do `package-lock.json` no build |
 | Marca | monograma "TD" em `src/components/Monogram.astro`, `public/favicon.svg`, `public/og.png` |
 | Redirects, headers, plugins | `netlify.toml` |
 
