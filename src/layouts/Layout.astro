@@ -1,0 +1,124 @@
+---
+import '@/tailwind.css'
+import TopMenu from '@/components/TopMenu.astro'
+import Footer from '@/components/Footer.astro'
+import { LOCALES, LOCALE_TAGS, OG_LOCALES, createTranslator, localePath } from '@/i18n'
+
+// `path` é o caminho sem prefixo de idioma ('/', '/stack'...). O layout monta
+// canonical, hreflang e os links de troca de idioma a partir dele.
+const { locale = 'pt', path = '/', title, description, noindex = false } = Astro.props
+const t = createTranslator(locale)
+const siteName = t('general.site_name')
+const pageTitle = title ? `${title} | ${siteName}` : siteName
+const metaDescription = description || t('general.meta_description_home')
+const absolute = (l) => new URL(localePath(l, path), Astro.site).href
+const canonical = absolute(locale)
+---
+<!doctype html>
+<html lang={LOCALE_TAGS[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={metaDescription} />
+    <meta name="author" content="Thomas Dev" />
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonical} />
+        {LOCALES.map((l) => <link rel="alternate" hreflang={LOCALE_TAGS[l]} href={absolute(l)} />)}
+        <link rel="alternate" hreflang="x-default" href={absolute('pt')} />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+      </>
+    )}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={OG_LOCALES[locale]} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#262626" media="(prefers-color-scheme: dark)" />
+
+    <script is:inline>
+      // Tema: escolha salva > preferência do sistema. Roda antes da pintura.
+      ;(function () {
+        try {
+          var saved = localStorage.getItem('color-theme')
+          var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
+          document.documentElement.classList.toggle('dark', dark)
+        } catch (e) {}
+      })()
+    </script>
+    {locale === 'pt' ? (
+      <script is:inline define:vars={{ path }}>
+        // Primeira visita: segue o idioma do navegador. Qualquer visita a /en
+        // grava a escolha, então isto só roda uma vez por navegador.
+        ;(function () {
+          try {
+            if (localStorage.getItem('locale-chosen')) return
+            var lang = (navigator.language || '').toLowerCase()
+            if (lang.indexOf('en') === 0) location.replace('/en' + (path === '/' ? '' : path))
+          } catch (e) {}
+        })()
+      </script>
+    ) : (
+      <script is:inline>
+        try { localStorage.setItem('locale-chosen', '1') } catch (e) {}
+      </script>
+    )}
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="bbe5b2be-4c67-40af-830d-61783fd70cd3"></script>
+  </head>
+  <body>
+    <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-green-100 focus:px-4 focus:py-2 focus:text-green-600">
+      {t('general.skip_to_content')}
+    </a>
+    <div class="mx-auto w-full max-w-4xl px-4">
+      <TopMenu locale={locale} path={path} />
+      <main id="conteudo">
+        <slot />
+      </main>
+      <Footer locale={locale} path={path} />
+    </div>
+
+    <button
+      type="button"
+      data-theme-toggle
+      aria-label={t('general.theme_toggle')}
+      title={t('general.theme_toggle')}
+      class="fixed bottom-5 left-5 rounded-full bg-blue-200 p-2 text-blue-900 shadow shadow-blue-300 dark:bg-yellow-100 dark:text-yellow-500 dark:shadow-yellow-300"
+    >
+      <svg class="hidden h-6 w-6 dark:block" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+      </svg>
+      <svg class="h-6 w-6 dark:hidden" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+      </svg>
+    </button>
+
+    <script is:inline>
+      // Delegação de eventos: um listener para o site inteiro, sem re-bind.
+      document.addEventListener('click', function (event) {
+        var theme = event.target.closest('[data-theme-toggle]')
+        if (theme) {
+          var dark = document.documentElement.classList.toggle('dark')
+          try { localStorage.setItem('color-theme', dark ? 'dark' : 'light') } catch (e) {}
+        }
+        var menu = event.target.closest('[data-menu-toggle]')
+        if (menu) {
+          var nav = document.getElementById('main-nav')
+          var hidden = nav.classList.toggle('hidden')
+          menu.setAttribute('aria-expanded', String(!hidden))
+        }
+      })
+    </script>
+  </body>
+</html>

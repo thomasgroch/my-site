@@ -1,0 +1,79 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { createTranslator } from '@/i18n'
+import { successBox, errorBox } from '@/lib/contact-messages.mjs'
+
+const { locale } = Astro.props
+const t = createTranslator(locale)
+const action = '/.netlify/functions/contact'
+---
+<Layout locale={locale} path="/contato" title={t('general.nav_contact')} description={t('general.meta_description_contact')}>
+  <section class="mx-auto max-w-md py-8">
+    <h1 class="sr-only">{t('general.nav_contact')}</h1>
+
+    <!-- Sem JavaScript a função redireciona para #enviado ou #erro. -->
+    <div id="enviado" class="target-box mb-6" set:html={successBox(locale)}></div>
+    <div id="erro" class="target-box mb-6" set:html={errorBox(locale)}></div>
+
+    <form
+      id="contact-form"
+      method="post"
+      action={action}
+      hx-post={action}
+      hx-target="#form-status"
+      hx-swap="innerHTML"
+      hx-disable="find button"
+      hx-indicator="#contact-form"
+      class="space-y-5"
+    >
+      <input type="hidden" name="locale" value={locale} />
+      <div class="hidden" aria-hidden="true">
+        <label>Deixe em branco <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      <div>
+        <label class="label" for="nome">{t('contact.name')}</label>
+        <input class="field" id="nome" name="nome" type="text" required autocomplete="name" />
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label class="label" for="email">{t('contact.email')}</label>
+          <input class="field" id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div>
+          <label class="label" for="telefone">
+            {t('contact.telephone')} <span class="text-sm text-neutral-400">({t('contact.optional')})</span>
+          </label>
+          <input class="field" id="telefone" name="telefone" type="tel" autocomplete="tel" />
+        </div>
+      </div>
+
+      <div>
+        <label class="label" for="cidade">
+          {t('contact.city')} <span class="text-sm text-neutral-400">({t('contact.optional')})</span>
+        </label>
+        <input class="field" id="cidade" name="cidade" type="text" autocomplete="address-level2" />
+      </div>
+
+      <div>
+        <label class="label" for="mensagem">{t('contact.help')}</label>
+        <textarea class="field" id="mensagem" name="mensagem" rows="5" required></textarea>
+        <p class="mt-2 text-xs italic text-neutral-400">{t('contact.span_message')}</p>
+      </div>
+
+      <div id="form-status" aria-live="polite"></div>
+
+      <div class="flex items-center justify-center gap-4">
+        <button type="submit" class="btn">{t('contact.submit')}</button>
+        <span class="htmx-indicator text-sm text-neutral-500" aria-hidden="true">{t('contact.sending')}</span>
+      </div>
+    </form>
+  </section>
+
+  <script>
+    // htmx só é carregado nesta página: envia o formulário sem recarregar e
+    // troca a resposta HTML da função no lugar certo (ver functions/contact.mjs).
+    import 'htmx.org'
+  </script>
+</Layout>

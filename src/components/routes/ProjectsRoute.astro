@@ -1,0 +1,16 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import ProjectCard from '@/components/ProjectCard.astro'
+import resume from '@/data/resume.json'
+import { createTranslator } from '@/i18n'
+
+const { locale } = Astro.props
+const t = createTranslator(locale)
+const projects = [...resume.work].sort((a, b) => b.startDate.localeCompare(a.startDate))
+---
+<Layout locale={locale} path="/projetos" title={t('general.nav_projects')} description={t('general.meta_description_projects')}>
+  <h1 class="sr-only">{t('general.nav_projects')}</h1>
+  <div class="grid gap-8 py-8 sm:grid-cols-2">
+    {projects.map((project, index) => <ProjectCard item={project} locale={locale} eager={index < 2} />)}
+  </div>
+</Layout>

@@ -1,0 +1,19 @@
+Humans.txt is an initiative (humanstxt.org) to tell a little about who is behind a website.
+We are human beings, not machines.
+
+/* SITE */
+    Last update: 2026-09-09
+    Site URL:    https://thomasdev.xyz/
+    Language:    Português / English
+    Built with:  Astro, Tailwind CSS, htmx, Netlify Functions
+    Budget:      every page under 512KB uncompressed (512kb.club)
+    Source:      https://github.com/thomasgroch/my-site
+
+/* AUTHOR */
+    Name:        Thomas Dev
+    Nickname:    tdev
+    Title:       Web Developer
+    Location:    Curitiba, Paraná, Brazil
+    Site:        https://thomasdev.xyz/
+    Github:      https://github.com/thomasgroch/
+    LinkedIn:    https://www.linkedin.com/in/thomasgroch

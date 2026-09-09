@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets'
+import { createTranslator } from '@/i18n'
+
+const images = import.meta.glob('/src/assets/projects/*.webp', { eager: true, import: 'default' })
+
+const { item, locale = 'pt', eager = false } = Astro.props
+const t = createTranslator(locale)
+const image = item.img ? images[`/src/assets/projects/${item.img}`] : null
+const site = item.website || null
+const type = t(`general.project.type_${item.type}`)
+---
+<article class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900">
+  {image && (
+    <a href={site} target={site ? '_blank' : undefined} rel={site ? 'noopener noreferrer' : undefined} class="block bg-neutral-100 dark:bg-neutral-800">
+      <Image
+        src={image}
+        alt=""
+        width={384}
+        densities={[1, 2]}
+        loading={eager ? 'eager' : 'lazy'}
+        class="aspect-video w-full object-cover object-top"
+      />
+    </a>
+  )}
+  <div class="flex flex-1 flex-col gap-2 p-5">
+    <h2 class="text-lg font-bold tracking-tight text-neutral-900 dark:text-white">
+      {site ? <a href={site} target="_blank" rel="noopener noreferrer">{item.company}</a> : item.company}
+    </h2>
+    {item.position && <p class="text-sm text-neutral-500 dark:text-neutral-400">{item.position}</p>}
+    <p class="text-neutral-700 dark:text-neutral-300">{item.summary}</p>
+    <div class="mt-auto flex items-center justify-between pt-3 text-sm text-neutral-500">
+      <span class="rounded-sm bg-green-100 px-2 py-0.5 text-green-600 dark:bg-neutral-700 dark:text-green-400">{type}</span>
+      <time datetime={item.startDate}>{item.startDate}</time>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,46 @@
+---
+import SocialLinks from '@/components/SocialLinks.astro'
+import resume from '@/data/resume.json'
+import { createTranslator, localePath, LOCALES, LOCALE_NAMES, LOCALE_TAGS } from '@/i18n'
+
+const { locale = 'pt', path = '/' } = Astro.props
+const t = createTranslator(locale)
+// A página 404 é uma só para todos os idiomas: o seletor leva para a home.
+const switchPath = path === '/404' ? '/' : path
+
+// Variáveis que o Netlify expõe durante o build.
+const { COMMIT_REF, BRANCH, NODE_VERSION } = process.env
+const repository = process.env.REPOSITORY_URL || resume.basics.websiteRepo
+---
+<footer class="space-y-4 pb-24 pt-16 text-center text-sm text-neutral-500 dark:text-neutral-400">
+  {path !== '/' && <SocialLinks profiles={resume.basics.profiles} />}
+
+  <nav aria-label={t('general.language')} class="flex justify-center gap-3">
+    {LOCALES.map((code) => (
+      <a
+        href={localePath(code, switchPath)}
+        hreflang={LOCALE_TAGS[code]}
+        lang={LOCALE_TAGS[code]}
+        aria-current={code === locale ? 'true' : undefined}
+        class:list={[
+          'locale-link rounded-sm border px-3 py-1 no-underline',
+          code === locale
+            ? 'border-green-400 text-green-500 dark:text-green-400'
+            : 'border-neutral-300 hover:border-green-400 hover:text-green-400 dark:border-neutral-600',
+        ]}
+      >
+        {LOCALE_NAMES[code]}
+      </a>
+    ))}
+  </nav>
+
+  <p>© 2002 - {new Date().getFullYear()} Thomas Dev · <a href={repository}>{t('general.footer_source')}</a></p>
+
+  {COMMIT_REF && (
+    <p>
+      {NODE_VERSION && <span>{t('general.footer_build_with_node')} {NODE_VERSION} · </span>}
+      <a href={`${repository}/commit/${COMMIT_REF}`}>#{COMMIT_REF.substring(0, 7)}</a>
+      {BRANCH && <span> on <a href={`${repository}/tree/${BRANCH}`}>{BRANCH}</a></span>}
+    </p>
+  )}
+</footer>

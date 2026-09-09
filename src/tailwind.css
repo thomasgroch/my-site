@@ -1,0 +1,94 @@
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/forms';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --text-*: initial;
+  --text-xs: 0.875rem;
+  --text-sm: 1rem;
+  --text-tiny: 1.125rem;
+  --text-base: 1.25rem;
+  --text-lg: 1.5rem;
+  --text-xl: 1.875rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3rem;
+  --text-4xl: 4rem;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility btn {
+  @apply inline-flex items-center gap-2 rounded-sm border-2 border-green-300 px-6 py-2 text-base font-medium text-neutral-600 no-underline transition
+      hover:border-green-100 hover:bg-green-100 hover:text-green-500
+      dark:border-neutral-400 dark:text-neutral-200 dark:hover:border-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-green-400;
+}
+
+@utility field {
+  @apply block w-full rounded-sm border-transparent bg-neutral-200 px-4 py-3 text-base text-neutral-800 caret-green-400
+      focus:border-green-300 focus:bg-white focus:ring-0
+      dark:bg-neutral-700 dark:text-neutral-100 dark:focus:border-neutral-500 dark:focus:bg-neutral-600;
+}
+
+@utility label {
+  @apply mb-2 block text-lg tracking-wide text-green-400;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-gray-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 font-sans antialiased;
+  }
+  p {
+    @apply font-light leading-relaxed;
+  }
+  a {
+    @apply underline decoration-green-400/60 underline-offset-4 hover:decoration-green-400;
+  }
+  h1, h2, h3 {
+    @apply tracking-wide;
+  }
+  :focus-visible {
+    @apply outline-hidden ring-2 ring-green-400 ring-offset-2 ring-offset-gray-100 dark:ring-offset-neutral-800 rounded-sm;
+  }
+}
+
+/* Estado de envio do htmx: o indicador só aparece enquanto a requisição roda. */
+.htmx-indicator {
+  @apply opacity-0 transition-opacity;
+}
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+  @apply opacity-100;
+}
+
+/* Fallback sem JavaScript: a função redireciona para #enviado ou #erro e a
+   caixa correspondente aparece via :target. */
+.target-box {
+  display: none;
+}
+.target-box:target {
+  display: block;
+}

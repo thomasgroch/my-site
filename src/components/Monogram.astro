@@ -1,0 +1,24 @@
+---
+// Marca visual do site: monograma "TD" em SVG inline (450 bytes), mesma arte do favicon.
+const { class: className = 'h-40 w-40', decorative = false } = Astro.props
+---
+<svg
+  viewBox="0 0 100 100"
+  class={className}
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : 'TD'}
+  aria-hidden={decorative ? 'true' : undefined}
+>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4"></circle>
+  <text
+    x="50"
+    y="51"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif"
+    font-size="42"
+    font-weight="600"
+    letter-spacing="-2"
+    fill="currentColor"
+  >TD</text>
+</svg>

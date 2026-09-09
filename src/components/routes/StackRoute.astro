@@ -1,0 +1,39 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import StackList from '@/components/StackList.astro'
+import resume from '@/data/resume.json'
+import { createTranslator } from '@/i18n'
+
+const { locale } = Astro.props
+const t = createTranslator(locale)
+const stacks = resume.stack
+
+const sections = [
+  { key: 'back', title: t('general.stack_back'), description: t('general.stack_desc_back') },
+  { key: 'front', title: t('general.stack_front'), description: t('general.stack_desc_front') },
+  { key: 'database', title: t('general.stack_db'), description: t('general.stack_desc_db') },
+  { key: 'infra', title: t('general.stack_infra'), description: t('general.stack_desc_infra') },
+  { key: 'misc', title: t('general.stack_misc'), description: t('general.stack_desc_misc') },
+]
+const intro = t('general.stack_intro')
+const note = t('general.stack_note')
+---
+<Layout locale={locale} path="/stack" title={t('general.nav_stack')} description={t('general.meta_description_stack')}>
+  <h1 class="sr-only">{t('general.nav_stack')}</h1>
+  {intro && <p class="mx-auto max-w-2xl py-4 text-center text-neutral-500 dark:text-neutral-300">{intro}</p>}
+
+  {sections.map((section) => (
+    <section class="py-6">
+      <h2 class="mb-2 text-lg font-semibold text-neutral-500 dark:text-neutral-200">{section.title}</h2>
+      {section.description && <p class="mb-4 text-neutral-500 dark:text-neutral-300">{section.description}</p>}
+      <StackList stack={stacks[section.key]} />
+    </section>
+  ))}
+  {note && <p class="text-sm text-neutral-500 dark:text-neutral-400">{note}</p>}
+
+  <section class="mt-8 border-t border-dashed border-neutral-300 py-8 dark:border-neutral-600">
+    <h2 class="mb-2 text-lg font-semibold text-neutral-400 dark:text-neutral-400">{t('general.stack_history')}</h2>
+    <p class="mb-4 text-sm text-neutral-500 dark:text-neutral-400">{t('general.stack_history_description')}</p>
+    <StackList stack={stacks.history} muted />
+  </section>
+</Layout>

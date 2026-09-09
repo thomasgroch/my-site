@@ -1,0 +1,64 @@
+[build]
+  publish = "dist/"
+  command = "npm run build"
+
+[build.environment]
+  # Astro 7 exige Node 22.12+.
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "functions/"
+  node_bundler = "esbuild"
+
+[dev]
+  command = "npm run dev:front"
+  targetPort = 3000
+  port = 8888
+  autoLaunch = false
+
+# netlify-plugin-cypress está instalado pela interface do Netlify (não dá para
+# remover pelo repositório) e, por padrão, rodaria os testes contra a produção
+# depois de cada deploy, disparando e-mails reais pelo formulário. Fica
+# desligado aqui; os testes e2e rodam localmente (npm run test:e2e).
+[[plugins]]
+  package = "netlify-plugin-cypress"
+  [plugins.inputs]
+    enable = false
+
+# Quebra o build se alguma página tiver link interno quebrado.
+[[plugins]]
+  package = "netlify-plugin-checklinks"
+  [plugins.inputs]
+    entryPoints = ["*.html"]
+    recursive = true
+    pretty = true
+    checkExternal = false
+    followSourceMaps = false
+    skipPatterns = []
+    # O script do Umami é externo: checa, mas uma indisponibilidade não derruba o build.
+    todoPatterns = ["cloud.umami.is"]
+
+# A versão em japonês foi removida em 2026-09; links antigos vão para o inglês.
+[[redirects]]
+  from = "/jp"
+  to = "/en"
+  status = 301
+
+[[redirects]]
+  from = "/jp/*"
+  to = "/en/:splat"
+  status = 301
+
+# Assets do Astro têm hash no nome: cache agressivo é seguro.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "interest-cohort=(), camera=(), microphone=(), geolocation=()"

@@ -1,0 +1,7 @@
+---
+import StackCard from './StackCard.astro'
+const { stack = [], muted = false } = Astro.props
+---
+<ul class="flex flex-wrap justify-center">
+  {stack.map((item) => <StackCard item={item} muted={muted} />)}
+</ul>

@@ -1,0 +1,11 @@
+---
+import ProjectsRoute from '@/components/routes/ProjectsRoute.astro'
+import { LOCALES, DEFAULT_LOCALE } from '@/i18n'
+
+export function getStaticPaths() {
+  return LOCALES.filter((l) => l !== DEFAULT_LOCALE).map((locale) => ({ params: { locale } }))
+}
+
+const { locale } = Astro.params
+---
+<ProjectsRoute locale={locale} />

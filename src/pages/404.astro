@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { LOCALES, LOCALE_TAGS, createTranslator, localePath } from '@/i18n'
+
+// O Netlify serve este arquivo para qualquer URL desconhecida, então a página
+// carrega os dois idiomas e mostra o que combina com o prefixo da URL.
+---
+<Layout locale="pt" path="/404" title="404" noindex>
+  {LOCALES.map((locale) => {
+    const t = createTranslator(locale)
+    return (
+      <section data-locale={locale} lang={LOCALE_TAGS[locale]} class:list={['py-16 text-center', { hidden: locale !== 'pt' }]}>
+        <p class="text-[8rem] font-semibold leading-none text-green-400">404</p>
+        <p class="mt-4 text-2xl">{t('general.nothing_here')}</p>
+        <p class="mt-10"><a class="btn" href={localePath(locale, '/')}>{t('general.goto_site')}</a></p>
+      </section>
+    )
+  })}
+  <script is:inline>
+    ;(function () {
+      var match = location.pathname.match(/^\/(en)(\/|$)/)
+      if (!match) return
+      document.querySelectorAll('[data-locale]').forEach(function (el) {
+        el.classList.toggle('hidden', el.dataset.locale !== match[1])
+      })
+    })()
+  </script>
+</Layout>

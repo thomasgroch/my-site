@@ -1,0 +1,55 @@
+---
+import Monogram from '@/components/Monogram.astro'
+import { createTranslator, localePath } from '@/i18n'
+
+const { locale = 'pt', path = '/' } = Astro.props
+const t = createTranslator(locale)
+
+const items = [
+  { to: '/', label: t('general.nav_about') },
+  { to: '/stack', label: t('general.nav_stack') },
+  { to: '/projetos', label: t('general.nav_projects') },
+  { to: '/contato', label: t('general.nav_contact') },
+]
+---
+<header class="flex flex-wrap items-center justify-between py-5 sm:justify-center">
+  <a
+    href={localePath(locale, '/')}
+    class:list={['flex items-center gap-2 text-lg font-semibold text-green-400 no-underline sm:hidden', { invisible: path === '/' }]}
+  >
+    <Monogram class="h-8 w-8" decorative />
+    Thomas Dev
+  </a>
+
+  <button
+    type="button"
+    data-menu-toggle
+    aria-controls="main-nav"
+    aria-expanded="false"
+    class="rounded-sm p-2 text-green-400 sm:hidden"
+  >
+    <span class="sr-only">{t('general.nav_open_menu')}</span>
+    <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
+
+  <!-- `hidden` vence `flex` no CSS do Tailwind; o botão só remove `hidden`. -->
+  <nav id="main-nav" class="flex hidden w-full flex-col text-center text-lg sm:flex sm:w-auto sm:flex-row sm:gap-2">
+    {items.map((item) => {
+      const active = path === item.to
+      return (
+        <a
+          href={localePath(locale, item.to)}
+          aria-current={active ? 'page' : undefined}
+          class:list={[
+            'rounded-md border-2 border-transparent px-5 py-4 text-neutral-500 no-underline hover:border-green-200 hover:text-green-400 dark:text-neutral-200 dark:hover:border-neutral-200 sm:py-2',
+            { 'border-[#DEF7DC] bg-[#DEF7DC] text-green-500 dark:border-transparent dark:bg-neutral-700 dark:text-green-400': active },
+          ]}
+        >
+          {item.label}
+        </a>
+      )
+    })}
+  </nav>
+</header>

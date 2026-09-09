@@ -1,0 +1,11 @@
+{
+  "name": "Nome",
+  "email": "E-mail",
+  "telephone": "Telefone",
+  "city": "Cidade / Estado",
+  "help": "Como posso ajudá-lo?",
+  "optional": "opcional",
+  "span_message": "Detalhe o quanto quiser. Por favor, não inclua informações confidenciais ou sensíveis em sua mensagem.",
+  "submit": "Enviar",
+  "sending": "Enviando…"
+}
