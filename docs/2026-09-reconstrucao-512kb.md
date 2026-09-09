@@ -58,3 +58,15 @@ Motivado pelos alertas de segurança do GitHub (todos em Astro < 7.2.8, um crít
 O repositório público ficou com **um único commit**. Motivo principal: os 281 commits anteriores traziam o sobrenome e o e-mail pessoal nos metadados de autor, além de 40MB de objetos antigos (artefatos de build commitados, vídeos do Cypress, imagens) para uma árvore de 1,3MB. O histórico completo continua no repositório privado `my-site-history`. Novos commits usam `Thomas Dev <contato@thomasdev.xyz>`.
 
 Limpeza que acompanhou: memória de bot (`.jules/`), teste de exemplo do Cypress e boilerplate de suporte, `prettier` sem uso, chaves de tradução mortas, config de editor, `.gitignore` reduzido ao que o projeto usa.
+
+## Testes sem navegador e pipeline única, 2026-09-09
+
+O `netlify-plugin-cypress` instalado pela interface não instalava em Mac ARM: ele carrega um Puppeteer de 2021 que tenta baixar um Chromium que nunca existiu para essa arquitetura. O Cypress em si não tinha problema nenhum, rodava normalmente. A conclusão foi que trocar de ferramenta de teste resolveria a coisa errada: qualquer runner que dirija um navegador de verdade, em qualquer linguagem, precisa de um binário por plataforma.
+
+A saída foi reduzir a superfície que precisa de navegador. Dos sete testes end-to-end, seis verificavam marcação, idioma e links, coisas que estão no HTML gerado. Eles viraram `test/dist.test.js`, que lê o `dist/` com `linkedom` em Node puro. O script de detecção de idioma, que era testado abrindo o navegador, agora é extraído do HTML e executado com `localStorage`, `navigator` e `location` falsos. Sobrou um caso legítimo de navegador, o htmx trocando a resposta da função no lugar, que continua no Cypress e fora do caminho de publicação.
+
+O plugin `netlify-plugin-checklinks` foi substituído por `scripts/check-links.mjs`, trinta linhas sem dependência que resolvem cada link interno contra o arquivo correspondente. É o mesmo que pegou os links quebrados para `/en/404` em agosto, mas roda localmente antes do push.
+
+Tudo isso ficou atrás de um comando só, `npm run verify`, usado no terminal, no hook de `pre-push` e como comando de build do Netlify. Ele encadeia lint, build, testes, checagem de links, checagem de classes de CSS e o orçamento de peso; qualquer falha cancela a publicação e mantém o deploy anterior no ar. Cada portão foi testado com um defeito real para confirmar que barra de verdade. O `[build.ignore]` evita gastar build quando o commit só mexe em documentação.
+
+O primeiro `verify` já encontrou um problema: a página 404 não tinha `h1`. O "404" virou o título da página, fora da troca de idioma, já que é igual em qualquer língua.

@@ -26,17 +26,27 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 ## Scripts
 
 ```sh
-npm run dev        # site em :3000 + funções em :8888 (proxy pelo Vite)
-npm run build      # gera dist/
-npm run preview    # serve dist/ em :3000
-npm run measure    # peso de cada página do build, falha acima de 512KB
-npm run check:css  # confere se toda classe dos templates existe no CSS gerado
-npm run test:unit  # vitest: i18n e função de contato
-npm run test:e2e   # cypress contra CYPRESS_BASE_URL (padrão :3000, precisa do dev rodando)
-npm run lint
+npm run dev      # site em :3000 + funções em :8888 (proxy pelo Vite)
+npm run verify   # a pipeline inteira: lint, build, testes e verificações
+npm run build    # só gera dist/
+npm run preview  # serve dist/ em :3000
+npm run test:e2e # cypress; precisa do dev rodando em outro terminal
 ```
 
-O hook de `pre-push` roda `test:unit` e `build`. Node 22.12 ou superior.
+`verify` é o mesmo comando no seu terminal, no hook de `pre-push` e no build do Netlify. Ele roda, em ordem: `lint`, `build`, `test:unit`, `check:links`, `check:css` e `measure`. Se qualquer etapa falhar, a publicação é cancelada e o deploy anterior continua no ar. Node 22.12 ou superior.
+
+## Testes
+
+Quase tudo roda sem navegador, em Node puro, então o resultado é o mesmo no Mac, no Linux e no build do Netlify:
+
+| Arquivo | O que cobre | Precisa de quê |
+|---|---|---|
+| `test/i18n.test.js` | tradutor, prefixos de URL, paridade entre idiomas | nada |
+| `test/contact.test.js` | função de contato: validação, honeypot, escape, chamadas ao Mailgun | nada |
+| `test/dist.test.js` | o HTML publicado: formulário, idiomas, SEO, imagens, script de redirecionamento | `dist/`, gerado pelo `verify` |
+| `cypress/e2e/contact-form.cy.js` | o único caso de navegador de verdade: o htmx trocando a resposta no lugar | servidor de dev no ar |
+
+O Cypress fica fora do `verify` de propósito: ele precisa de um servidor e de um binário de navegador, e nada disso pertence ao caminho de publicação.
 
 ## Variáveis de ambiente
 

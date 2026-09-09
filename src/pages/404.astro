@@ -4,18 +4,22 @@ import { LOCALES, LOCALE_TAGS, createTranslator, localePath } from '@/i18n'
 
 // O Netlify serve este arquivo para qualquer URL desconhecida, então a página
 // carrega os dois idiomas e mostra o que combina com o prefixo da URL.
+// O "404" fica fora dessa troca: é o mesmo em qualquer idioma e serve como
+// título único da página.
 ---
 <Layout locale="pt" path="/404" title="404" noindex>
-  {LOCALES.map((locale) => {
-    const t = createTranslator(locale)
-    return (
-      <section data-locale={locale} lang={LOCALE_TAGS[locale]} class:list={['py-16 text-center', { hidden: locale !== 'pt' }]}>
-        <p class="text-[8rem] font-semibold leading-none text-green-400">404</p>
-        <p class="mt-4 text-2xl">{t('general.nothing_here')}</p>
-        <p class="mt-10"><a class="btn" href={localePath(locale, '/')}>{t('general.goto_site')}</a></p>
-      </section>
-    )
-  })}
+  <section class="py-16 text-center">
+    <h1 class="text-[8rem] font-semibold leading-none text-green-400">404</h1>
+    {LOCALES.map((locale) => {
+      const t = createTranslator(locale)
+      return (
+        <div data-locale={locale} lang={LOCALE_TAGS[locale]} class:list={[{ hidden: locale !== 'pt' }]}>
+          <p class="mt-4 text-2xl">{t('general.nothing_here')}</p>
+          <p class="mt-10"><a class="btn" href={localePath(locale, '/')}>{t('general.goto_site')}</a></p>
+        </div>
+      )
+    })}
+  </section>
   <script is:inline>
     ;(function () {
       var match = location.pathname.match(/^\/(en)(\/|$)/)

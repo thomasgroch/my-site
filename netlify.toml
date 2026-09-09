@@ -1,6 +1,11 @@
 [build]
   publish = "dist/"
-  command = "npm run build"
+  # `verify` roda lint, build, testes, checagem de links e de CSS, e o
+  # orçamento de peso. Qualquer um que falhe cancela a publicação, então o
+  # deploy anterior continua no ar.
+  command = "npm run verify"
+  # Não gasta build quando o commit só mexe em documentação.
+  ignore = "[ -n \"$CACHED_COMMIT_REF\" ] && git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ':!docs' ':!*.md'"
 
 [build.environment]
   # Astro 7 exige Node 22.12+.
@@ -16,27 +21,16 @@
   port = 8888
   autoLaunch = false
 
-# netlify-plugin-cypress está instalado pela interface do Netlify (não dá para
-# remover pelo repositório) e, por padrão, rodaria os testes contra a produção
-# depois de cada deploy, disparando e-mails reais pelo formulário. Fica
-# desligado aqui; os testes e2e rodam localmente (npm run test:e2e).
+# netlify-plugin-cypress está instalado pela interface do Netlify e não pode
+# ser removido pelo repositório. Sem este bloco ele voltaria ao padrão
+# `enable = true` e rodaria os testes contra a produção depois de cada deploy,
+# enviando e-mails de verdade pelo formulário. Mantenha até removê-lo no
+# painel; depois disso, apague este bloco e defina CYPRESS_INSTALL_BINARY = "0"
+# em [build.environment] para o build parar de baixar o binário do Cypress.
 [[plugins]]
   package = "netlify-plugin-cypress"
   [plugins.inputs]
     enable = false
-
-# Quebra o build se alguma página tiver link interno quebrado.
-[[plugins]]
-  package = "netlify-plugin-checklinks"
-  [plugins.inputs]
-    entryPoints = ["*.html"]
-    recursive = true
-    pretty = true
-    checkExternal = false
-    followSourceMaps = false
-    skipPatterns = []
-    # O script do Umami é externo: checa, mas uma indisponibilidade não derruba o build.
-    todoPatterns = ["cloud.umami.is"]
 
 # A versão em japonês foi removida em 2026-09; links antigos vão para o inglês.
 [[redirects]]
