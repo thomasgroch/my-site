@@ -1,0 +1,5 @@
+name: "Docker"
+group: "infra"
+href: "https://docker.com"
+logo: "../../assets/stack/docker-logo.webp"
+order: 0

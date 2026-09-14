@@ -1,0 +1,9 @@
+company: "Resource Generator"
+position:
+  pt: "Web Developer"
+type: 3
+startDate: "2017"
+website: "https://github.com/thomasgroch/ResourceGenerator"
+summary:
+  pt: "Gere toda a estrutura para um determinado nome de recurso."
+order: 1

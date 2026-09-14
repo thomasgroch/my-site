@@ -1,0 +1,5 @@
+name: "RoR"
+group: "back"
+href: "https://rubyonrails.org/"
+logo: "../../assets/stack/ruby-logo.webp"
+order: 6

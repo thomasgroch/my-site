@@ -1,0 +1,5 @@
+name: "Bash"
+group: "misc"
+href: "https://www.gnu.org/software/bash/"
+logo: "../../assets/stack/bash-logo.webp"
+order: 6

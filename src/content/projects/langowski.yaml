@@ -1,0 +1,10 @@
+company: "Langowski"
+position:
+  pt: "Gerente de Projeto da Tecnologia da Informação"
+type: 1
+startDate: "2016"
+website: "https://langowski.com.br/"
+image: "../../assets/projects/langowski.webp"
+summary:
+  pt: "Desenvolvimento de sistema de CRM Multitenancy. Implementação de gerenciador de empreendimentos, pessoas e empresas do projeto."
+order: 3

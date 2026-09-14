@@ -1,0 +1,5 @@
+name: "GraphQL"
+group: "database"
+href: "https://graphql.org/"
+logo: "../../assets/stack/graph-logo.webp"
+order: 3

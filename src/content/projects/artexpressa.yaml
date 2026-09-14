@@ -1,0 +1,9 @@
+company: "Artexpressa"
+position:
+  pt: "Web Developer"
+type: 1
+startDate: "2012"
+image: "../../assets/projects/artexpressa.webp"
+summary:
+  pt: "Desenvolvimento de sistemas web em PHP/MYSQL. Modelagem de sistema gestão e agendamento de palestras. Implementação de funcionalidade para emissão de certificado digital."
+order: 6

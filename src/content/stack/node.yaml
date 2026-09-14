@@ -1,0 +1,5 @@
+name: "Node"
+group: "back"
+href: "https://nodejs.org/"
+logo: "../../assets/stack/node-logo.webp"
+order: 1

@@ -1,0 +1,5 @@
+name: "TailwindCSS"
+group: "front"
+href: "https://tailwindcss.com"
+logo: "../../assets/stack/tailwindcss-logo.webp"
+order: 2

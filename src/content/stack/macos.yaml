@@ -1,0 +1,5 @@
+name: "MacOS"
+group: "misc"
+href: "https://www.apple.com/macos/"
+logo: "../../assets/stack/macos-logo.webp"
+order: 3

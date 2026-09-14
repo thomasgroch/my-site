@@ -1,0 +1,5 @@
+name: "Vue Router"
+group: "front"
+href: "https://router.vuejs.org/"
+logo: "../../assets/stack/vue-logo.webp"
+order: 6

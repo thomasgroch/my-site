@@ -1,0 +1,5 @@
+name: "FaunaDB"
+group: "history"
+href: "https://fauna.com/"
+logo: "../../assets/stack/fauna-logo.webp"
+order: 1

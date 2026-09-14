@@ -1,0 +1,5 @@
+name: "Nobackend"
+group: "history"
+href: "http://nobackend.org/"
+logo: "../../assets/stack/nobk-logo.webp"
+order: 2

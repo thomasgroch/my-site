@@ -1,0 +1,10 @@
+company: "RESERVA"
+position:
+  pt: "Analista de Sistemas"
+type: 1
+startDate: "2014"
+website: "https://www.usereserva.com/"
+image: "../../assets/projects/reserva.webp"
+summary:
+  pt: "Desenvolvimento de API para integração do e-commerce da Reserva para portal de vendas MercadoLivre e ajudei a lidar com a grande escala de usuários."
+order: 5

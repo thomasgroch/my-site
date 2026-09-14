@@ -1,0 +1,5 @@
+name: "Linux"
+group: "misc"
+href: "https://www.linux.org/"
+logo: "../../assets/stack/linux-logo.webp"
+order: 2

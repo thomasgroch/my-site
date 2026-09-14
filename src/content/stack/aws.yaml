@@ -1,0 +1,5 @@
+name: "AWS"
+group: "infra"
+href: "https://aws.amazon.com/"
+logo: "../../assets/stack/aws-logo.webp"
+order: 2

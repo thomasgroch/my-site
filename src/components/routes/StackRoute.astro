@@ -1,12 +1,18 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import StackList from '@/components/StackList.astro'
-import resume from '@/data/resume.json'
+import { getCollection } from 'astro:content'
 import { createTranslator } from '@/i18n'
 
 const { locale } = Astro.props
 const t = createTranslator(locale)
-const stacks = resume.stack
+
+const entries = await getCollection('stack')
+const group = (name) =>
+  entries
+    .filter((entry) => entry.data.group === name)
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((entry) => entry.data)
 
 const sections = [
   { key: 'back', title: t('general.stack_back'), description: t('general.stack_desc_back') },
@@ -26,7 +32,7 @@ const note = t('general.stack_note')
     <section class="py-6">
       <h2 class="mb-2 text-lg font-semibold text-neutral-500 dark:text-neutral-200">{section.title}</h2>
       {section.description && <p class="mb-4 text-neutral-500 dark:text-neutral-300">{section.description}</p>}
-      <StackList stack={stacks[section.key]} />
+      <StackList stack={group(section.key)} />
     </section>
   ))}
   {note && <p class="text-sm text-neutral-500 dark:text-neutral-400">{note}</p>}
@@ -34,6 +40,6 @@ const note = t('general.stack_note')
   <section class="mt-8 border-t border-dashed border-neutral-300 py-8 dark:border-neutral-600">
     <h2 class="mb-2 text-lg font-semibold text-neutral-400 dark:text-neutral-400">{t('general.stack_history')}</h2>
     <p class="mb-4 text-sm text-neutral-500 dark:text-neutral-400">{t('general.stack_history_description')}</p>
-    <StackList stack={stacks.history} muted />
+    <StackList stack={group('history')} muted />
   </section>
 </Layout>

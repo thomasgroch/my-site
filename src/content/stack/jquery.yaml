@@ -1,0 +1,5 @@
+name: "jQuery"
+group: "front"
+href: "https://jquery.com"
+logo: "../../assets/stack/jquery-logo.webp"
+order: 1

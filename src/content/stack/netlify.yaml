@@ -1,0 +1,5 @@
+name: "Netlify"
+group: "infra"
+href: "https://netlify.com/"
+logo: "../../assets/stack/netlify-logo.webp"
+order: 1

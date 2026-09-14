@@ -1,0 +1,10 @@
+company: "Forpix"
+position:
+  pt: "Desenvolvedor / Analista de Dados"
+type: 1
+startDate: "2009"
+website: "http://forpix.com.br/"
+image: "../../assets/projects/forpix.webp"
+summary:
+  pt: "Modelagem de sistema de CMS, levantamento de requisitos de acordo com necessidade apresentada pelo cliente. Prestação de serviços de desenvolvimento para experiência intuitiva."
+order: 9

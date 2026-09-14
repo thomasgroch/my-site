@@ -1,0 +1,32 @@
+title:
+  pt: "Geração do site"
+  en: "Site generation"
+intro:
+  pt: "Roda no build e desaparece: o resultado é HTML estático."
+  en: "Runs at build time and disappears: the result is static HTML."
+order: 1
+items:
+  - name: "Astro"
+    pkg: "astro"
+    url: "https://astro.build/"
+    note:
+      pt: "Gera as páginas nos dois idiomas, otimiza as imagens e não envia JavaScript por padrão."
+      en: "Generates the pages in both languages, optimizes images and ships no JavaScript by default."
+  - name: "@tailwindcss/vite"
+    pkg: "@tailwindcss/vite"
+    url: "https://tailwindcss.com/docs/installation/using-vite"
+    note:
+      pt: "Integração do Tailwind 4 com o Vite, que o Astro usa por baixo. Dispensa PostCSS e autoprefixer."
+      en: "Tailwind 4 integration with Vite, which Astro uses underneath. No PostCSS or autoprefixer needed."
+  - name: "@astrojs/sitemap"
+    pkg: "@astrojs/sitemap"
+    url: "https://docs.astro.build/en/guides/integrations-guide/sitemap/"
+    note:
+      pt: "Sitemap com as versões alternativas de cada página por idioma."
+      en: "Sitemap with the alternate language version of each page."
+  - name: "Node.js"
+    version: "22"
+    url: "https://nodejs.org/"
+    note:
+      pt: "Versão fixada no Netlify para o build ser igual ao ambiente local."
+      en: "Pinned on Netlify so the build matches the local environment."

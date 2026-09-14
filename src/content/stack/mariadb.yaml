@@ -1,0 +1,5 @@
+name: "MariaDB"
+group: "database"
+href: "https://mariadb.com"
+logo: "../../assets/stack/mariadb-logo.webp"
+order: 0

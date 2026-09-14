@@ -1,0 +1,10 @@
+company: "Hero99"
+position:
+  pt: "Web Developer"
+type: 1
+startDate: "2017"
+website: "https://hero99.com.br/"
+image: "../../assets/projects/hero99.webp"
+summary:
+  pt: "Melhora da disponibilidade usando proxy reverso em docker integrado ao workflow de CI zero-downtime deployment. Solução de automação para agregar em tempo real mensageiros instantâneos distintos (fb, whatsapp e instagram)."
+order: 2

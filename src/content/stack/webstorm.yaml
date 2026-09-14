@@ -1,0 +1,5 @@
+name: "WebStorm"
+group: "misc"
+href: "https://www.jetbrains.com/webstorm/"
+logo: "../../assets/stack/webstorm-logo.webp"
+order: 5

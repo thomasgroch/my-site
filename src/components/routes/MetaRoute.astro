@@ -1,11 +1,12 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { groups } from '@/data/meta.js'
+import { getCollection } from 'astro:content'
 import { createTranslator } from '@/i18n'
 import lockfile from '../../../package-lock.json'
 
 const { locale } = Astro.props
 const t = createTranslator(locale)
+const groups = (await getCollection('meta')).sort((a, b) => a.data.order - b.data.order).map((entry) => entry.data)
 
 // Versão exata do que está instalado, direto do lockfile. Evita a lista
 // envelhecer em silêncio quando uma dependência é atualizada.

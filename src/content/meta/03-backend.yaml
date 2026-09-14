@@ -1,0 +1,18 @@
+title:
+  pt: "Formulário e e-mail"
+  en: "Form and e-mail"
+intro:
+  pt: "A única parte do site que não é estática."
+  en: "The only part of the site that is not static."
+order: 2
+items:
+  - name: "Netlify Functions"
+    url: "https://docs.netlify.com/functions/overview/"
+    note:
+      pt: "Uma função, sem dependência nenhuma: valida os campos, barra robôs com honeypot e responde em HTML."
+      en: "One function, with zero dependencies: it validates the fields, blocks bots with a honeypot and answers in HTML."
+  - name: "Mailgun"
+    url: "https://www.mailgun.com/"
+    note:
+      pt: "Envio dos dois e-mails pela API REST, chamada com fetch. Sem SDK."
+      en: "Both e-mails sent through the REST API, called with fetch. No SDK."

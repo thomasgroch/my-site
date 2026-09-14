@@ -1,0 +1,5 @@
+name: "MongoDB"
+group: "database"
+href: "https://www.mongodb.com/"
+logo: "../../assets/stack/mongo-logo.webp"
+order: 1

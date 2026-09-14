@@ -1,0 +1,5 @@
+name: "VueJS"
+group: "front"
+href: "https://vuejs.org"
+logo: "../../assets/stack/vue-logo.webp"
+order: 4

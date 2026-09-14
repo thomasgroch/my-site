@@ -1,0 +1,5 @@
+name: "Redis"
+group: "database"
+href: "https://redis.io"
+logo: "../../assets/stack/redis-logo.webp"
+order: 2

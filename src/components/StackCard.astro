@@ -1,25 +1,20 @@
 ---
 import { Image } from 'astro:assets'
 
-// Logos ficam em src/assets/stack e passam pelo otimizador do Astro:
-// saem em 64px (e 128px para telas 2x) em vez dos 2400px originais.
-const logos = import.meta.glob('/src/assets/stack/*.webp', { eager: true, import: 'default' })
-
+// `item` é uma entrada validada da coleção `stack`. O logo passa pelo
+// otimizador do Astro: sai em 64px, e 128px para telas 2x.
 const { item, muted = false } = Astro.props
-const logo = logos[`/src/assets/stack/${item.photo}`]
 ---
 <li class="w-28 p-3 text-center sm:w-32">
   <a href={item.href} target="_blank" rel="noopener noreferrer" class="group flex flex-col items-center gap-2 no-underline">
     <span class="flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-700">
-      {logo && (
-        <Image
-          src={logo}
-          alt=""
-          width={64}
-          densities={[1, 2]}
-          class:list={['h-full w-full object-contain', { 'grayscale transition group-hover:grayscale-0': muted }]}
-        />
-      )}
+      <Image
+        src={item.logo}
+        alt=""
+        width={64}
+        densities={[1, 2]}
+        class:list={['h-full w-full object-contain', { 'grayscale transition group-hover:grayscale-0': muted }]}
+      />
     </span>
     <span class="text-sm tracking-wide text-neutral-500 group-hover:text-green-400 dark:text-neutral-200">{item.name}</span>
   </a>
