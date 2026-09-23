@@ -1,9 +1,11 @@
 company: "Resource Generator"
 position:
   pt: "Web Developer"
+  en: "Web Developer"
 type: "3"
 startDate: "2017"
 website: "https://github.com/thomasgroch/ResourceGenerator"
 summary:
   pt: "Gere toda a estrutura para um determinado nome de recurso."
+  en: "Generates the whole structure for a given resource name."
 order: 1

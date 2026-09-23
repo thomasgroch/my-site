@@ -1,5 +1,5 @@
 name: "MongoDB"
 group: "database"
 href: "https://www.mongodb.com/"
-logo: "../../assets/stack/mongo-logo.webp"
+logo: "../../assets/stack/mongodb/logo.webp"
 order: 1

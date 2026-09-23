@@ -1,10 +1,12 @@
 company: "Arquitetura Abstrata"
 position:
   pt: "Web Developer"
+  en: "Web Developer"
 type: "1"
 startDate: "2011"
 website: "https://arqabs.com/"
-image: "../../assets/projects/arqabs.webp"
+image: "../../assets/projects/arquitetura-abstrata/image.webp"
 summary:
   pt: "Desenvolvimento de sistema de incubadoras de empresas. Implementação de gerenciador de empreendimentos, pessoas e empresas. Desenvolvimento de processo seletivo do empreendimento. Adaptação do módulo de gerenciamento financeiro empresarial."
+  en: "Built a business incubator system: a manager for ventures, people and companies, the venture selection process, and an adapted business finance module."
 order: 7

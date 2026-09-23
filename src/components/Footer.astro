@@ -1,19 +1,20 @@
 ---
 import SocialLinks from '@/components/SocialLinks.astro'
-import resume from '@/data/resume.json'
+import { getEntry } from 'astro:content'
 import { createTranslator, localePath, LOCALES, LOCALE_NAMES, LOCALE_TAGS } from '@/i18n'
 
 const { locale = 'pt', path = '/', alternates = true } = Astro.props
 const t = createTranslator(locale)
+const { data: basics } = await getEntry('resume', 'basics')
 // A página 404 é uma só para todos os idiomas: o seletor leva para a home.
 const switchPath = path === '/404' ? '/' : path
 
 // Variáveis que o Netlify expõe durante o build.
 const { COMMIT_REF, BRANCH, NODE_VERSION } = process.env
-const repository = process.env.REPOSITORY_URL || resume.basics.websiteRepo
+const repository = process.env.REPOSITORY_URL || basics.websiteRepo
 ---
 <footer class="space-y-4 pb-24 pt-16 text-center text-sm text-neutral-500 dark:text-neutral-400">
-  {path !== '/' && <SocialLinks profiles={resume.basics.profiles} />}
+  {path !== '/' && <SocialLinks profiles={basics.profiles} />}
 
   {alternates && <nav aria-label={t('general.language')} class="flex justify-center gap-3">
     {LOCALES.map((code) => (

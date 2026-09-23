@@ -1,5 +1,5 @@
 name: "Windows"
 group: "misc"
 href: "https://www.microsoft.com/windows/"
-logo: "../../assets/stack/windows-logo.webp"
+logo: "../../assets/stack/windows/logo.webp"
 order: 4

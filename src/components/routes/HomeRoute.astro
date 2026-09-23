@@ -2,22 +2,23 @@
 import Layout from '@/layouts/Layout.astro'
 import Monogram from '@/components/Monogram.astro'
 import SocialLinks from '@/components/SocialLinks.astro'
-import resume from '@/data/resume.json'
+import { getEntry } from 'astro:content'
 import { createTranslator, localePath } from '@/i18n'
 
 const { locale } = Astro.props
 const t = createTranslator(locale)
+const { data: basics } = await getEntry('resume', 'basics')
 const bio = t('general.profile_description').split('\n').map((s) => s.trim()).filter(Boolean)
 ---
 <Layout locale={locale} path="/" title={t('general.nav_about')} description={t('general.meta_description_home')}>
   <section class="flex flex-col items-center py-10 text-center md:py-20">
     <Monogram class="h-36 w-36 text-green-400" />
-    <h1 class="mt-6 text-3xl font-semibold text-green-400">{resume.basics.name}</h1>
+    <h1 class="mt-6 text-3xl font-semibold text-green-400">{basics.name}</h1>
     <p class="mt-2 text-neutral-500 dark:text-neutral-400">
-      {t('general.role_profile')}, <span class="rounded-sm bg-green-100 px-1 text-green-500 dark:bg-neutral-700 dark:text-green-400">{resume.basics.label}</span>
+      {t('general.role_profile')}, <span class="rounded-sm bg-green-100 px-1 text-green-500 dark:bg-neutral-700 dark:text-green-400">{basics.label}</span>
     </p>
 
-    <SocialLinks profiles={resume.basics.profiles} />
+    <SocialLinks profiles={basics.profiles} />
 
     <div class="max-w-2xl space-y-4 text-neutral-600 dark:text-neutral-300">
       {bio.map((paragraph) => <p>{paragraph}</p>)}

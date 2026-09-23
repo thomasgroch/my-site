@@ -17,13 +17,16 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 
 | O quê | Onde |
 |---|---|
-| Bio, projetos, stack | `src/data/resume.json` e `src/locales/*.json` |
+| Nome, cargo e redes | `src/data/resume.json` (JSON Resume), lido pela coleção `resume` |
+| Projetos e stack | um YAML por entrada em `src/content/projects/` e `src/content/stack/` |
+| Bio e textos da interface | `src/locales/*.json` |
 | Textos do formulário e dos e-mails | `src/lib/contact-messages.mjs` (compartilhado com a função) |
 | Páginas | `src/pages/` (wrappers por idioma) e `src/components/routes/` (conteúdo) |
 | Blog (só em inglês) | posts MDX em `src/content/blog/`, páginas em `src/pages/blog/`, feed em `/rss.xml`. `draft: true` fica fora do build |
-| Painel de conteúdo | Keystatic em `http://localhost:3000/keystatic` durante o `npm run dev` (`keystatic.config.js`). Grava nos arquivos de `src/content/`; não é publicado |
-| Imagens | `src/assets/` (otimizadas pelo Astro no build) |
-| Colofão em `/meta` | `src/data/meta.js`, com as versões lidas do `package-lock.json` no build |
+| Esquemas do conteúdo | `src/content.config.js`: texto sempre em `{ pt, en }`; conteúdo inválido quebra o build |
+| Painel de conteúdo | Keystatic em `http://localhost:3000/keystatic` durante o `npm run dev` (`keystatic.config.js`). Grava nos arquivos de `src/content/` e não é publicado |
+| Imagens | `src/assets/<coleção>/<entrada>/<campo>.<ext>`, otimizadas pelo Astro no build |
+| Colofão em `/meta` | `src/content/meta.yaml`, com as versões lidas do `package-lock.json` no build |
 | Marca | monograma "TD" em `src/components/Monogram.astro`, `public/favicon.svg`, `public/og.png` |
 | Redirects, headers, plugins | `netlify.toml` |
 
@@ -58,20 +61,8 @@ Veja `.env.example`. A função de contato usa `MAILGUN_API_KEY`, `MAILGUN_DOMAI
 
 ## Peso
 
-Medido com `npm run measure`, sem compressão, que é como o [512KB Club](https://512kb.club/) conta. Inclui HTML, CSS, JavaScript, imagens e o maior ícone declarado:
+Medido com `npm run measure`, sem compressão, que é como o [512KB Club](https://512kb.club/) conta: HTML, CSS, JavaScript, imagens e o maior ícone declarado. O comando imprime a tabela por página e falha acima de 512 KB, então o orçamento é obrigatório. O analytics do Umami (4,6 KB, de `cloud.umami.is`) fica fora da conta.
 
-| Página | Peso | Faixa |
-|---|---|---|
-| Home | 47 KB | verde |
-| 404 | 46 KB | verde |
-| Contato | 84 KB | verde |
-| Stack | 116 KB | laranja |
-| Projetos | 141 KB | laranja |
+## Arquitetura
 
-Some 4,6 KB de analytics do Umami, carregado de `cloud.umami.is` e não contabilizado acima. A home aferida no navegador em produção fica em torno de 51 KB com tudo somado, dentro da faixa verde do clube, que é o limite de 100 KB.
-
-O `measure` falha acima de 512 KB, então o orçamento é obrigatório e não uma recomendação.
-
-## Histórico
-
-O repositório público começa em setembro de 2026, quando o site foi reconstruído. Os documentos em `docs/` contam as decisões dessa reconstrução. O histórico anterior fica em um repositório privado.
+As decisões por trás da estrutura estão em [`docs/arquitetura.md`](docs/arquitetura.md).

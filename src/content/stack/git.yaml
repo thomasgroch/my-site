@@ -1,5 +1,5 @@
 name: "Git"
 group: "misc"
 href: "https://git-scm.com/"
-logo: "../../assets/stack/git-logo.webp"
+logo: "../../assets/stack/git/logo.webp"
 order: 0

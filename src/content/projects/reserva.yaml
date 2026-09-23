@@ -1,10 +1,12 @@
 company: "RESERVA"
 position:
   pt: "Analista de Sistemas"
+  en: "Systems Analyst"
 type: "1"
 startDate: "2014"
 website: "https://www.usereserva.com/"
-image: "../../assets/projects/reserva.webp"
+image: "../../assets/projects/reserva/image.webp"
 summary:
   pt: "Desenvolvimento de API para integração do e-commerce da Reserva para portal de vendas MercadoLivre e ajudei a lidar com a grande escala de usuários."
+  en: "Built the API integrating the Reserva e-commerce with the MercadoLivre marketplace, and helped handle its large user scale."
 order: 5

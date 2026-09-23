@@ -1,9 +1,11 @@
 company: "TagBox"
 position:
   pt: "Analista de Sistemas Web"
+  en: "Web Systems Analyst"
 type: "1"
 startDate: "2015"
-image: "../../assets/projects/tagbox.webp"
+image: "../../assets/projects/tagbox/image.webp"
 summary:
   pt: "Produção de Marketplace de moda com PHP, Codeigniter, RESTful, Amazon AWS (EC2, AMIs, Elastic IPs, S3), Vagrant, Git-remote, cURL e XML Parser."
+  en: "Built a fashion marketplace with PHP, CodeIgniter, RESTful APIs, Amazon AWS (EC2, AMIs, Elastic IPs, S3), Vagrant, Git remotes, cURL and an XML parser."
 order: 4

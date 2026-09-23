@@ -1,5 +1,5 @@
 name: "Lambda"
 group: "back"
 href: "https://aws.amazon.com/lambda/"
-logo: "../../assets/stack/lambda-logo.webp"
+logo: "../../assets/stack/lambda/logo.webp"
 order: 7

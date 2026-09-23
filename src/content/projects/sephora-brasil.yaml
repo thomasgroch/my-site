@@ -1,10 +1,12 @@
 company: "Sephora Brasil"
 position:
   pt: "Desenvolvedor PHP / Analista de Dados"
+  en: "PHP Developer / Data Analyst"
 type: "1"
 startDate: "2011"
 website: "https://pesquisa.sephora.com.br/"
-image: "../../assets/projects/sephora.webp"
+image: "../../assets/projects/sephora-brasil/image.webp"
 summary:
   pt: "Rotina de integração bidirecional do gerenciamento de conteúdo com produtos."
+  en: "Two-way integration routine between content management and products."
 order: 8

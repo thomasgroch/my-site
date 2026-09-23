@@ -1,5 +1,5 @@
 name: "Postgres"
 group: "database"
 href: "https://www.postgresql.org/"
-logo: "../../assets/stack/postgres-logo.webp"
+logo: "../../assets/stack/postgres/logo.webp"
 order: 4

@@ -1,10 +1,12 @@
 company: "Workana widget"
 position:
   pt: "Web Developer"
+  en: "Web Developer"
 type: "3"
 startDate: "2018"
 website: "https://github.com/thomasgroch/workana-widget"
-image: "../../assets/projects/workana.webp"
+image: "../../assets/projects/workana-widget/image.webp"
 summary:
   pt: "O workana-widget é um widget que permite aos usuários do Workana monitorar os trabalhos mais recentes."
+  en: "A widget that lets Workana users keep track of the latest jobs."
 order: 0

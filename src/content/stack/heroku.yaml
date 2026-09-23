@@ -1,5 +1,5 @@
 name: "Heroku"
 group: "history"
 href: "https://heroku.com/"
-logo: "../../assets/stack/heroku-logo.webp"
+logo: "../../assets/stack/heroku/logo.webp"
 order: 3

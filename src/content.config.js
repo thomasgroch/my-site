@@ -1,11 +1,16 @@
-// Coleções de conteúdo. Cada entrada é um arquivo próprio em
-// src/content/<coleção>/, editável à mão ou pelo painel do Keystatic
-// (keystatic.config.js), que grava nesses mesmos arquivos.
+// Coleções de conteúdo. Tudo é editável à mão ou pelo painel do Keystatic
+// (keystatic.config.js), que grava nesses mesmos arquivos. A exceção é o
+// src/data/resume.json, no formato JSON Resume, editado só à mão.
 //
 // Os esquemas são o contrato do conteúdo: um campo faltando, uma URL malformada
 // ou uma imagem que não existe derrubam o build, e a pipeline cancela o deploy.
+//
+// Convenções:
+// - Texto que o visitante lê vem nos dois idiomas, { pt, en }, sempre.
+// - Imagem fica em src/assets/<coleção>/<entrada>/<campo>.<ext>, o caminho
+//   que o painel grava.
 import { defineCollection } from 'astro:content'
-import { glob } from 'astro/loaders'
+import { file, glob } from 'astro/loaders'
 import { z } from 'astro/zod'
 
 // O Keystatic grava campo vazio como '' ou null. Os dois contam como ausente.
@@ -14,10 +19,6 @@ const optional = (schema) => z.preprocess(blank, schema.optional())
 
 const text = z.string().trim().min(1)
 const url = z.string().url()
-// Texto em português, com inglês opcional. Sem tradução, a versão em inglês do
-// site mostra o português.
-const bilingual = z.object({ pt: text, en: optional(text) })
-// Texto obrigatório nos dois idiomas.
 const translated = z.object({ pt: text, en: text })
 const order = z.preprocess(blank, z.number().int().default(0))
 
@@ -26,14 +27,13 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       company: text,
-      position: bilingual,
+      position: translated,
       // Índice das chaves general.project.type_N. O seletor do Keystatic grava texto.
       type: z.coerce.number().int().min(0).max(3),
       startDate: z.string().regex(/^\d{4}$/, 'use só o ano, com quatro dígitos'),
       website: optional(url),
-      // Caminho relativo ao arquivo YAML; uma imagem inexistente quebra o build.
       image: z.preprocess(blank, image().optional()),
-      summary: bilingual,
+      summary: translated,
       // Desempate entre projetos do mesmo ano: menor aparece antes.
       order,
     }),
@@ -51,26 +51,42 @@ const stack = defineCollection({
     }),
 })
 
+// Colofão em /meta: um arquivo só, com os grupos na ordem em que aparecem.
+// Vira uma entrada única, `groups`.
 const meta = defineCollection({
-  loader: glob({ pattern: '*.yaml', base: './src/content/meta' }),
+  loader: file('src/content/meta.yaml'),
+  schema: z
+    .array(
+      z.object({
+        title: translated,
+        intro: translated,
+        items: z
+          .array(
+            z.object({
+              name: translated,
+              // Pacote npm: a versão é lida do package-lock.json no build.
+              pkg: optional(text),
+              // Versão fixa, para o que não é pacote npm.
+              version: optional(text),
+              url,
+              note: translated,
+            })
+          )
+          .min(1),
+      })
+    )
+    .min(1),
+})
+
+// Identidade (nome, cargo, redes), lida do currículo em JSON Resume, que
+// continua sendo a fonte. Vira uma entrada única, `basics`.
+const resume = defineCollection({
+  loader: file('src/data/resume.json', { parser: (json) => ({ basics: JSON.parse(json).basics }) }),
   schema: z.object({
-    title: translated,
-    intro: translated,
-    order,
-    items: z
-      .array(
-        z.object({
-          name: text,
-          nameEn: optional(text),
-          // Pacote npm: a versão é lida do package-lock.json no build.
-          pkg: optional(text),
-          // Versão fixa, para o que não é pacote npm.
-          version: optional(text),
-          url,
-          note: translated,
-        })
-      )
-      .min(1),
+    name: text,
+    label: text,
+    websiteRepo: url,
+    profiles: z.array(z.object({ network: text, username: text, url })).min(1),
   }),
 })
 
@@ -91,4 +107,4 @@ const blog = defineCollection({
     }),
 })
 
-export const collections = { projects, stack, meta, blog }
+export const collections = { projects, stack, meta, resume, blog }

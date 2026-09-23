@@ -5,8 +5,6 @@ import { createTranslator } from '@/i18n'
 // `item` é uma entrada validada da coleção `projects` (src/content.config.js).
 const { item, locale = 'pt', eager = false } = Astro.props
 const t = createTranslator(locale)
-// Texto no idioma da página, com o português de reserva enquanto não há tradução.
-const pick = (text) => text[locale] ?? text.pt
 const site = item.website ?? null
 const type = t(`general.project.type_${item.type}`)
 ---
@@ -27,8 +25,8 @@ const type = t(`general.project.type_${item.type}`)
     <h2 class="text-lg font-bold tracking-tight text-neutral-900 dark:text-white">
       {site ? <a href={site} target="_blank" rel="noopener noreferrer">{item.company}</a> : item.company}
     </h2>
-    <p class="text-sm text-neutral-500 dark:text-neutral-400">{pick(item.position)}</p>
-    <p class="text-neutral-700 dark:text-neutral-300">{pick(item.summary)}</p>
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">{item.position[locale]}</p>
+    <p class="text-neutral-700 dark:text-neutral-300">{item.summary[locale]}</p>
     <div class="mt-auto flex items-center justify-between pt-3 text-sm text-neutral-500">
       <span class="rounded-sm bg-green-100 px-2 py-0.5 text-green-600 dark:bg-neutral-700 dark:text-green-400">{type}</span>
       <time datetime={item.startDate}>{item.startDate}</time>

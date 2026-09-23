@@ -1,10 +1,12 @@
 company: "Langowski"
 position:
   pt: "Gerente de Projeto da Tecnologia da Informação"
+  en: "IT Project Manager"
 type: "1"
 startDate: "2016"
 website: "https://langowski.com.br/"
-image: "../../assets/projects/langowski.webp"
+image: "../../assets/projects/langowski/image.webp"
 summary:
   pt: "Desenvolvimento de sistema de CRM Multitenancy. Implementação de gerenciador de empreendimentos, pessoas e empresas do projeto."
+  en: "Built a multitenant CRM system, including the manager for the project’s ventures, people and companies."
 order: 3

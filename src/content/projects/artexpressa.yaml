@@ -1,9 +1,11 @@
 company: "Artexpressa"
 position:
   pt: "Web Developer"
+  en: "Web Developer"
 type: "1"
 startDate: "2012"
-image: "../../assets/projects/artexpressa.webp"
+image: "../../assets/projects/artexpressa/image.webp"
 summary:
   pt: "Desenvolvimento de sistemas web em PHP/MYSQL. Modelagem de sistema gestão e agendamento de palestras. Implementação de funcionalidade para emissão de certificado digital."
+  en: "Web systems in PHP/MySQL. Modeled a system for managing and scheduling talks, and built the feature that issues digital certificates."
 order: 6

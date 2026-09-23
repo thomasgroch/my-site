@@ -1,5 +1,5 @@
 name: "Playwright"
 group: "front"
 href: "https://playwright.dev/"
-logo: "../../assets/stack/playwright-logo.webp"
+logo: "../../assets/stack/playwright/logo.webp"
 order: 7
