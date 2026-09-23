@@ -1,7 +1,7 @@
 company: "Forpix"
 position:
   pt: "Desenvolvedor / Analista de Dados"
-type: 1
+type: "1"
 startDate: "2009"
 website: "http://forpix.com.br/"
 image: "../../assets/projects/forpix.webp"

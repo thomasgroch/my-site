@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import BlogPost from '@/components/blog/BlogPost.astro'
+import Callout from '@/components/blog/Callout.astro'
+import { getCollection, render } from 'astro:content'
+import { isVisible } from '@/lib/blog.js'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', isVisible)
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }))
+}
+
+const { post } = Astro.props
+const { Content, headings } = await render(post)
+---
+<Layout
+  locale="en"
+  path={`/blog/${post.id}`}
+  alternates={false}
+  noindex={post.data.draft}
+  ogType="article"
+  title={post.data.title}
+  description={post.data.description}
+>
+  <BlogPost post={post} headings={headings}>
+    <Content components={{ Callout }} />
+  </BlogPost>
+</Layout>

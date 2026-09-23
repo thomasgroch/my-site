@@ -76,3 +76,12 @@ O primeiro `verify` já encontrou um problema: a página 404 não tinha `h1`. O 
 Rota nova, fora do menu, listando tudo que constrói, testa e serve o site, agrupado por função: o que chega ao navegador, a geração do site, o backend do formulário, testes e infraestrutura. Existe em português e inglês, entra no sitemap e é encontrável, só não ocupa espaço na navegação.
 
 O conteúdo fica em `src/data/meta.js`, e não em `src/locales/`, porque cada nota é inseparável do item que descreve. As versões não são escritas à mão: saem do `package-lock.json` durante o build, então a página não envelhece sozinha quando uma dependência é atualizada.
+
+## Blog e Keystatic, 2026-09-18
+
+- Blog só em inglês em `/blog`, sem prefixo de idioma: `Layout` ganhou `alternates={false}` (sem hreflang, sem troca de idioma no rodapé, canonical direto) e `ogType`. Posts em MDX em `src/content/blog/`, feed em `/rss.xml`, anunciado no `<head>` de todas as páginas.
+- Rascunhos (`draft: true`) aparecem no `astro dev` e ficam fora do build; `BLOG_DRAFTS=1 npm run build` os inclui. Nunca entram no feed.
+- Keystatic em modo `local` (`keystatic.config.js`), em `/keystatic` durante o `npm run dev`. As rotas dele não são pré-renderizáveis, então `astro.config.mjs` só registra `keystatic()` e `react()` no comando `dev`. O build continua estático, sem adapter (`@astrojs/netlify` foi removido) e sem React: `/blog/` pesa 48KB e um post de exemplo, 55KB.
+- Coleções no painel: blog, projetos e stack. `meta` fica de fora (sem campo de slug). Imagens de projetos e stack são um campo de texto com o caminho relativo, porque o campo de imagem do Keystatic exige uma pasta por entrada; a capa dos posts usa o campo de imagem, em `src/assets/blog/`.
+- `check:css` passou a aceitar classes definidas no `<style>` do próprio componente: o CSS de `post-content` só chega ao `dist/` quando há post publicado.
+- Em aberto: publicar o primeiro post de verdade (o único é o `hello-world`, rascunho).

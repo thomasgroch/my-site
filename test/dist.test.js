@@ -71,7 +71,7 @@ describe('idiomas', () => {
   it('canonical e hreflang apontam para as duas versões', () => {
     const doc = page('/en/stack/index.html')
     expect(doc.querySelector('link[rel="canonical"]').getAttribute('href')).toBe('https://thomasdev.xyz/en/stack')
-    const alt = [...doc.querySelectorAll('link[rel="alternate"]')].map((l) => [l.getAttribute('hreflang'), l.getAttribute('href')])
+    const alt = [...doc.querySelectorAll('link[rel="alternate"][hreflang]')].map((l) => [l.getAttribute('hreflang'), l.getAttribute('href')])
     expect(alt).toEqual([
       ['pt-BR', 'https://thomasdev.xyz/stack'],
       ['en', 'https://thomasdev.xyz/en/stack'],
@@ -152,5 +152,39 @@ describe('orçamento e higiene das páginas', () => {
       titulos.add(page(rota).title)
     }
     expect(titulos.size).toBe(rotas.length)
+  })
+})
+
+describe('blog', () => {
+  const doc = () => page('/blog/index.html')
+
+  it('é uma página só em inglês: sem hreflang, sem troca de idioma, canonical sem prefixo', () => {
+    expect(doc().documentElement.getAttribute('lang')).toBe('en')
+    expect(doc().querySelectorAll('link[hreflang]').length).toBe(0)
+    expect(doc().querySelectorAll('.locale-link').length).toBe(0)
+    expect(doc().querySelector('link[rel="canonical"]').getAttribute('href')).toBe('https://thomasdev.xyz/blog')
+  })
+
+  it('está no menu dos dois idiomas, sempre em /blog', () => {
+    for (const rota of ['/index.html', '/en/index.html', '/blog/index.html']) {
+      expect(page(rota).querySelector('#main-nav a[href="/blog"]'), rota).not.toBeNull()
+    }
+    expect(doc().querySelector('#main-nav a[href="/blog"]').getAttribute('aria-current')).toBe('page')
+  })
+
+  it('anuncia o feed, e o feed existe e é válido', () => {
+    expect(page('/index.html').querySelector('link[type="application/rss+xml"]').getAttribute('href')).toBe('/rss.xml')
+    const feed = readFileSync(`${DIST}/rss.xml`, 'utf8')
+    expect(feed).toContain('<rss')
+    expect(feed).toContain('<language>en</language>')
+  })
+
+  it('rascunho não entra no feed, e só é publicado se o build pedir', () => {
+    expect(readFileSync(`${DIST}/rss.xml`, 'utf8')).not.toContain('hello-world')
+    expect(existsSync(`${DIST}/blog/hello-world/index.html`)).toBe(process.env.BLOG_DRAFTS === '1')
+  })
+
+  it('o painel do Keystatic não é publicado', () => {
+    expect(existsSync(`${DIST}/keystatic`)).toBe(false)
   })
 })

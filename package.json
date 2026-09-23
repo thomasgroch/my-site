@@ -19,11 +19,18 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@astrojs/mdx": "^8.0.1",
+    "@astrojs/react": "^6.0.5",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.2",
     "htmx.org": "^4.0.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

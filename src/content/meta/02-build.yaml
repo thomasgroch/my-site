@@ -24,6 +24,24 @@ items:
     note:
       pt: "Sitemap com as versões alternativas de cada página por idioma."
       en: "Sitemap with the alternate language version of each page."
+  - name: "@astrojs/mdx"
+    pkg: "@astrojs/mdx"
+    url: "https://docs.astro.build/en/guides/integrations-guide/mdx/"
+    note:
+      pt: "Posts do blog em MDX: Markdown com componentes, como os avisos destacados."
+      en: "Blog posts in MDX: Markdown with components, such as callouts."
+  - name: "@astrojs/rss"
+    pkg: "@astrojs/rss"
+    url: "https://docs.astro.build/en/recipes/rss/"
+    note:
+      pt: "Gera o feed RSS do blog no build."
+      en: "Generates the blog's RSS feed at build time."
+  - name: "Keystatic"
+    pkg: "@keystatic/core"
+    url: "https://keystatic.com/"
+    note:
+      pt: "Painel de edição que grava nos arquivos do repositório. Só existe em desenvolvimento: nem ele nem o React que ele usa são publicados."
+      en: "Editing panel that writes to the repository files. It only exists in development: neither it nor the React it uses is published."
   - name: "Node.js"
     version: "22"
     url: "https://nodejs.org/"

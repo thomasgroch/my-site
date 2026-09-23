@@ -6,13 +6,15 @@ import { LOCALES, LOCALE_TAGS, OG_LOCALES, createTranslator, localePath } from '
 
 // `path` é o caminho sem prefixo de idioma ('/', '/stack'...). O layout monta
 // canonical, hreflang e os links de troca de idioma a partir dele.
-const { locale = 'pt', path = '/', title, description, noindex = false } = Astro.props
+// `alternates={false}` é para páginas de um idioma só (o blog): a URL não leva
+// prefixo, não há hreflang e o rodapé não mostra a troca de idioma.
+const { locale = 'pt', path = '/', title, description, noindex = false, alternates = true, ogType = 'website' } = Astro.props
 const t = createTranslator(locale)
 const siteName = t('general.site_name')
 const pageTitle = title ? `${title} | ${siteName}` : siteName
 const metaDescription = description || t('general.meta_description_home')
 const absolute = (l) => new URL(localePath(l, path), Astro.site).href
-const canonical = absolute(locale)
+const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
 ---
 <!doctype html>
 <html lang={LOCALE_TAGS[locale]}>
@@ -27,12 +29,17 @@ const canonical = absolute(locale)
     ) : (
       <>
         <link rel="canonical" href={canonical} />
-        {LOCALES.map((l) => <link rel="alternate" hreflang={LOCALE_TAGS[l]} href={absolute(l)} />)}
-        <link rel="alternate" hreflang="x-default" href={absolute('pt')} />
+        {alternates && (
+          <>
+            {LOCALES.map((l) => <link rel="alternate" hreflang={LOCALE_TAGS[l]} href={absolute(l)} />)}
+            <link rel="alternate" hreflang="x-default" href={absolute('pt')} />
+          </>
+        )}
         <link rel="sitemap" href="/sitemap-index.xml" />
       </>
     )}
-    <meta property="og:type" content="website" />
+    <link rel="alternate" type="application/rss+xml" title="Thomas Dev Blog" href="/rss.xml" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={metaDescription} />
@@ -86,7 +93,7 @@ const canonical = absolute(locale)
       <main id="conteudo">
         <slot />
       </main>
-      <Footer locale={locale} path={path} />
+      <Footer locale={locale} path={path} alternates={alternates} />
     </div>
 
     <button

@@ -20,6 +20,8 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 | Bio, projetos, stack | `src/data/resume.json` e `src/locales/*.json` |
 | Textos do formulário e dos e-mails | `src/lib/contact-messages.mjs` (compartilhado com a função) |
 | Páginas | `src/pages/` (wrappers por idioma) e `src/components/routes/` (conteúdo) |
+| Blog (só em inglês) | posts MDX em `src/content/blog/`, páginas em `src/pages/blog/`, feed em `/rss.xml`. `draft: true` fica fora do build |
+| Painel de conteúdo | Keystatic em `http://localhost:3000/keystatic` durante o `npm run dev` (`keystatic.config.js`). Grava nos arquivos de `src/content/`; não é publicado |
 | Imagens | `src/assets/` (otimizadas pelo Astro no build) |
 | Colofão em `/meta` | `src/data/meta.js`, com as versões lidas do `package-lock.json` no build |
 | Marca | monograma "TD" em `src/components/Monogram.astro`, `public/favicon.svg`, `public/og.png` |

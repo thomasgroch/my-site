@@ -1,7 +1,7 @@
 company: "Sephora Brasil"
 position:
   pt: "Desenvolvedor PHP / Analista de Dados"
-type: 1
+type: "1"
 startDate: "2011"
 website: "https://pesquisa.sephora.com.br/"
 image: "../../assets/projects/sephora.webp"

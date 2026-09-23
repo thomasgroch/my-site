@@ -1,7 +1,7 @@
 company: "Workana widget"
 position:
   pt: "Web Developer"
-type: 3
+type: "3"
 startDate: "2018"
 website: "https://github.com/thomasgroch/workana-widget"
 image: "../../assets/projects/workana.webp"

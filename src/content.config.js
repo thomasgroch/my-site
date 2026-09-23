@@ -1,5 +1,6 @@
-// Coleções de conteúdo. Cada entrada é um arquivo YAML próprio em
-// src/content/<coleção>/, formato que os CMS baseados em Git editam bem.
+// Coleções de conteúdo. Cada entrada é um arquivo próprio em
+// src/content/<coleção>/, editável à mão ou pelo painel do Keystatic
+// (keystatic.config.js), que grava nesses mesmos arquivos.
 //
 // Os esquemas são o contrato do conteúdo: um campo faltando, uma URL malformada
 // ou uma imagem que não existe derrubam o build, e a pipeline cancela o deploy.
@@ -7,27 +8,34 @@ import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
 
+// O Keystatic grava campo vazio como '' ou null. Os dois contam como ausente.
+const blank = (value) => (value === '' || value === null ? undefined : value)
+const optional = (schema) => z.preprocess(blank, schema.optional())
+
+const text = z.string().trim().min(1)
+const url = z.string().url()
 // Texto em português, com inglês opcional. Sem tradução, a versão em inglês do
 // site mostra o português.
-const bilingual = z.object({ pt: z.string().min(1), en: z.string().min(1).optional() })
+const bilingual = z.object({ pt: text, en: optional(text) })
 // Texto obrigatório nos dois idiomas.
-const translated = z.object({ pt: z.string().min(1), en: z.string().min(1) })
+const translated = z.object({ pt: text, en: text })
+const order = z.preprocess(blank, z.number().int().default(0))
 
 const projects = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/projects' }),
   schema: ({ image }) =>
     z.object({
-      company: z.string().min(1),
+      company: text,
       position: bilingual,
-      // Índice das chaves general.project.type_N nos arquivos de idioma.
-      type: z.number().int().min(0).max(3),
+      // Índice das chaves general.project.type_N. O seletor do Keystatic grava texto.
+      type: z.coerce.number().int().min(0).max(3),
       startDate: z.string().regex(/^\d{4}$/, 'use só o ano, com quatro dígitos'),
-      website: z.string().url().optional(),
+      website: optional(url),
       // Caminho relativo ao arquivo YAML; uma imagem inexistente quebra o build.
-      image: image().optional(),
+      image: z.preprocess(blank, image().optional()),
       summary: bilingual,
       // Desempate entre projetos do mesmo ano: menor aparece antes.
-      order: z.number().int(),
+      order,
     }),
 })
 
@@ -35,11 +43,11 @@ const stack = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/stack' }),
   schema: ({ image }) =>
     z.object({
-      name: z.string().min(1),
+      name: text,
       group: z.enum(['back', 'front', 'database', 'infra', 'misc', 'history']),
-      href: z.string().url(),
+      href: url,
       logo: image(),
-      order: z.number().int(),
+      order,
     }),
 })
 
@@ -48,17 +56,17 @@ const meta = defineCollection({
   schema: z.object({
     title: translated,
     intro: translated,
-    order: z.number().int(),
+    order,
     items: z
       .array(
         z.object({
-          name: z.string().min(1),
-          nameEn: z.string().min(1).optional(),
+          name: text,
+          nameEn: optional(text),
           // Pacote npm: a versão é lida do package-lock.json no build.
-          pkg: z.string().optional(),
+          pkg: optional(text),
           // Versão fixa, para o que não é pacote npm.
-          version: z.string().optional(),
-          url: z.string().url(),
+          version: optional(text),
+          url,
           note: translated,
         })
       )
@@ -66,4 +74,21 @@ const meta = defineCollection({
   }),
 })
 
-export const collections = { projects, stack, meta }
+// Blog, só em inglês. Rascunhos aparecem no `astro dev` e ficam fora do build
+// de produção (ver src/lib/blog.js).
+const blog = defineCollection({
+  loader: glob({ pattern: '*.{md,mdx}', base: './src/content/blog' }),
+  schema: ({ image }) =>
+    z.object({
+      title: text,
+      description: text,
+      pubDate: z.coerce.date(),
+      updatedDate: z.preprocess(blank, z.coerce.date().optional()),
+      draft: z.boolean().default(false),
+      tags: z.array(text).default([]),
+      cover: z.preprocess(blank, image().optional()),
+      coverAlt: optional(text),
+    }),
+})
+
+export const collections = { projects, stack, meta, blog }

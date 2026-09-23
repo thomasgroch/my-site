@@ -1,0 +1,49 @@
+---
+title: Hello, world
+description: A starter post showing everything the blog supports. It is a draft, so it never reaches production. Edit it, publish it or delete it.
+pubDate: 2026-09-14
+draft: true
+tags:
+  - meta
+---
+
+This post is a **draft**. It shows up in `npm run dev` and in the admin, and stays out of the production build until `draft` is unchecked.
+
+## Code
+
+Fenced code gets syntax highlighting that follows the site theme, light or dark:
+
+```js
+export function readingTime(body = '') {
+  const words = body.split(/\s+/).filter(Boolean).length
+  return Math.max(1, Math.ceil(words / 220))
+}
+```
+
+Inline code like `npm run verify` works too.
+
+## Components
+
+<Callout type="tip">
+  Callouts come in four types: note, tip, warning and danger. Add them from the admin or write the tag by hand.
+</Callout>
+
+<Callout type="warning">
+  MDX files cannot use `import`. Components are provided by the blog layout.
+</Callout>
+
+## Markdown
+
+### Lists and tables
+
+- GitHub-flavored Markdown
+- Tables, task lists and footnotes[^1]
+- Automatic heading anchors, used by the table of contents above
+
+| Feature | Where it comes from |
+| --- | --- |
+| Highlighting | Shiki, built into Astro |
+| Components | MDX |
+| Editing | Keystatic |
+
+[^1]: Like this one.

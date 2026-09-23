@@ -1,7 +1,7 @@
 company: "Artexpressa"
 position:
   pt: "Web Developer"
-type: 1
+type: "1"
 startDate: "2012"
 image: "../../assets/projects/artexpressa.webp"
 summary:

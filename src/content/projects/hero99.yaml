@@ -1,7 +1,7 @@
 company: "Hero99"
 position:
   pt: "Web Developer"
-type: 1
+type: "1"
 startDate: "2017"
 website: "https://hero99.com.br/"
 image: "../../assets/projects/hero99.webp"

@@ -3,7 +3,7 @@ import SocialLinks from '@/components/SocialLinks.astro'
 import resume from '@/data/resume.json'
 import { createTranslator, localePath, LOCALES, LOCALE_NAMES, LOCALE_TAGS } from '@/i18n'
 
-const { locale = 'pt', path = '/' } = Astro.props
+const { locale = 'pt', path = '/', alternates = true } = Astro.props
 const t = createTranslator(locale)
 // A página 404 é uma só para todos os idiomas: o seletor leva para a home.
 const switchPath = path === '/404' ? '/' : path
@@ -15,7 +15,7 @@ const repository = process.env.REPOSITORY_URL || resume.basics.websiteRepo
 <footer class="space-y-4 pb-24 pt-16 text-center text-sm text-neutral-500 dark:text-neutral-400">
   {path !== '/' && <SocialLinks profiles={resume.basics.profiles} />}
 
-  <nav aria-label={t('general.language')} class="flex justify-center gap-3">
+  {alternates && <nav aria-label={t('general.language')} class="flex justify-center gap-3">
     {LOCALES.map((code) => (
       <a
         href={localePath(code, switchPath)}
@@ -32,7 +32,7 @@ const repository = process.env.REPOSITORY_URL || resume.basics.websiteRepo
         {LOCALE_NAMES[code]}
       </a>
     ))}
-  </nav>
+  </nav>}
 
   <p>© 2002 - {new Date().getFullYear()} Thomas Dev · <a href={repository}>{t('general.footer_source')}</a></p>
 

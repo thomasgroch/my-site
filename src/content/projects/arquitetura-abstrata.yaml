@@ -1,7 +1,7 @@
 company: "Arquitetura Abstrata"
 position:
   pt: "Web Developer"
-type: 1
+type: "1"
 startDate: "2011"
 website: "https://arqabs.com/"
 image: "../../assets/projects/arqabs.webp"

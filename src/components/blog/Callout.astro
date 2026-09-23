@@ -1,0 +1,17 @@
+---
+// Aviso destacado dentro de um post. No MDX: <Callout type="tip">texto</Callout>.
+// O painel do Keystatic oferece o mesmo componente (keystatic.config.js).
+const { type = 'note' } = Astro.props
+
+const variants = {
+  note: { label: 'Note', classes: 'border-sky-400 bg-sky-50 dark:bg-sky-950/40' },
+  tip: { label: 'Tip', classes: 'border-green-400 bg-green-50 dark:bg-green-950/40' },
+  warning: { label: 'Warning', classes: 'border-amber-400 bg-amber-50 dark:bg-amber-950/40' },
+  danger: { label: 'Danger', classes: 'border-red-400 bg-red-50 dark:bg-red-950/40' },
+}
+const variant = variants[type] ?? variants.note
+---
+<aside class:list={['my-6 rounded-r-lg border-l-4 px-4 py-3', variant.classes]}>
+  <p class="text-sm font-semibold uppercase tracking-wide text-neutral-600 dark:text-neutral-300">{variant.label}</p>
+  <div class="mt-1"><slot /></div>
+</aside>

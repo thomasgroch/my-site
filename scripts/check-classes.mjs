@@ -17,6 +17,12 @@ const css = readdirSync('dist/_astro')
   .filter((f) => f.endsWith('.css'))
   .map((f) => readFileSync(join('dist/_astro', f), 'utf8'))
   .join('\n')
+// CSS escrito à mão num <style> de componente também conta: o de um post só
+// chega ao dist/ quando existe post publicado.
+const ownCss = files
+  .filter((f) => f.endsWith('.astro'))
+  .flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]))
+  .join('\n')
 
 const tokens = new Set()
 const add = (value) =>
@@ -36,7 +42,7 @@ for (const file of files) {
 }
 
 const escape = (t) => t.replace(/([:/[\]#.()%,!])/g, '\\$1')
-const missing = [...tokens].filter((t) => !css.includes('.' + escape(t)))
+const missing = [...tokens].filter((t) => !(css + ownCss).includes('.' + escape(t)))
 console.log(`classes usadas: ${tokens.size} | ausentes no CSS: ${missing.length}`)
 if (missing.length) {
   console.log(missing.join('\n'))

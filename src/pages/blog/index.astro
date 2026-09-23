@@ -1,0 +1,42 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+import { byNewest, formatDate, isVisible, readingTime } from '@/lib/blog.js'
+
+// Blog só em inglês: URL sem prefixo de idioma e sem versões alternativas.
+const posts = (await getCollection('blog', isVisible)).sort(byNewest)
+---
+<Layout locale="en" path="/blog" alternates={false} title="Blog" description="Posts about web development by Thomas Dev.">
+  <section class="mx-auto max-w-2xl py-8">
+    <h1 class="text-3xl font-semibold text-green-400">Blog</h1>
+    <p class="mt-2 text-sm"><a href="/rss.xml">RSS feed</a></p>
+
+    {posts.length === 0 ? (
+      <p class="mt-10 text-neutral-500 dark:text-neutral-400">No posts yet.</p>
+    ) : (
+      <ol class="mt-10 space-y-10">
+        {posts.map((post) => (
+          <li>
+            <article>
+              <h2 class="text-xl font-semibold text-neutral-900 dark:text-white">
+                <a href={`/blog/${post.id}`}>{post.data.title}</a>
+              </h2>
+              <p class="mt-1 flex flex-wrap gap-x-3 text-sm text-neutral-500 dark:text-neutral-400">
+                <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                <span aria-hidden="true">·</span>
+                <span>{readingTime(post.body).minutes} min read</span>
+                {post.data.draft && (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <span class="rounded-sm bg-yellow-100 px-1.5 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">Draft</span>
+                  </>
+                )}
+              </p>
+              <p class="mt-2 text-neutral-600 dark:text-neutral-300">{post.data.description}</p>
+            </article>
+          </li>
+        ))}
+      </ol>
+    )}
+  </section>
+</Layout>
