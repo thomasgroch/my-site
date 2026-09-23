@@ -18,7 +18,7 @@
   "nav_open_menu": "Open menu",
   "role_profile": "Web developer",
   "profile_description": "I'm motivated and I'm always learning new technologies, updating myself through documentation and articles. I recognize the tradeoffs of client-side frameworks and analyze and test the code, always looking to improve them. I aspire to modern design but recognize that good design must also meet a real need.",
-  "stack_intro": "My main stack is composed of tools associated with VueJS. To handle the styling part, I use TailwindCSS.",
+  "stack_intro": "The tools I work with, grouped by area. The ones I no longer use are under Past stack, at the end of the page.",
   "stack_back": "Back-end",
   "stack_front": "Front-end",
   "stack_db": "Databases",
