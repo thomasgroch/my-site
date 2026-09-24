@@ -1,0 +1,129 @@
+---
+// Pac-Man contra um fantasma com cérebro de modelo (pacman.js). Funciona sem
+// modelo: o 🤖 só escolhe ao acaso até um ser carregado.
+import Styles from './Styles.astro'
+---
+<Styles />
+<div class="semif-card" data-semif-pacman>
+  <div class="semif-row">
+    <p class="semif-kicker">👻 Pac-Man vs. 🤖</p>
+    <span class="semif-muted" data-hud>🟡🟡🟡 · Score 0 · Level 1</span>
+  </div>
+  <div class="semif-arcade" data-wrap>
+    <canvas data-canvas role="img" aria-label="Pac-Man maze. Use the arrow keys, WASD, swipes or the buttons below to move."></canvas>
+  </div>
+  <div class="semif-row">
+    <button type="button" class="semif-btn" data-start>▶️ Start</button>
+    <button type="button" class="semif-btn semif-ghost" data-pause disabled>⏸️ Pause</button>
+    <span class="semif-muted">⌨️ Arrows or WASD · P pauses · 📱 swipe</span>
+  </div>
+  <div class="semif-pad" data-pad>
+    <button type="button" class="semif-btn semif-ghost" data-dir="up" aria-label="Up">⬆️</button>
+    <button type="button" class="semif-btn semif-ghost" data-dir="left" aria-label="Left">⬅️</button>
+    <button type="button" class="semif-btn semif-ghost" data-dir="down" aria-label="Down">⬇️</button>
+    <button type="button" class="semif-btn semif-ghost" data-dir="right" aria-label="Right">➡️</button>
+  </div>
+  <dl class="semif-stats">
+    <div><dt>🧠 Brain</dt><dd data-brain>🎲 none</dd></div>
+    <div><dt>🎯 Decisions</dt><dd data-decisions>0</dd></div>
+    <div><dt>⏱️ Avg. think</dt><dd data-think>—</dd></div>
+    <div><dt>💭 Waited · gave up</dt><dd data-waits>0 · 0</dd></div>
+  </dl>
+  <p class="semif-muted" data-robot>🤖 The green ghost with the antenna asks the model which way to turn at every crossroads.</p>
+</div>
+
+<style is:global>
+  .semif-arcade { display: flex; justify-content: center; overflow: hidden; border-radius: 0.6rem; background: #070b14; padding: 0.5em 0; }
+  .semif-arcade canvas { display: block; touch-action: none; border-radius: 0 !important; }
+  .semif-pad { display: none; grid-template-columns: repeat(3, 3.2em); grid-template-areas: '. up .' 'left down right'; justify-content: center; gap: 0.35em; }
+  .semif-pad button { justify-content: center; padding: 0.6em 0; font-size: 1.1em; touch-action: manipulation; }
+  .semif-pad [data-dir='up'] { grid-area: up; }
+  .semif-pad [data-dir='left'] { grid-area: left; }
+  .semif-pad [data-dir='down'] { grid-area: down; }
+  .semif-pad [data-dir='right'] { grid-area: right; }
+  @media (pointer: coarse) { .semif-pad { display: grid; } }
+</style>
+
+<script>
+  import { createGame, DIRECTIONS } from './pacman.js'
+  import { subscribe } from './engine.js'
+
+  const KEYS = { ArrowUp: 'up', KeyW: 'up', ArrowLeft: 'left', KeyA: 'left', ArrowDown: 'down', KeyS: 'down', ArrowRight: 'right', KeyD: 'right' }
+
+  for (const card of document.querySelectorAll('[data-semif-pacman]')) {
+    const $ = (selector) => card.querySelector(selector)
+    const canvas = $('[data-canvas]')
+    const wrap = $('[data-wrap]')
+    const startButton = $('[data-start]')
+    const pauseButton = $('[data-pause]')
+
+    const game = createGame(canvas, {
+      onHud({ score, lives, level, phase, paused }) {
+        $('[data-hud]').textContent = `${'🟡'.repeat(Math.max(0, lives)) || '💀'} · Score ${score.toLocaleString('en')} · Level ${level}`
+        const over = phase === 'over'
+        pauseButton.disabled = over
+        pauseButton.textContent = paused ? '▶️ Resume' : '⏸️ Pause'
+        startButton.textContent = over ? '🔁 Play again' : '🔄 Restart'
+      },
+      onRobot({ brain, decisions, totalMs, waits, timeouts, last, pending }) {
+        $('[data-brain]').textContent = brain ?? '🎲 none'
+        $('[data-decisions]').textContent = String(decisions)
+        $('[data-think]').textContent = decisions ? `${(totalMs / decisions / 1000).toFixed(2)} s` : '—'
+        $('[data-waits]').textContent = `${waits} · ${timeouts}`
+        if (!brain) {
+          $('[data-robot]').textContent = '🎲 No model loaded, so the 🤖 ghost turns at random. Load one above to give it a brain.'
+        } else if (last?.probs) {
+          const odds = last.options
+            .map((d, i) => [d, last.probs[i]])
+            .sort((a, b) => b[1] - a[1])
+            .map(([d, p]) => `${d.arrow} ${Math.round(p * 100)}%`)
+            .join(' · ')
+          $('[data-robot]').textContent = `${pending ? '🤔 Thinking about the next crossroads… ' : ''}Last call: ${odds}${last.frightened ? ' (running away)' : ''} in ${(last.ms / 1000).toFixed(2)} s.`
+        } else if (pending) {
+          $('[data-robot]').textContent = '🤔 Thinking about the next crossroads…'
+        }
+      },
+    })
+
+    new ResizeObserver(([entry]) => game.resize(entry.contentRect.width)).observe(wrap)
+    subscribe(() => game.refresh())
+
+    startButton.addEventListener('click', () => game.start())
+    pauseButton.addEventListener('click', () => game.setPaused(!game.paused))
+    card.querySelectorAll('[data-dir]').forEach((button) =>
+      button.addEventListener('pointerdown', (event) => {
+        event.preventDefault()
+        game.steer(DIRECTIONS[button.dataset.dir])
+      })
+    )
+
+    // As setas só são do jogo enquanto ele roda e ninguém está digitando.
+    window.addEventListener('keydown', (event) => {
+      if (!game.active && !game.paused) return
+      if (event.target.closest?.('input, textarea, select, [contenteditable]')) return
+      if (event.code === 'KeyP' || event.code === 'Escape') {
+        game.setPaused(!game.paused)
+        return event.preventDefault()
+      }
+      const dir = KEYS[event.code]
+      if (!dir || game.paused) return
+      event.preventDefault()
+      game.steer(DIRECTIONS[dir])
+    })
+
+    let touch = null
+    canvas.addEventListener('pointerdown', (event) => (touch = { x: event.clientX, y: event.clientY }))
+    canvas.addEventListener('pointerup', (event) => {
+      if (!touch) return
+      const dx = event.clientX - touch.x
+      const dy = event.clientY - touch.y
+      touch = null
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 16) return
+      game.steer(DIRECTIONS[Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'down' : 'up'])
+    })
+
+    // Pausa sozinho quando sai da tela ou a aba fica em segundo plano.
+    new IntersectionObserver(([entry]) => entry.intersectionRatio < 0.3 && game.setPaused(true), { threshold: [0, 0.3] }).observe(canvas)
+    document.addEventListener('visibilitychange', () => document.hidden && game.setPaused(true))
+  }
+</script>

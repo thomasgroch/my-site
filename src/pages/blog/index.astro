@@ -25,6 +25,12 @@ const posts = (await getCollection('blog', isVisible)).sort(byNewest)
                 <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
                 <span aria-hidden="true">·</span>
                 <span>{readingTime(post.body).minutes} min read</span>
+                {post.data.series && (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <span>{post.data.series}{post.data.seriesPart && `, part ${post.data.seriesPart}`}</span>
+                  </>
+                )}
                 {post.data.draft && (
                   <>
                     <span aria-hidden="true">·</span>

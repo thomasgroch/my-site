@@ -4,8 +4,11 @@ import { formatDate, readingTime, tableOfContents } from '@/lib/blog.js'
 
 // Moldura de um post: cabeçalho, capa, sumário e o conteúdo no <slot />.
 // Os estilos de leitura abaixo só entram nas páginas de post.
-const { post, headings = [] } = Astro.props
+const { post, headings = [], series = [] } = Astro.props
 const { title, description, pubDate, updatedDate, tags, cover, coverAlt, draft } = post.data
+// Posição deste post na série (ver seriesOf em src/lib/blog.js).
+const part = series.findIndex((entry) => entry.id === post.id)
+const next = series[part + 1]
 const { minutes } = readingTime(post.body)
 const toc = tableOfContents(headings)
 ---
@@ -42,6 +45,23 @@ const toc = tableOfContents(headings)
 
   {cover && <Image src={cover} alt={coverAlt ?? ''} width={768} densities={[1, 2]} loading="eager" class="mt-8 w-full rounded-lg" />}
 
+  {series.length > 1 && (
+    <nav aria-label="Series" class="mt-8 rounded-lg border border-green-400/40 bg-green-400/5 p-4">
+      <p class="text-sm font-semibold text-neutral-500 dark:text-neutral-400">
+        Series: {post.data.series} · Part {part + 1} of {series.length}
+      </p>
+      <ol class="mt-2 list-decimal space-y-1 pl-5 text-sm marker:text-green-400">
+        {series.map((entry) => (
+          <li>
+            {entry.id === post.id
+              ? <span aria-current="page" class="font-semibold">{entry.data.title}</span>
+              : <a href={`/blog/${entry.id}`}>{entry.data.title}</a>}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )}
+
   {toc.length > 1 && (
     <nav aria-label="Contents" class="mt-8 rounded-lg border border-neutral-200 p-4 dark:border-neutral-700">
       <p class="text-sm font-semibold text-neutral-500 dark:text-neutral-400">Contents</p>
@@ -54,6 +74,13 @@ const toc = tableOfContents(headings)
   )}
 
   <div class="post-content mt-8"><slot /></div>
+
+  {next && (
+    <p class="mt-12 border-t border-neutral-200 pt-6 dark:border-neutral-700">
+      <span class="text-sm text-neutral-500 dark:text-neutral-400">Next in {post.data.series}</span><br />
+      <a href={`/blog/${next.id}`} class="font-semibold">{next.data.title} →</a>
+    </p>
+  )}
 </article>
 
 <style is:global>

@@ -1,0 +1,43 @@
+---
+title: Show do Milhão, with a language model as the audience
+description: A ten-question quiz show where the audience lifeline is a small open model running on your GPU. It is often very sure of itself.
+pubDate: 2026-09-24
+draft: true
+tags:
+  - webgpu
+  - llm
+  - game
+series: LLMs in the browser
+seriesPart: 2
+---
+
+import ModelLoader from '@/components/blog/semif/ModelLoader.astro'
+import Millionaire from '@/components/blog/semif/Millionaire.astro'
+
+In [the first part](/blog/llm-choices-in-the-browser) we read a model's choice straight from the log-probabilities of the option letters: one forward pass, about a second, no text generated. That is fast enough to sit in a quiz show audience.
+
+## The rules 📜
+
+Ten questions from R$ 1,000 to R$ 1 million, with the rules of the Brazilian show:
+
+- **🛑 Stop** and you keep what you have.
+- **❌ Get it wrong** and you leave with half.
+- **💥 Miss the million-real question** and you leave with nothing.
+
+You get three lifelines: **✂️ 50:50** once, **⏭️ Skip** three times (same prize, new question), and **📊 Audience** twice.
+
+## Load the audience 🧠
+
+The game works without a model; only the 📊 lifeline needs one.
+
+<ModelLoader />
+
+## Play 💰
+
+<Millionaire />
+
+## What the audience really is
+
+It is the direct readout from part 1, run only on the answers still on screen. After a 50:50 it votes between two. The prompt says a contestant is asking for help and that the answer must be factually correct, and the percentages are a softmax over the letter tokens.
+
+That makes them a confidence, not a poll, and not a calibrated one: a small model can put 98% on the wrong planet. At the end of a game, the status line tells you how many times the audience was right.

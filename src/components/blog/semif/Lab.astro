@@ -1,0 +1,214 @@
+---
+// Laboratório: a mesma decisão lida de dois jeitos, lado a lado.
+// 🎯 leitura direta (uma passada, logprobs das letras) e
+// ✍️ geração (o modelo escreve um JSON com as probabilidades).
+import Styles from './Styles.astro'
+---
+<Styles />
+<div class="semif-card" data-semif-lab>
+  <div class="semif-row">
+    <p class="semif-kicker">Decision</p>
+    <span class="semif-muted">Presets:</span>
+    <button type="button" class="semif-btn semif-ghost" data-preset="email">📨 Email triage</button>
+    <button type="button" class="semif-btn semif-ghost" data-preset="account">🔐 Account support</button>
+  </div>
+  <label class="block">
+    <span class="semif-muted">State</span>
+    <textarea data-state rows="3" class="semif-input"></textarea>
+  </label>
+  <label class="block">
+    <span class="semif-muted">Question</span>
+    <input data-question class="semif-input" />
+  </label>
+  <div>
+    <div class="semif-row">
+      <span class="semif-muted">Options</span>
+      <span class="semif-muted" data-count></span>
+      <button type="button" class="semif-btn semif-ghost" data-add aria-label="Add option">➕</button>
+      <button type="button" class="semif-btn semif-ghost" data-remove aria-label="Remove option">➖</button>
+    </div>
+    <ol class="semif-options" data-options></ol>
+  </div>
+  <div class="semif-row">
+    <button type="button" class="semif-btn" data-run disabled>▶️ Run both</button>
+    <span class="semif-status" data-status>☝️ Load a model above first.</span>
+  </div>
+
+  <div class="semif-lab-grid">
+    <section class="semif-panel">
+      <p class="semif-kicker">🎯 Direct readout</p>
+      <div class="semif-bars" data-direct><span class="semif-muted">One forward pass, no text generated.</span></div>
+      <dl class="semif-stats">
+        <div><dt>Total</dt><dd data-direct-total>—</dd></div>
+        <div><dt>Input</dt><dd data-direct-input>—</dd></div>
+      </dl>
+    </section>
+    <section class="semif-panel">
+      <p class="semif-kicker">✍️ Generation</p>
+      <pre class="semif-stream" data-generated>The model writes a JSON answer, token by token.</pre>
+      <dl class="semif-stats">
+        <div><dt>First token</dt><dd data-ttft>—</dd></div>
+        <div><dt>Total</dt><dd data-gen-total>—</dd></div>
+        <div><dt>Output</dt><dd data-gen-tokens>—</dd></div>
+      </dl>
+    </section>
+  </div>
+  <p class="semif-verdict" data-ratio></p>
+</div>
+
+<style is:global>
+  .semif-input { display: block; margin-top: 0.25em; width: 100%; border-radius: 0.5rem; border-color: var(--color-neutral-300); background: transparent; font-size: 0.95em; }
+  .semif-options { display: grid; gap: 0.4em; margin-top: 0.5em; list-style: none !important; padding-left: 0 !important; counter-reset: option; }
+  .semif-options li { display: flex; align-items: center; gap: 0.6em; margin: 0 !important; counter-increment: option; }
+  .semif-options li::before { content: counter(option, upper-alpha); width: 1.2em; font-weight: 600; color: var(--color-green-600); }
+  .semif-options .semif-input { margin-top: 0; }
+  .semif-lab-grid { display: grid; gap: 0.75em; grid-template-columns: repeat(auto-fit, minmax(17em, 1fr)); }
+  .semif-panel { display: grid; align-content: start; gap: 0.75em; border-radius: 0.6rem; background: rgb(0 0 0 / 0.025); padding: 0.85em 1em; }
+  .semif-stream { min-height: 5.5em; margin: 0; white-space: pre-wrap; word-break: break-word; font-size: 0.85em; }
+  .semif-verdict { font-weight: 600; }
+  html.dark .semif-input { border-color: var(--color-neutral-600); }
+  html.dark .semif-panel { background: rgb(255 255 255 / 0.04); }
+  html.dark .semif-options li::before { color: var(--color-green-400); }
+</style>
+
+<script>
+  import { direct, generate, seconds, subscribe } from './engine.js'
+
+  const PRESETS = {
+    email: {
+      state: 'An email claims to be from the payroll team and says the recipient’s salary payment will be suspended today. It comes from payroll-review@outlook.com and links to a non-company sign-in page asking for a password and verification code.',
+      question: 'How should this email be classified?',
+      options: ['Legitimate', 'Spam', 'Phishing'],
+    },
+    account: {
+      state: 'A customer says a password reset succeeded, but every login attempt still returns ‘account locked’. Two unlock emails were requested and neither arrived.',
+      question: 'Which queue should handle this request?',
+      options: ['Account access support', 'Billing support', 'Close as resolved'],
+    },
+  }
+  const MIN_OPTIONS = 2
+  const MAX_OPTIONS = 20
+
+  for (const lab of document.querySelectorAll('[data-semif-lab]')) {
+    const $ = (selector) => lab.querySelector(selector)
+    const list = $('[data-options]')
+    const run = $('[data-run]')
+    let ready = false
+    let busy = false
+    const say = (text, kind = '') => {
+      $('[data-status]').textContent = text
+      $('[data-status]').dataset.kind = kind
+    }
+    const inputs = () => [...list.querySelectorAll('input')]
+
+    const sync = () => {
+      const count = inputs().length
+      $('[data-count]').textContent = `${count} / ${MAX_OPTIONS}`
+      $('[data-add]').disabled = count >= MAX_OPTIONS
+      $('[data-remove]').disabled = count <= MIN_OPTIONS
+      run.disabled = !ready || busy
+    }
+    const addOption = (value = '') => {
+      const item = document.createElement('li')
+      const input = document.createElement('input')
+      input.className = 'semif-input'
+      input.placeholder = 'Describe this option'
+      input.value = value
+      item.append(input)
+      list.append(item)
+      return input
+    }
+    const applyPreset = ({ state, question, options }) => {
+      $('[data-state]').value = state
+      $('[data-question]').value = question
+      list.replaceChildren()
+      options.forEach((option) => addOption(option))
+      sync()
+    }
+
+    $('[data-add]').addEventListener('click', () => {
+      addOption().focus()
+      sync()
+    })
+    $('[data-remove]').addEventListener('click', () => {
+      list.lastElementChild?.remove()
+      sync()
+    })
+    lab.querySelectorAll('[data-preset]').forEach((button) =>
+      button.addEventListener('click', () => applyPreset(PRESETS[button.dataset.preset]))
+    )
+    applyPreset(PRESETS.email)
+
+    subscribe(({ state }) => {
+      ready = state === 'ready'
+      if (ready && !busy) say('👍 Ready. Edit anything, then run.')
+      sync()
+    })
+
+    const renderBars = (options, probabilities) => {
+      const best = probabilities.indexOf(Math.max(...probabilities))
+      $('[data-direct]').replaceChildren(
+        ...options.flatMap((option, index) => {
+          const label = document.createElement('span')
+          label.innerHTML = `<b>${String.fromCharCode(65 + index)}</b> <small></small>`
+          label.querySelector('small').textContent = option
+          const bar = document.createElement('div')
+          bar.className = 'semif-meter'
+          bar.innerHTML = `<i style="width:${Math.max(1, probabilities[index] * 100)}%"></i>`
+          const score = document.createElement('em')
+          score.textContent = probabilities[index].toFixed(3)
+          if (index === best) score.className = 'semif-top'
+          return [label, bar, score]
+        })
+      )
+    }
+
+    run.addEventListener('click', async () => {
+      const data = {
+        state: $('[data-state]').value.trim(),
+        question: $('[data-question]').value.trim(),
+        options: inputs().map((input) => input.value.trim()),
+      }
+      if (!data.state || !data.question || data.options.some((option) => !option)) {
+        return say('✋ State, question and every option need some text.', 'error')
+      }
+      busy = true
+      sync()
+      for (const key of ['direct-total', 'direct-input', 'ttft', 'gen-total', 'gen-tokens']) $(`[data-${key}]`).textContent = '—'
+      $('[data-ratio]').textContent = ''
+      $('[data-generated]').textContent = '⏳ Waiting for the direct readout…'
+      say('🎯 Reading the option logits…')
+      try {
+        const readout = await direct(data)
+        renderBars(data.options, readout.probabilities)
+        $('[data-direct-total]').textContent = seconds(readout.totalMs)
+        $('[data-direct-input]').textContent = `${readout.inputTokens} tok`
+
+        say('✍️ Now generating the JSON…')
+        const written = await generate(data, ({ text, tokens, ttftMs }) => {
+          $('[data-generated]').textContent = text
+          $('[data-gen-tokens]').textContent = `${tokens} tok`
+          if (ttftMs != null) $('[data-ttft]').textContent = seconds(ttftMs)
+        })
+        $('[data-generated]').textContent = written.text || '(no visible text generated)'
+        $('[data-gen-total]').textContent = seconds(written.totalMs)
+        $('[data-gen-tokens]').textContent = `${written.tokens} tok`
+
+        const ratio = written.totalMs / readout.totalMs
+        const bestDirect = readout.probabilities.indexOf(Math.max(...readout.probabilities))
+        const agree = written.valid
+          ? written.choice === bestDirect
+            ? '🤝 Both picked the same option.'
+            : '🤔 They disagree.'
+          : `⚠️ The JSON didn't validate (${written.validationError}).`
+        $('[data-ratio]').textContent = `🐢 Generation took ${ratio.toFixed(1)}× longer than the direct readout. ${agree}`
+        say('✅ Done. Change something and run again.', 'ok')
+      } catch (error) {
+        say(`❌ ${error.message}`, 'error')
+      } finally {
+        busy = false
+        sync()
+      }
+    })
+  }
+</script>

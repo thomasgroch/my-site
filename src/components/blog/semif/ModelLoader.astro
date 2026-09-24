@@ -1,0 +1,92 @@
+---
+// Escolha e carga do modelo. Um por página: o laboratório e o jogo usam o
+// mesmo (engine.js). Com prefer="fast", começa no menor modelo em qualquer
+// aparelho: no Pac-Man, latência importa mais que acerto.
+import Styles from './Styles.astro'
+import { MODELS } from './models.js'
+
+const { prefer } = Astro.props
+---
+<Styles />
+<div class="semif-card" data-semif-loader data-prefer={prefer}>
+  <p class="semif-kicker">Model</p>
+  <div class="semif-row">
+    <select data-model class="rounded-lg border-neutral-300 bg-transparent py-1.5 text-[0.95em] dark:border-neutral-600">
+      {Object.entries(MODELS).map(([id, model]) => <option value={id}>{model.name} · {model.size}</option>)}
+    </select>
+    <button type="button" class="semif-btn" data-load>⬇️ Load</button>
+  </div>
+  <p class="semif-muted" data-notice></p>
+  <div>
+    <div class="semif-row semif-muted"><span>📦 Download</span><span data-percent>—</span></div>
+    <div class="semif-meter mt-1"><i data-meter></i></div>
+  </div>
+  <dl class="semif-stats">
+    <div><dt>⏱️ Model load</dt><dd data-load-time>—</dd></div>
+    <div><dt>🔥 Warmup</dt><dd data-warmup>—</dd></div>
+  </dl>
+  <p class="semif-status" data-status>💤 No model loaded. Everything runs on your GPU; nothing is sent anywhere.</p>
+</div>
+
+<script>
+  import { MODELS, recommendedModel } from './models.js'
+  import { load, seconds, subscribe } from './engine.js'
+
+  for (const card of document.querySelectorAll('[data-semif-loader]')) {
+    const $ = (selector) => card.querySelector(selector)
+    const select = $('[data-model]')
+    const button = $('[data-load]')
+    const say = (text, kind = '') => {
+      $('[data-status]').textContent = text
+      $('[data-status]').dataset.kind = kind
+    }
+    const render = () => {
+      const model = MODELS[select.value]
+      $('[data-notice]').textContent = model.notice
+      button.textContent = `⬇️ Load ${model.name} (${model.size})`
+    }
+
+    select.value = card.dataset.prefer === 'fast' ? 'qwen3-0.6b' : recommendedModel()
+    select.addEventListener('change', render)
+    render()
+
+    if (!navigator.gpu) {
+      button.disabled = true
+      say('❌ This browser has no WebGPU, so the model cannot load.', 'error')
+    }
+
+    subscribe(({ state, name, error }) => {
+      select.disabled = button.disabled = state === 'loading' || state === 'ready' || !navigator.gpu
+      if (state === 'loading') button.textContent = '⏳ Loading…'
+      if (state === 'ready') {
+        button.textContent = '✅ Ready'
+        say(`✅ ${name} is loaded on your GPU. Scroll down and try it.`, 'ok')
+      }
+      if (state === 'error') {
+        render()
+        say(`❌ ${error}`, 'error')
+      }
+    })
+
+    button.addEventListener('click', async () => {
+      say('📡 Fetching the model, or reading it from the browser cache…')
+      try {
+        const result = await load(select.value, (event) => {
+          if (event.phase === 'download' && event.total) {
+            const percent = Math.min(100, (event.loaded / event.total) * 100)
+            $('[data-meter]').style.width = `${percent}%`
+            $('[data-percent]').textContent = `${percent.toFixed(0)}%`
+          }
+          if (event.phase === 'warmup') {
+            $('[data-meter]').style.width = '100%'
+            $('[data-load-time]').textContent = seconds(event.loadMs)
+            say('🔥 Loaded. Compiling shaders with one warmup pass…')
+          }
+        })
+        $('[data-warmup]').textContent = seconds(result.warmupMs)
+      } catch {
+        // O estado de erro já foi publicado pelo engine.js.
+      }
+    })
+  }
+</script>

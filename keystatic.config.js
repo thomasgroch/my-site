@@ -74,6 +74,8 @@ export default config({
         updatedDate: fields.date({ label: 'Updated' }),
         draft: fields.checkbox({ label: 'Draft', description: 'Drafts show up in dev and stay out of the production build.', defaultValue: true }),
         tags: fields.array(fields.text({ label: 'Tag' }), { label: 'Tags', itemLabel: (props) => props.value }),
+        series: fields.text({ label: 'Series', description: 'Posts with the same series name link to each other.' }),
+        seriesPart: fields.integer({ label: 'Part', description: 'Position in the series, starting at 1.', validation: { min: 1 } }),
         cover: image('Cover', 'blog'),
         coverAlt: fields.text({ label: 'Cover alt text' }),
         content: fields.mdx({

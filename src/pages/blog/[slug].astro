@@ -5,14 +5,14 @@ import Callout from '@/components/blog/Callout.astro'
 import Wide from '@/components/blog/Wide.astro'
 import Embed from '@/components/blog/Embed.astro'
 import { getCollection, render } from 'astro:content'
-import { isVisible } from '@/lib/blog.js'
+import { isVisible, seriesOf } from '@/lib/blog.js'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', isVisible)
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }))
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, series: seriesOf(post, posts) } }))
 }
 
-const { post } = Astro.props
+const { post, series } = Astro.props
 const { Content, headings } = await render(post)
 ---
 <Layout
@@ -24,7 +24,7 @@ const { Content, headings } = await render(post)
   title={post.data.title}
   description={post.data.description}
 >
-  <BlogPost post={post} headings={headings}>
+  <BlogPost post={post} headings={headings} series={series}>
     <Content components={{ Callout, Wide, Embed }} />
   </BlogPost>
 </Layout>

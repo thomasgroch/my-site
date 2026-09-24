@@ -1,0 +1,56 @@
+---
+title: Pac-Man vs. a ghost with a language model for a brain
+description: Three ghosts run the arcade rules. The fourth asks a small open model on your GPU which way to turn, and you can watch it think.
+pubDate: 2026-09-24
+draft: true
+tags:
+  - webgpu
+  - llm
+  - game
+series: LLMs in the browser
+seriesPart: 3
+---
+
+import ModelLoader from '@/components/blog/semif/ModelLoader.astro'
+import PacMan from '@/components/blog/semif/PacMan.astro'
+
+A quiz answer can wait a second. A ghost in a maze can't. This part puts the direct readout from [the first part](/blog/llm-choices-in-the-browser) in a place where latency is the whole game.
+
+## The ghosts 👻
+
+Three ghosts run the original arcade logic: Blinky chases you, Pinky aims four tiles ahead of you, and Clyde gets shy up close. The fourth one, the green 🤖 with the antenna, has no logic of its own.
+
+As soon as it leaves a crossroads, it asks the model which way to turn at the next one. The green arrows are the model's answer, sized by probability, and a dashed **?** marks the crossroads it is still thinking about.
+
+If the answer hasn't arrived by the time the ghost gets there, it stops with a 💭 and waits. That pause is the model's latency, right in the maze. After 2.5 seconds it gives up and falls back to the arcade rules.
+
+## Give the ghost a brain 🧠
+
+This page starts on the smallest model. Here a fast wrong answer beats a slow right one. Without a model, the 🤖 turns at random.
+
+<ModelLoader prefer="fast" />
+
+## Play 🕹️
+
+<PacMan />
+
+## What the ghost is asked
+
+Every crossroads is one direct readout. The options are only the open directions, never the way back, and the question flips when you eat a power pellet:
+
+```text title="prompt"
+State:
+You are a ghost in a Pac-Man maze, standing at a crossroads. Pac-Man is
+10 tiles down and 7 tiles to the left from you. You want to catch him.
+
+Question:
+Which way takes you toward Pac-Man?
+
+Allowed options:
+A. Up
+B. Down
+
+Reply with exactly one option letter from: A, B.
+```
+
+The ghost asks with Pac-Man's position from when it left the last crossroads, so by the time it turns, you have moved. A faster model is a scarier ghost. With a bigger one you'll see it stop at the crossroads a lot more, and that pause is how you escape.

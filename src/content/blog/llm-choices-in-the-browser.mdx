@@ -1,0 +1,86 @@
+---
+title: A language model that picks answers, right in your browser
+description: Load a small open model on your GPU with WebGPU and compare two ways of making it choose between options.
+pubDate: 2026-09-24
+draft: true
+tags:
+  - webgpu
+  - llm
+  - demo
+series: LLMs in the browser
+seriesPart: 1
+---
+
+import GpuCheck from '@/components/blog/semif/GpuCheck.astro'
+import ModelLoader from '@/components/blog/semif/ModelLoader.astro'
+import Lab from '@/components/blog/semif/Lab.astro'
+
+Most of what we ask a language model in production is not "write me an essay". It is "which of these three buckets does this ticket go into?". [SemIf](https://github.com/TheoLeeCJ/SemIf-OpenJev) is a small experiment around that question, and its browser demo runs the whole thing on your own GPU: no server, no API key, and nothing leaves the page.
+
+This post is a trimmed-down version of that demo. In the next parts, the same model plays two games: it is the [audience in Show do Milhão](/blog/llm-show-do-milhao) and the [brain of a Pac-Man ghost](/blog/llm-pac-man-ghost).
+
+## Can your browser run it? 🧪
+
+Everything below needs [WebGPU](https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API). This box checks before anything heavy happens:
+
+<GpuCheck />
+
+## The models 📦
+
+Three open models, quantized to GGUF and pinned to an exact Hugging Face revision. The quality columns come from the project's own evaluation on the full-precision checkpoints, so the quantized files you download here may do a bit worse. The timings are the project's single-machine smoke test on an RTX 3090, not a promise about your laptop.
+
+<Wide>
+
+| Model | Download | Authored | Perturbed | TypeSafe | Direct readout on RTX 3090 |
+| --- | --: | --: | --: | --: | --: |
+| Qwen3 0.6B | 639 MB | 44.0% | 52.8% | 40.7% | 0.704 s |
+| MiniCPM5 2B | 1.56 GB | 68.6% | 69.3% | 63.7% | 1.508 s |
+| Qwen3.5 4B | 3.01 GB | 81.3% | 76.6% | 84.5% | 3.271 s |
+| Jev (hosted, for reference) | — | — | — | 88.3% | — |
+
+</Wide>
+
+Phones start on Qwen3 0.6B and desktops on MiniCPM5 2B. You can switch before loading.
+
+<Callout type="warning">
+The first load downloads the whole model. Stay on Wi-Fi. The browser caches it, so the next visit is much faster.
+</Callout>
+
+<ModelLoader />
+
+## Two ways to ask 🎯 vs ✍️
+
+Given a situation, a question and a list of options, there are two ways to get a choice out of the model:
+
+- **🎯 Direct readout.** Label the options A, B, C, ask for one letter, and read the log-probabilities of those letter tokens from a single forward pass. A softmax over them gives a distribution. Nothing is actually generated.
+- **✍️ Generation.** Ask the model to *write* a JSON object with a probability for each option, token by token, then parse it.
+
+The first is one step. The second is dozens of steps, and the JSON can still come back malformed. Try both on the same input:
+
+<Wide>
+<Lab />
+</Wide>
+
+The two numbers don't have to agree. The direct readout is what the model's next token *would* be; the generated JSON is what the model *says* it believes. Neither is a calibrated probability.
+
+## How the readout works
+
+The core of the direct readout is one chat completion with a grammar that allows only the option letters, a strong bias toward those tokens, and `logprobs` turned on:
+
+```js title="worker.js"
+const response = await engine.createChatCompletion({
+  messages: messagesFor(data, 'direct'),
+  max_tokens: 1,
+  logprobs: true,
+  top_logprobs: 20,
+  logit_bias: Object.fromEntries(labels.map((_, i) => [String(labelBase + i), 100])),
+  grammar: `root ::= ${labels.map((label) => `"${label}"`).join(' | ')}`,
+})
+const probabilities = softmax(optionLogprobs(response, labels))
+```
+
+`labelBase` is the token id of `A` in each model's vocabulary, which is why every model entry carries it.
+
+## Credits
+
+The demo logic, prompts, models and numbers come from [SemIf](https://github.com/TheoLeeCJ/SemIf-OpenJev) by TheoLeeCJ (MIT). Inference runs on [wllama](https://github.com/ngxson/wllama), llama.cpp compiled to WebAssembly with a WebGPU backend, loaded from jsDelivr. This version drops Vue and the icon font for plain JavaScript and emoji, loads the model once per page and shares it between everything on it, and starts phones on the smaller model.

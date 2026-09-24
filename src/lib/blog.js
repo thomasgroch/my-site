@@ -29,6 +29,17 @@ export function readingTime(body = '') {
   return { words, minutes: Math.max(1, Math.ceil(words / WORDS_PER_MINUTE)) }
 }
 
+// Partes da série de `post`, na ordem de `seriesPart` e, no empate, da data.
+// Vazio quando o post não faz parte de uma série.
+export function seriesOf(post, posts = []) {
+  const name = post.data.series
+  if (!name) return []
+  const part = (entry) => entry.data.seriesPart ?? Infinity
+  return posts
+    .filter((entry) => entry.data.series === name)
+    .sort((a, b) => part(a) - part(b) || a.data.pubDate - b.data.pubDate)
+}
+
 // Sumário a partir dos títulos que o Astro extrai do post: só h2 e h3.
 export function tableOfContents(headings = []) {
   return headings.filter((heading) => heading.depth === 2 || heading.depth === 3)

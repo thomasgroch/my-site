@@ -102,6 +102,10 @@ const blog = defineCollection({
       updatedDate: z.preprocess(blank, z.coerce.date().optional()),
       draft: z.boolean().default(false),
       tags: z.array(text).default([]),
+      // Série: posts com o mesmo `series` ganham navegação entre si, na ordem
+      // de `seriesPart` (ver seriesOf em src/lib/blog.js).
+      series: optional(text),
+      seriesPart: z.preprocess(blank, z.number().int().min(1).optional()),
       cover: z.preprocess(blank, image().optional()),
       coverAlt: optional(text),
     }),

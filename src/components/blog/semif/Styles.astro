@@ -1,0 +1,46 @@
+---
+// Estilos comuns dos componentes da demo SemIf. Cada componente inclui este;
+// o Astro emite o CSS uma vez só. Globais porque boa parte do HTML é montada
+// em JS e não recebe o atributo de escopo.
+---
+<style is:global>
+  .semif-card { border: 1px solid rgb(0 0 0 / 0.12); border-radius: 0.75rem; padding: 1em 1.25em; font-size: 0.9em; line-height: 1.5; }
+  .semif-card > * + * { margin-top: 0.85em; }
+  .semif-kicker { font-size: 0.75em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-neutral-500); }
+  .semif-muted { color: var(--color-neutral-500); font-size: 0.9em; }
+  .semif-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em 0.75em; }
+
+  .semif-btn { display: inline-flex; align-items: center; gap: 0.4em; border-radius: 0.5rem; background: var(--color-green-600); padding: 0.45em 0.95em; font-weight: 600; color: white; transition: background 150ms, opacity 150ms; }
+  .semif-btn:hover:not(:disabled) { background: var(--color-green-700); }
+  .semif-btn:disabled { cursor: not-allowed; opacity: 0.45; }
+  .semif-btn.semif-ghost { border: 1px solid rgb(0 0 0 / 0.15); background: transparent; color: inherit; font-weight: 500; }
+  .semif-btn.semif-ghost:hover:not(:disabled) { background: rgb(0 0 0 / 0.05); }
+
+  .semif-meter { overflow: hidden; height: 0.5em; border-radius: 99px; background: rgb(0 0 0 / 0.08); }
+  .semif-meter > i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--color-green-400); transition: width 200ms; }
+
+  .semif-bars { display: grid; grid-template-columns: minmax(0, 1fr) minmax(4em, 1.5fr) 3.2em; align-items: center; gap: 0.45em 0.75em; }
+  .semif-bars b { font-weight: 600; }
+  .semif-bars small { color: var(--color-neutral-500); }
+  .semif-bars em { font-style: normal; font-variant-numeric: tabular-nums; text-align: right; }
+  .semif-bars .semif-top { color: var(--color-green-600); }
+
+  .semif-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr)); gap: 0.5em; }
+  .semif-stats div { border-radius: 0.5rem; background: rgb(0 0 0 / 0.04); padding: 0.4em 0.65em; }
+  .semif-stats dt { font-size: 0.75em; color: var(--color-neutral-500); }
+  .semif-stats dd { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .semif-status[data-kind='ok'] { color: var(--color-green-700); }
+  .semif-status[data-kind='error'] { color: var(--color-red-600); }
+
+  html.dark .semif-card, html.dark .semif-btn.semif-ghost { border-color: rgb(255 255 255 / 0.15); }
+  html.dark .semif-btn.semif-ghost:hover:not(:disabled), html.dark .semif-stats div { background: rgb(255 255 255 / 0.06); }
+  html.dark .semif-meter { background: rgb(255 255 255 / 0.1); }
+  html.dark :is(.semif-kicker, .semif-muted, .semif-bars small, .semif-stats dt) { color: var(--color-neutral-400); }
+  html.dark .semif-bars .semif-top, html.dark .semif-status[data-kind='ok'] { color: var(--color-green-400); }
+  html.dark .semif-status[data-kind='error'] { color: var(--color-red-400); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .semif-meter > i, .semif-btn { transition: none; }
+  }
+</style>

@@ -20,7 +20,7 @@ As decisões que o código sozinho não explica. O que é e onde fica está no R
 ## Idiomas
 
 - `/` é pt-BR e `/en/` é inglês, com prefixo de URL e um tradutor próprio (`src/i18n/`). A primeira visita segue o idioma do navegador. `/jp/*` responde 301 para `/en/*`.
-- O blog existe só em inglês, em `/blog`, sem prefixo: `Layout` recebe `alternates={false}`. Rascunhos (`draft: true`) aparecem no dev, ficam fora do build e nunca entram no feed. `BLOG_DRAFTS=1` os inclui no build.
+- O blog existe só em inglês, em `/blog`, sem prefixo: `Layout` recebe `alternates={false}`. Rascunhos (`draft: true`) aparecem no dev, ficam fora do build e nunca entram no feed. `BLOG_DRAFTS=1` os inclui no build. Posts com o mesmo `series` formam uma série: cada um ganha a lista das partes, na ordem de `seriesPart`, e o link para a próxima (`seriesOf` em `src/lib/blog.js`).
 
 ## Contato
 

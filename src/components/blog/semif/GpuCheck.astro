@@ -1,0 +1,48 @@
+---
+// Diz ao leitor se o navegador tem WebGPU antes de ele baixar centenas de MB.
+import Styles from './Styles.astro'
+---
+<Styles />
+<div class="semif-card" data-semif-gpu>
+  <p class="semif-kicker">Your browser</p>
+  <p class="semif-status" data-status>⏳ Checking WebGPU…</p>
+  <dl class="semif-stats" data-details hidden></dl>
+</div>
+
+<script>
+  import { MODELS, isMobileDevice, recommendedModel } from './models.js'
+
+  for (const card of document.querySelectorAll('[data-semif-gpu]')) {
+    const status = card.querySelector('[data-status]')
+    const details = card.querySelector('[data-details]')
+    const say = (text, kind = '') => {
+      status.textContent = text
+      status.dataset.kind = kind
+    }
+    const stat = (label, value) => {
+      const box = document.createElement('div')
+      const dt = document.createElement('dt')
+      const dd = document.createElement('dd')
+      dt.textContent = label
+      dd.textContent = value
+      box.append(dt, dd)
+      return box
+    }
+
+    ;(async () => {
+      if (!navigator.gpu) return say('❌ No WebGPU here. Try a recent Chrome, Edge or Safari, over HTTPS.', 'error')
+      const adapter = await navigator.gpu.requestAdapter()
+      if (!adapter) return say('⚠️ WebGPU exists, but the browser gave no GPU adapter. It may be blocklisted or disabled.', 'error')
+      const info = adapter.info ?? {}
+      const gpu = [info.vendor, info.architecture].filter(Boolean).join(' · ') || 'hidden by the browser'
+      say('✅ WebGPU is ready. Nothing downloads until you press load.', 'ok')
+      details.replaceChildren(
+        stat('🎮 GPU', gpu),
+        stat('🧮 Max buffer', `${Math.round(adapter.limits.maxBufferSize / 1024 ** 2)} MB`),
+        stat('🔢 shader-f16', adapter.features.has('shader-f16') ? 'yes' : 'no'),
+        stat(isMobileDevice() ? '📱 Suggested' : '💻 Suggested', MODELS[recommendedModel()].name)
+      )
+      details.hidden = false
+    })().catch((error) => say(`❌ WebGPU check failed: ${error.message}`, 'error'))
+  }
+</script>

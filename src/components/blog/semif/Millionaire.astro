@@ -1,0 +1,276 @@
+---
+// Show do Milhão com o modelo como plateia: a ajuda 📊 mostra a leitura
+// direta do modelo sobre as alternativas que sobraram. Regras do programa:
+// parar leva o acumulado, errar leva a metade, e errar a pergunta do milhão
+// leva nada. O jogo funciona sem modelo; só a plateia depende dele.
+import Styles from './Styles.astro'
+import { LADDER, money } from './quiz.js'
+---
+<Styles />
+<div class="semif-card" data-semif-show>
+  <div class="semif-row">
+    <p class="semif-kicker">💰 Show do Milhão</p>
+    <span class="semif-muted" data-level></span>
+  </div>
+  <ol class="semif-ladder" data-ladder>
+    {LADDER.map((value) => <li>{money(value)}</li>)}
+  </ol>
+  <dl class="semif-stats">
+    <div><dt>🛑 Stop</dt><dd data-if-stop>—</dd></div>
+    <div><dt>❌ Wrong</dt><dd data-if-wrong>—</dd></div>
+    <div><dt>✅ Right</dt><dd data-if-right>—</dd></div>
+  </dl>
+  <p class="semif-question" data-question></p>
+  <div class="semif-answers" data-answers></div>
+  <div class="semif-row" data-confirm hidden>
+    <strong>🎙️ Is that your final answer?</strong>
+    <button type="button" class="semif-btn" data-yes>✅ Final answer</button>
+    <button type="button" class="semif-btn semif-ghost" data-no>↩️ Let me think</button>
+  </div>
+  <div class="semif-bars" data-audience hidden></div>
+  <div class="semif-row" data-lifelines>
+    <button type="button" class="semif-btn semif-ghost" data-fifty>✂️ 50:50 <small data-left></small></button>
+    <button type="button" class="semif-btn semif-ghost" data-ask>📊 Audience <small data-left></small></button>
+    <button type="button" class="semif-btn semif-ghost" data-skip>⏭️ Skip <small data-left></small></button>
+    <button type="button" class="semif-btn semif-ghost" data-stop>🛑 Stop</button>
+  </div>
+  <p class="semif-status" data-status></p>
+  <button type="button" class="semif-btn" data-restart hidden>🔁 Play again</button>
+</div>
+
+<style is:global>
+  .semif-ladder { display: flex; flex-wrap: wrap; gap: 0.3em; list-style: none !important; padding-left: 0 !important; font-size: 0.8em; font-variant-numeric: tabular-nums; }
+  .semif-ladder li { margin: 0 !important; border-radius: 99px; background: rgb(0 0 0 / 0.05); padding: 0.1em 0.6em; color: var(--color-neutral-500); }
+  .semif-ladder li[data-state='won'] { background: rgb(74 222 128 / 0.2); color: inherit; }
+  .semif-ladder li[data-state='current'] { background: var(--color-green-600); color: white; font-weight: 600; }
+  .semif-question { font-size: 1.2em; font-weight: 600; line-height: 1.35; text-wrap: balance; }
+  .semif-answers { display: grid; gap: 0.5em; grid-template-columns: repeat(auto-fit, minmax(13em, 1fr)); }
+  .semif-answers button { display: flex; gap: 0.6em; border: 1px solid rgb(0 0 0 / 0.15); border-radius: 0.6rem; padding: 0.6em 0.9em; text-align: left; transition: background 150ms, border-color 150ms, opacity 150ms; }
+  .semif-answers button b { color: var(--color-green-600); }
+  .semif-answers button:hover:not(:disabled) { border-color: var(--color-green-400); }
+  .semif-answers button:disabled { cursor: default; }
+  .semif-answers button[data-state='picked'] { border-color: var(--color-amber-400); background: rgb(251 191 36 / 0.15); }
+  .semif-answers button[data-state='right'] { border-color: var(--color-green-500); background: rgb(74 222 128 / 0.25); }
+  .semif-answers button[data-state='wrong'] { border-color: var(--color-red-400); background: rgb(248 113 113 / 0.2); }
+  .semif-answers button[data-state='gone'] { visibility: hidden; }
+  .semif-answers button[data-state='dim'] { opacity: 0.45; }
+  html.dark .semif-ladder li { background: rgb(255 255 255 / 0.07); color: var(--color-neutral-400); }
+  html.dark .semif-ladder li[data-state='won'] { background: rgb(74 222 128 / 0.18); color: inherit; }
+  html.dark .semif-ladder li[data-state='current'] { background: var(--color-green-600); color: white; }
+  html.dark .semif-answers button { border-color: rgb(255 255 255 / 0.18); }
+  html.dark .semif-answers button b { color: var(--color-green-400); }
+  @media (prefers-reduced-motion: reduce) { .semif-answers button { transition: none; } }
+</style>
+
+<script>
+  import { direct, subscribe } from './engine.js'
+  import { LADDER, QUESTIONS, money, tierFor } from './quiz.js'
+
+  const LIFELINES = { fifty: 1, ask: 2, skip: 3 }
+  const LETTERS = ['A', 'B', 'C', 'D']
+  const shuffle = (items) => items.map((item) => [Math.random(), item]).sort((a, b) => a[0] - b[0]).map(([, item]) => item)
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  for (const show of document.querySelectorAll('[data-semif-show]')) {
+    const $ = (selector) => show.querySelector(selector)
+    const answers = $('[data-answers]')
+    const audience = $('[data-audience]')
+    let game
+    let modelReady = false
+    const say = (text, kind = '') => {
+      $('[data-status]').textContent = text
+      $('[data-status]').dataset.kind = kind
+    }
+
+    const won = () => (game.level === 0 ? 0 : LADDER[game.level - 1])
+    const ifWrong = () => (game.level === LADDER.length - 1 ? 0 : Math.floor(won() / 2))
+
+    function draw() {
+      const pool = QUESTIONS[tierFor(game.level)].filter((question) => !game.used.has(question))
+      const fallback = Object.values(QUESTIONS).flat().filter((question) => !game.used.has(question))
+      const question = shuffle(pool.length ? pool : fallback)[0]
+      game.used.add(question)
+      const [text, correct, ...wrong] = question
+      game.question = { text, correct, options: shuffle([correct, ...wrong]) }
+      game.picked = null
+      game.audienceAsked = false
+    }
+
+    function renderLifelines() {
+      for (const [name, count] of Object.entries(LIFELINES)) {
+        const button = $(`[data-${name}]`)
+        const left = game.lifelines[name]
+        button.querySelector('[data-left]').textContent = `×${left}`
+        button.disabled = game.over || game.locked || left === 0 || (name === 'ask' && (!modelReady || game.audienceAsked))
+        button.title = name === 'ask' && !modelReady ? 'Load a model above to ask the audience' : `${left} of ${count} left`
+      }
+      $('[data-stop]').disabled = game.over || game.locked
+    }
+
+    function render() {
+      const { text, options } = game.question
+      $('[data-level]').textContent = `Question ${game.level + 1} of ${LADDER.length}`
+      $('[data-ladder]').querySelectorAll('li').forEach((item, index) => {
+        item.dataset.state = index < game.level ? 'won' : index === game.level ? 'current' : ''
+      })
+      $('[data-if-stop]').textContent = money(won())
+      $('[data-if-wrong]').textContent = money(ifWrong())
+      $('[data-if-right]').textContent = money(LADDER[game.level])
+      $('[data-question]').textContent = text
+      answers.replaceChildren(
+        ...options.map((option, index) => {
+          const button = document.createElement('button')
+          button.type = 'button'
+          button.dataset.option = option
+          button.innerHTML = `<b>${LETTERS[index]}</b><span></span>`
+          button.querySelector('span').textContent = option
+          button.addEventListener('click', () => pick(option))
+          return button
+        })
+      )
+      audience.hidden = true
+      $('[data-confirm]').hidden = true
+      renderLifelines()
+    }
+
+    function start() {
+      game = { level: 0, used: new Set(), lifelines: { ...LIFELINES }, over: false, locked: false }
+      $('[data-restart]').hidden = true
+      $('[data-lifelines]').hidden = false
+      draw()
+      render()
+      say(modelReady ? '🎤 Good luck! The audience is a language model; it can be very confident and very wrong.' : '🎤 Good luck! Load a model above to unlock the 📊 audience.')
+    }
+
+    function end(message, kind) {
+      game.over = true
+      answers.querySelectorAll('button').forEach((button) => (button.disabled = true))
+      $('[data-confirm]').hidden = true
+      $('[data-lifelines]').hidden = true
+      $('[data-restart]').hidden = false
+      say(message, kind)
+    }
+
+    function pick(option) {
+      if (game.over || game.locked) return
+      game.picked = option
+      answers.querySelectorAll('button').forEach((button) => {
+        if (button.dataset.state !== 'gone') button.dataset.state = button.dataset.option === option ? 'picked' : ''
+      })
+      $('[data-confirm]').hidden = false
+    }
+
+    async function confirm() {
+      const { correct } = game.question
+      game.locked = true
+      $('[data-confirm]').hidden = true
+      renderLifelines()
+      answers.querySelectorAll('button').forEach((button) => (button.disabled = true))
+      say('🥁 …')
+      await wait(900)
+      answers.querySelectorAll('button').forEach((button) => {
+        if (button.dataset.option === correct) button.dataset.state = 'right'
+        else if (button.dataset.option === game.picked) button.dataset.state = 'wrong'
+        else if (button.dataset.state !== 'gone') button.dataset.state = 'dim'
+      })
+      if (game.audienceAsked) {
+        game.audienceTotal = (game.audienceTotal ?? 0) + 1
+        if (game.audienceChoice === correct) game.audienceRight = (game.audienceRight ?? 0) + 1
+      }
+      const tally = game.audienceTotal ? ` The 🤖 audience was right ${game.audienceRight ?? 0} of ${game.audienceTotal} times.` : ''
+      if (game.picked !== correct) return end(`💥 Wrong! It was “${correct}”. You leave with ${money(ifWrong())}.${tally}`, 'error')
+      if (game.level === LADDER.length - 1) return end(`🏆 You won ${money(LADDER.at(-1))}! Silvio Santos would be proud.${tally}`, 'ok')
+      say(`🎉 Right! ${money(LADDER[game.level])} is yours.`, 'ok')
+      await wait(1400)
+      game.level += 1
+      game.locked = false
+      draw()
+      render()
+      say(`🎤 On to ${money(LADDER[game.level])}.`)
+    }
+
+    $('[data-yes]').addEventListener('click', confirm)
+    $('[data-no]').addEventListener('click', () => {
+      game.picked = null
+      $('[data-confirm]').hidden = true
+      answers.querySelectorAll('button').forEach((button) => {
+        if (button.dataset.state !== 'gone') button.dataset.state = ''
+      })
+    })
+
+    $('[data-fifty]').addEventListener('click', () => {
+      game.lifelines.fifty -= 1
+      const { correct } = game.question
+      const doomed = shuffle(game.question.options.filter((option) => option !== correct)).slice(0, 2)
+      answers.querySelectorAll('button').forEach((button) => {
+        if (doomed.includes(button.dataset.option)) {
+          button.dataset.state = 'gone'
+          button.disabled = true
+        }
+      })
+      if (doomed.includes(game.picked)) $('[data-no]').click()
+      say('✂️ Two wrong answers are gone.')
+      renderLifelines()
+    })
+
+    $('[data-skip]').addEventListener('click', () => {
+      game.lifelines.skip -= 1
+      draw()
+      render()
+      say('⏭️ Skipped. Same prize, new question.')
+    })
+
+    $('[data-stop]').addEventListener('click', () => end(`🛑 You stopped and take home ${money(won())}.`, 'ok'))
+
+    // A plateia vota só nas alternativas que ainda estão na tela.
+    $('[data-ask]').addEventListener('click', async () => {
+      game.lifelines.ask -= 1
+      game.audienceAsked = true
+      game.locked = true
+      renderLifelines()
+      const asked = game.question
+      const visible = [...answers.querySelectorAll('button')].filter((button) => button.dataset.state !== 'gone')
+      const options = visible.map((button) => button.dataset.option)
+      say('📊 The audience is voting…')
+      try {
+        const { probabilities, totalMs } = await direct({
+          state: 'A contestant on a TV quiz show asks the studio audience to help with a general knowledge question. Pick the answer that is factually correct.',
+          question: asked.text,
+          options,
+        })
+        if (game.question !== asked) return
+        const best = probabilities.indexOf(Math.max(...probabilities))
+        game.audienceChoice = options[best]
+        audience.replaceChildren(
+          ...options.flatMap((option, index) => {
+            const label = document.createElement('span')
+            label.innerHTML = `<b>${visible[index].querySelector('b').textContent}</b> <small></small>`
+            label.querySelector('small').textContent = option
+            const bar = document.createElement('div')
+            bar.className = 'semif-meter'
+            bar.innerHTML = `<i style="width:${Math.max(1, probabilities[index] * 100)}%"></i>`
+            const score = document.createElement('em')
+            score.textContent = `${Math.round(probabilities[index] * 100)}%`
+            if (index === best) score.className = 'semif-top'
+            return [label, bar, score]
+          })
+        )
+        audience.hidden = false
+        say(`📊 The audience voted in ${(totalMs / 1000).toFixed(2)} s. Trust it?`)
+      } catch (error) {
+        say(`❌ The audience went quiet: ${error.message}`, 'error')
+      } finally {
+        game.locked = false
+        renderLifelines()
+      }
+    })
+
+    $('[data-restart]').addEventListener('click', start)
+
+    subscribe(({ state }) => {
+      modelReady = state === 'ready'
+      if (game) renderLifelines()
+    })
+    start()
+  }
+</script>

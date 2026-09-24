@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { byNewest, formatDate, readingTime, tableOfContents } from '../src/lib/blog.js'
+import { byNewest, formatDate, readingTime, seriesOf, tableOfContents } from '../src/lib/blog.js'
 
 describe('tempo de leitura', () => {
   it('tem mínimo de um minuto', () => {
@@ -41,5 +41,23 @@ describe('ordenação e datas', () => {
 
   it('formata em inglês sem deslocar o dia pelo fuso horário', () => {
     expect(formatDate(new Date('2026-09-14'))).toBe('September 14, 2026')
+  })
+})
+
+describe('série', () => {
+  const post = (id, series, seriesPart, date = '2026-09-24') => ({ id, data: { series, seriesPart, pubDate: new Date(date) } })
+
+  it('post fora de série não tem partes', () => {
+    expect(seriesOf(post('a'), [post('a'), post('b', 'X', 1)])).toEqual([])
+  })
+
+  it('só a mesma série, na ordem das partes', () => {
+    const posts = [post('c', 'X', 3), post('other', 'Y', 1), post('a', 'X', 1), post('b', 'X', 2)]
+    expect(seriesOf(posts[0], posts).map((p) => p.id)).toEqual(['a', 'b', 'c'])
+  })
+
+  it('sem número de parte, vai para o fim, por data', () => {
+    const posts = [post('late', 'X', undefined, '2026-10-02'), post('early', 'X', undefined, '2026-10-01'), post('first', 'X', 1)]
+    expect(seriesOf(posts[0], posts).map((p) => p.id)).toEqual(['first', 'early', 'late'])
   })
 })
