@@ -2,6 +2,8 @@
 import Layout from '@/layouts/Layout.astro'
 import BlogPost from '@/components/blog/BlogPost.astro'
 import Callout from '@/components/blog/Callout.astro'
+import Wide from '@/components/blog/Wide.astro'
+import Embed from '@/components/blog/Embed.astro'
 import { getCollection, render } from 'astro:content'
 import { isVisible } from '@/lib/blog.js'
 
@@ -23,6 +25,6 @@ const { Content, headings } = await render(post)
   description={post.data.description}
 >
   <BlogPost post={post} headings={headings}>
-    <Content components={{ Callout }} />
+    <Content components={{ Callout, Wide, Embed }} />
   </BlogPost>
 </Layout>

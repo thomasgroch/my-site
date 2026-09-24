@@ -1,0 +1,192 @@
+---
+title: Kitchen sink
+description: Every text feature a post can use, in one place. A draft used to tune the reading typography; it never reaches production.
+pubDate: 2026-09-23
+draft: true
+tags:
+  - meta
+  - typography
+---
+
+This is the opening paragraph. It is where the reader decides whether to stay, so it deserves the same size as the rest of the body, never smaller. A good paragraph sits between 60 and 75 characters per line, with enough line height that the eye finds the start of the next line without effort.
+
+A second paragraph shows the rhythm between blocks. Text can be **bold**, *italic*, ***both***, ~~struck through~~, or `inline code`. Links look [like this](/blog), and external ones [like this](https://developer.mozilla.org/). HTML elements also work: <kbd>Cmd</kbd> + <kbd>K</kbd>, <mark>highlighted text</mark>, <abbr title="Cascading Style Sheets">CSS</abbr>, H<sub>2</sub>O and E = mc<sup>2</sup>.
+
+## Headings
+
+The `h2` above opens a section and appears in the table of contents.
+
+### A third-level heading
+
+Also listed in the contents, indented.
+
+#### A fourth-level heading
+
+Not in the contents. Useful for small subdivisions, and currently unstyled.
+
+## Lists
+
+Unordered:
+
+- First item
+- Second item, long enough to wrap onto a second line so we can check the hanging indent and the line height inside a list item
+  - Nested item
+  - Another nested item
+- Third item
+
+Ordered:
+
+1. Install the dependencies
+2. Run `npm run dev`
+3. Open the post
+
+Task list:
+
+- [x] Write the draft
+- [ ] Review the typography
+- [ ] Publish
+
+## Quotes
+
+> Programs must be written for people to read, and only incidentally for machines to execute.
+>
+> — <cite>Harold Abelson</cite>
+
+A quote with more than one paragraph and **formatting** inside:
+
+> First paragraph of the quote.
+>
+> Second paragraph, with `code` and a [link](/blog).
+
+## Code
+
+Fenced code gets syntax highlighting that follows the site theme. The header shows the language and a copy button:
+
+```ts
+type Post = { title: string; words: number }
+
+export function readingTime({ words }: Post): number {
+  return Math.max(1, Math.ceil(words / 220))
+}
+```
+
+With a file name, using `title="..."`:
+
+```js title="src/lib/blog.js"
+export const isVisible = ({ data }) => import.meta.env.DEV || !data.draft
+```
+
+Highlighted lines, using `{1,3-4}` after the language:
+
+```css {1,3-4}
+.post { font-size: clamp(1.0625rem, 0.9rem + 0.6vw, 1.25rem); }
+.post-content { line-height: 1.65; }
+.post-content p { font-weight: 400; }
+.post { max-width: 34em; }
+```
+
+Or with a comment inside the code:
+
+```js
+const a = 1
+const b = 2 // [!code highlight]
+const c = 3
+```
+
+Added and removed lines, with `// [!code ++]` and `// [!code --]`:
+
+```js
+export default defineConfig({
+  site: 'https://example.com', // [!code --]
+  site: 'https://thomasdev.xyz', // [!code ++]
+})
+```
+
+A long line, to check horizontal scroll:
+
+```bash
+npx astro build --verbose && node scripts/check-links.mjs --base https://thomasdev.xyz --timeout 30000
+```
+
+A `diff` block, colored by the grammar:
+
+```diff
+- .post-content { font-size: 1rem; }
++ .post-content { font-size: 1.1875rem; }
+```
+
+Plain text without a language:
+
+```
+No highlighting here.
+```
+
+## Callouts
+
+<Callout type="note">
+  A **note** for context the reader may want.
+</Callout>
+
+<Callout type="tip">
+  A **tip** with a shortcut or a better way.
+</Callout>
+
+<Callout type="warning">
+  A **warning** about something easy to get wrong.
+</Callout>
+
+<Callout type="danger">
+  A **danger** callout for things that break or lose data.
+</Callout>
+
+## Images
+
+A plain Markdown image, optimized by Astro:
+
+![Screenshot of the Forpix project](../../assets/projects/forpix/image.webp)
+
+With a caption, using HTML:
+
+<figure>
+  ![Screenshot of the Forpix project](../../assets/projects/forpix/image.webp)
+  <figcaption>A caption explains what the reader should notice.</figcaption>
+</figure>
+
+Wider than the text column, with `<Wide>`:
+
+<Wide>
+  ![Screenshot of the Forpix project](../../assets/projects/forpix/image.webp)
+</Wide>
+
+## Embeds
+
+An interactive demo in an iframe, with `<Embed>`. It loads lazily and can be `wide`:
+
+<Embed src="https://codepen.io/team/codepen/embed/PNaGbb?default-tab=result" title="CodePen demo" caption="Any page that allows embedding works: CodePen, a canvas demo, a page of your own." />
+
+## Tables
+
+| Property | Before | Now |
+| :--- | :---: | ---: |
+| Font size | 16px | 17–20px |
+| Line height | 1.625 | 1.65 |
+| Measure | 672px | 34em |
+
+## Disclosure
+
+<details>
+  <summary>Click to expand</summary>
+
+  Hidden content, useful for long logs, spoilers or optional detail.
+</details>
+
+## Footnotes
+
+Footnotes keep asides out of the main flow.[^1] You can have several.[^long]
+
+---
+
+The line above is a horizontal rule, a thematic break between parts of the post.
+
+[^1]: A short footnote.
+[^long]: A longer footnote, with `code` and a [link](/blog), to see how the footnote section handles wrapping text.

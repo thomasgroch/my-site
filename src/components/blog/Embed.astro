@@ -1,0 +1,16 @@
+---
+// Demo interativa num iframe (CodePen, canvas, página própria).
+// No MDX: <Embed src="https://..." title="O que a demo mostra" caption="..." wide />
+const { src, title, caption, ratio = '16 / 9', height, wide = false } = Astro.props
+---
+<figure class:list={['embed', { wide }]}>
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    allow="fullscreen; clipboard-write"
+    referrerpolicy="strict-origin-when-cross-origin"
+    style={height ? `height: ${height}` : `aspect-ratio: ${ratio}`}
+  ></iframe>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

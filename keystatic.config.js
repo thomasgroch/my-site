@@ -7,7 +7,39 @@
 // Fora do painel só fica o src/data/resume.json: o painel regravaria o
 // arquivo inteiro com apenas os campos que conhece.
 import { collection, config, fields, singleton } from '@keystatic/core'
-import { wrapper } from '@keystatic/core/content-components'
+import { block, mark, wrapper } from '@keystatic/core/content-components'
+import { createElement } from 'react'
+import { Icon } from '@keystar/ui/icon'
+import { highlighterIcon } from '@keystar/ui/icon/icons/highlighterIcon'
+import { keyboardIcon } from '@keystar/ui/icon/icons/keyboardIcon'
+import { listCollapseIcon } from '@keystar/ui/icon/icons/listCollapseIcon'
+import { quoteIcon } from '@keystar/ui/icon/icons/quoteIcon'
+import { subscriptIcon } from '@keystar/ui/icon/icons/subscriptIcon'
+import { superscriptIcon } from '@keystar/ui/icon/icons/superscriptIcon'
+import { wholeWordIcon } from '@keystar/ui/icon/icons/wholeWordIcon'
+
+// O editor MDX do Keystatic recusa tags HTML que não conhece ("Missing component
+// definition"). Registrar um componente com o mesmo nome da tag resolve: o
+// Astro renderiza nomes em minúsculas como HTML nativo, então o site não muda.
+const icon = (src) => createElement(Icon, { src })
+const htmlTags = {
+  kbd: mark({ label: 'Keyboard key', tag: 'kbd', icon: icon(keyboardIcon), schema: {} }),
+  mark: mark({ label: 'Highlight', tag: 'mark', icon: icon(highlighterIcon), schema: {} }),
+  sub: mark({ label: 'Subscript', tag: 'sub', icon: icon(subscriptIcon), schema: {} }),
+  sup: mark({ label: 'Superscript', tag: 'sup', icon: icon(superscriptIcon), schema: {} }),
+  abbr: mark({
+    label: 'Abbreviation',
+    tag: 'abbr',
+    icon: icon(wholeWordIcon),
+    schema: { title: fields.text({ label: 'Full form', validation: { length: { min: 1 } } }) },
+  }),
+  cite: mark({ label: 'Citation', tag: 'span', icon: icon(quoteIcon), schema: {} }),
+  figure: wrapper({ label: 'Figure', description: 'Image with a caption: add a line marked as Figure caption.', schema: {} }),
+  // Legenda e título ficam numa linha só, então o MDX os lê como inline.
+  figcaption: mark({ label: 'Figure caption', tag: 'small', icon: icon(quoteIcon), schema: {} }),
+  details: wrapper({ label: 'Details', description: 'Collapsible content: start with a line marked as Details summary.', schema: {} }),
+  summary: mark({ label: 'Details summary', tag: 'strong', icon: icon(listCollapseIcon), schema: {} }),
+}
 
 // Texto que o visitante lê: os dois idiomas são obrigatórios.
 const translated = (label, { multiline = false } = {}) =>
@@ -49,7 +81,9 @@ export default config({
           extension: 'mdx',
           options: { image: { directory: 'src/assets/blog', publicPath: '../../assets/blog/' } },
           components: {
-            // Mesmo componente que o layout do blog entrega ao MDX (Callout.astro).
+            ...htmlTags,
+            // Mesmos componentes que o layout do blog entrega ao MDX
+            // (src/components/blog, registrados em src/pages/blog/[slug].astro).
             Callout: wrapper({
               label: 'Callout',
               schema: {
@@ -63,6 +97,31 @@ export default config({
                   ],
                   defaultValue: 'note',
                 }),
+              },
+            }),
+            Wide: wrapper({
+              label: 'Wide',
+              description: 'Content wider than the text column, like a large screenshot.',
+              schema: {},
+            }),
+            Embed: block({
+              label: 'Embed',
+              description: 'Interactive demo in an iframe (CodePen, canvas, a page of your own).',
+              schema: {
+                src: fields.url({ label: 'URL', validation: { isRequired: true } }),
+                title: fields.text({ label: 'Title', description: 'What the demo shows, for screen readers.', validation: { length: { min: 1 } } }),
+                caption: fields.text({ label: 'Caption' }),
+                ratio: fields.select({
+                  label: 'Aspect ratio',
+                  options: [
+                    { label: '16:9', value: '16 / 9' },
+                    { label: '4:3', value: '4 / 3' },
+                    { label: '1:1', value: '1 / 1' },
+                  ],
+                  defaultValue: '16 / 9',
+                }),
+                height: fields.text({ label: 'Fixed height', description: 'CSS value such as 480px. Overrides the aspect ratio.' }),
+                wide: fields.checkbox({ label: 'Wide', description: 'Wider than the text column.' }),
               },
             }),
           },

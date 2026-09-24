@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import keystatic from '@keystatic/astro'
+import { shikiTransformers } from './src/lib/shiki.js'
 
 // O painel do Keystatic (/keystatic) grava direto nos arquivos de src/content
 // e só existe no `astro dev`. Suas rotas não são pré-renderizáveis, então
@@ -31,6 +32,7 @@ export default defineConfig({
     shikiConfig: {
       themes: { light: 'github-light', dark: 'github-dark' },
       defaultColor: false,
+      transformers: shikiTransformers,
     },
   },
   vite: {
