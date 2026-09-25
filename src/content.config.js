@@ -1,5 +1,5 @@
-// Coleções de conteúdo. Tudo é editável à mão ou pelo painel do Keystatic
-// (keystatic.config.js), que grava nesses mesmos arquivos. A exceção é o
+// Coleções de conteúdo. Tudo é editável à mão ou pelo painel do Sveltia CMS
+// (public/admin/config.yml), que grava nesses mesmos arquivos. A exceção é o
 // src/data/resume.json, no formato JSON Resume, editado só à mão.
 //
 // Os esquemas são o contrato do conteúdo: um campo faltando, uma URL malformada
@@ -13,7 +13,7 @@ import { defineCollection } from 'astro:content'
 import { file, glob } from 'astro/loaders'
 import { z } from 'astro/zod'
 
-// O Keystatic grava campo vazio como '' ou null. Os dois contam como ausente.
+// Campo vazio pode chegar como '' ou null. Os dois contam como ausente.
 const blank = (value) => (value === '' || value === null ? undefined : value)
 const optional = (schema) => z.preprocess(blank, schema.optional())
 
@@ -28,7 +28,7 @@ const projects = defineCollection({
     z.object({
       company: text,
       position: translated,
-      // Índice das chaves general.project.type_N. O seletor do Keystatic grava texto.
+      // Índice das chaves general.project.type_N. O seletor do painel grava texto.
       type: z.coerce.number().int().min(0).max(3),
       startDate: z.string().regex(/^\d{4}$/, 'use só o ano, com quatro dígitos'),
       website: optional(url),

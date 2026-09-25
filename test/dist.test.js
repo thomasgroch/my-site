@@ -184,7 +184,8 @@ describe('blog', () => {
     expect(existsSync(`${DIST}/blog/hello-world/index.html`)).toBe(process.env.BLOG_DRAFTS === '1')
   })
 
-  it('o painel do Keystatic não é publicado', () => {
-    expect(existsSync(`${DIST}/keystatic`)).toBe(false)
+  it('o painel do Sveltia é estático, fora dos buscadores', () => {
+    expect(existsSync(`${DIST}/admin/config.yml`)).toBe(true)
+    expect(readFileSync(`${DIST}/admin/index.html`, 'utf8')).toContain('<meta name="robots" content="noindex" />')
   })
 })

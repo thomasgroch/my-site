@@ -12,10 +12,19 @@ As decisões que o código sozinho não explica. O que é e onde fica está no R
 
 - Tudo passa por coleções do Astro (`src/content.config.js`). O esquema é o contrato: se o conteúdo estiver inválido, o build quebra.
 - Todo texto que o visitante lê vem como `{ pt, en }`, com os dois idiomas obrigatórios. Não existe fallback de idioma.
-- As imagens ficam em `src/assets/<coleção>/<entrada>/<campo>.<ext>`, o mesmo caminho que o Keystatic grava. Com isso, editar à mão ou pelo painel dá o mesmo resultado.
+- As imagens ficam em `src/assets/<coleção>/<entrada>/`, com caminho relativo à entrada (`../../assets/...`), que é o que o `image()` do Astro espera. O painel grava na mesma pasta, com o nome do arquivo enviado.
 - Os conteúdos de arquivo único (`meta.yaml` e o `basics` do `resume.json`) viram uma entrada só, lida com `getEntry`. No `/meta`, a ordem dos grupos é a ordem da lista.
-- O `src/data/resume.json` segue o formato [JSON Resume](https://jsonresume.org/) e é a fonte da identidade (nome, cargo e redes). A coleção `resume` lê esse arquivo sem copiá-lo. Ele fica fora do Keystatic porque o painel regravaria o arquivo inteiro só com os campos que conhece.
-- O Keystatic roda em modo `local` e só no `astro dev`: as rotas dele não são pré-renderizáveis. O build continua estático, sem adapter e sem React.
+- O `src/data/resume.json` segue o formato [JSON Resume](https://jsonresume.org/) e é a fonte da identidade (nome, cargo e redes). A coleção `resume` lê esse arquivo sem copiá-lo. Ele fica fora do painel porque seria regravado inteiro só com os campos que o painel conhece.
+- O painel é o [Sveltia CMS](https://sveltiacms.app/), uma página estática em `public/admin/` que carrega o script do unpkg, com versão fixa. A configuração (`public/admin/config.yml`) repete os esquemas de `src/content.config.js`: mudou um, muda o outro. O corpo dos posts só tem o modo raw, porque o rich text reescreveria o MDX.
+
+## Painel de conteúdo
+
+- **No site** (`/admin/`): login com GitHub pelo OAuth do Netlify, o padrão do Sveltia. Cada "Salvar" é um commit na `main` com mensagem `content(<coleção>): ...`, e o deploy passa pelo `npm run verify` como qualquer outro: conteúdo inválido cancela a publicação. Também aceita login com um token do GitHub (fine-grained, só este repositório, Contents: read and write).
+- **No `npm run dev`**: `http://localhost:3000/admin/index.html` num navegador Chromium, "Work with Local Repository", e escolha a pasta do projeto. Grava direto nos arquivos; o commit é seu.
+- **Configurar o OAuth**, uma vez:
+  1. No GitHub, em Settings > Developer settings > OAuth Apps > New OAuth App: homepage `https://thomasdev.xyz` e callback `https://api.netlify.com/auth/done`. Gere um client secret.
+  2. No Netlify, no site, em Project configuration > Access & security > OAuth > Install provider: GitHub, com o client ID e o secret do passo anterior.
+  3. O login só funciona no domínio do site (`site_id` é o hostname). Em `localhost`, use o repositório local.
 
 ## Idiomas
 

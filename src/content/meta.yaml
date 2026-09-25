@@ -77,13 +77,13 @@ groups:
           pt: "Gera o feed RSS do blog no build."
           en: "Generates the blog's RSS feed at build time."
       - name:
-          pt: "Keystatic"
-          en: "Keystatic"
-        pkg: "@keystatic/core"
-        url: "https://keystatic.com/"
+          pt: "Sveltia CMS"
+          en: "Sveltia CMS"
+        version: "0.221.0"
+        url: "https://sveltiacms.app/"
         note:
-          pt: "Painel de edição que grava nos arquivos do repositório. Só existe em desenvolvimento: nem ele nem o React que ele usa são publicados."
-          en: "Editing panel that writes to the repository files. It only exists in development: neither it nor the React it uses is published."
+          pt: "Painel de edição em /admin, carregado só nessa página. Cada alteração vira um commit no repositório, e o site é reconstruído a partir dele."
+          en: "Editing panel at /admin, loaded only on that page. Every change becomes a commit in the repository, and the site is rebuilt from it."
       - name:
           pt: "Node.js"
           en: "Node.js"

@@ -1,0 +1,202 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.221.0/schema/sveltia-cms.json
+# Painel de conteúdo (Sveltia CMS), em /admin/.
+#
+# - No site publicado: login com GitHub pelo OAuth do Netlify (base_url padrão
+#   do Sveltia). Cada "Salvar" vira um commit na main, e o deploy passa pelo
+#   `npm run verify` como qualquer outro.
+# - No `npm run dev`: abra http://localhost:3000/admin/index.html num navegador
+#   Chromium e escolha "Work with Local Repository". Ele grava direto nos
+#   arquivos; o commit continua sendo seu.
+#
+# Os esquemas do Astro (src/content.config.js) são o contrato: o que o painel
+# gravar de errado derruba o build. Fora do painel só fica o
+# src/data/resume.json, que ele regravaria só com os campos que conhece.
+#
+# Imagens em src/assets/<coleção>/<entrada>/, caminho relativo à entrada, que é
+# o que o image() do Astro espera.
+
+backend:
+  name: github
+  repo: thomasgroch/my-site
+  branch: main
+  commit_messages:
+    create: 'content({{collection}}): cria {{slug}}'
+    update: 'content({{collection}}): atualiza {{slug}}'
+    delete: 'content({{collection}}): remove {{slug}}'
+    uploadMedia: 'content: envia {{path}}'
+    deleteMedia: 'content: remove {{path}}'
+
+app_title: thomasdev.xyz
+site_url: https://thomasdev.xyz
+logo:
+  src: /favicon.svg
+
+media_folder: /src/assets
+public_folder: /src/assets
+
+# Nomes de arquivo como o site já usa: minúsculas, sem acento.
+slug:
+  encoding: ascii
+  clean_accents: true
+
+output:
+  # Campo opcional vazio sai do arquivo, em vez de virar '' ou null.
+  omit_empty_optional_fields: true
+  # Os YAML existentes têm todas as strings entre aspas duplas.
+  yaml:
+    quote: double
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Post
+    icon: article
+    description: Only in English. Drafts show up in `npm run dev` and stay out of the production build.
+    folder: src/content/blog
+    extension: mdx
+    format: frontmatter
+    identifier_field: title
+    slug:
+      template: '{{title}}'
+      editable: [create]
+    summary: '{{title}}'
+    sortable_fields: [pubDate, title]
+    view_filters:
+      - { label: Drafts, field: draft, pattern: true }
+      - { label: Published, field: draft, pattern: false }
+    preview_path: blog/{{slug}}
+    media_folder: ../../assets/blog/{{filename}}
+    public_folder: ../../assets/blog/{{filename}}
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Description, widget: text }
+      - { name: pubDate, label: Published, widget: datetime, type: date, format: YYYY-MM-DD, default: '{{now}}' }
+      - { name: updatedDate, label: Updated, widget: datetime, type: date, format: YYYY-MM-DD, required: false }
+      - { name: draft, label: Draft, widget: boolean, default: true, hint: Drafts show up in dev and stay out of the production build. }
+      - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string }, required: false }
+      - { name: series, label: Series, widget: string, required: false, hint: Posts with the same series name link to each other. }
+      - { name: seriesPart, label: Part, widget: number, value_type: int, min: 1, required: false, hint: 'Position in the series, starting at 1.' }
+      - { name: cover, label: Cover, widget: image, required: false }
+      - { name: coverAlt, label: Cover alt text, widget: string, required: false }
+      # Só o modo raw: o rich text reescreveria o MDX (imports e componentes).
+      - name: body
+        label: Content
+        widget: richtext
+        modes: [raw]
+        hint: >-
+          MDX. Components available in every post:
+          `<Callout type="note|tip|warning|danger">…</Callout>`,
+          `<Wide>…</Wide>` and
+          `<Embed src="https://…" title="What it shows" caption="…" wide />`.
+
+  - name: projects
+    label: Projetos
+    label_singular: Projeto
+    icon: work
+    folder: src/content/projects
+    extension: yaml
+    format: yaml
+    identifier_field: company
+    slug: '{{company}}'
+    summary: '{{company}} · {{startDate}}'
+    sortable_fields: [startDate, company, order]
+    media_folder: ../../assets/projects/{{filename}}
+    public_folder: ../../assets/projects/{{filename}}
+    fields:
+      - { name: company, label: Empresa, widget: string }
+      - name: position
+        label: Cargo
+        widget: object
+        fields:
+          - { name: pt, label: Português, widget: string }
+          - { name: en, label: English, widget: string }
+      # O valor é o índice das chaves general.project.type_N.
+      - name: type
+        label: Tipo
+        widget: select
+        default: '1'
+        options:
+          - { label: Acadêmico, value: '0' }
+          - { label: Profissional, value: '1' }
+          - { label: Freelancer, value: '2' }
+          - { label: Pessoal, value: '3' }
+      - { name: startDate, label: Ano de início, widget: string, pattern: ['^\d{4}$', 'Use só o ano, com quatro dígitos'] }
+      - { name: website, label: Site, widget: string, type: url, required: false }
+      - { name: image, label: Imagem, widget: image, required: false }
+      - name: summary
+        label: Resumo
+        widget: object
+        fields:
+          - { name: pt, label: Português, widget: text }
+          - { name: en, label: English, widget: text }
+      - { name: order, label: Ordem, widget: number, value_type: int, default: 0, required: false, hint: 'Desempate entre projetos do mesmo ano: menor aparece antes.' }
+
+  - name: stack
+    label: Stack
+    icon: layers
+    folder: src/content/stack
+    extension: yaml
+    format: yaml
+    identifier_field: name
+    slug: '{{name}}'
+    summary: '{{name}} · {{group}}'
+    sortable_fields: [name, group, order]
+    view_groups:
+      - { label: Grupo, field: group }
+    media_folder: ../../assets/stack/{{filename}}
+    public_folder: ../../assets/stack/{{filename}}
+    fields:
+      - { name: name, label: Nome, widget: string }
+      - { name: group, label: Grupo, widget: select, default: misc, options: [back, front, database, infra, misc, history] }
+      - { name: href, label: Link, widget: string, type: url }
+      - { name: logo, label: Logo, widget: image }
+      - { name: order, label: Ordem, widget: number, value_type: int, default: 0, required: false }
+
+singletons:
+  - name: meta
+    label: Colofão (/meta)
+    icon: info
+    file: src/content/meta.yaml
+    format: yaml
+    fields:
+      - name: groups
+        label: Grupos
+        label_singular: Grupo
+        widget: list
+        root: true
+        hint: Aparecem nesta ordem.
+        summary: '{{title.pt}}'
+        fields:
+          - name: title
+            label: Título
+            widget: object
+            fields:
+              - { name: pt, label: Português, widget: string }
+              - { name: en, label: English, widget: string }
+          - name: intro
+            label: Introdução
+            widget: object
+            fields:
+              - { name: pt, label: Português, widget: text }
+              - { name: en, label: English, widget: text }
+          - name: items
+            label: Itens
+            label_singular: Item
+            widget: list
+            summary: '{{name.pt}}'
+            fields:
+              - name: name
+                label: Nome
+                widget: object
+                fields:
+                  - { name: pt, label: Português, widget: string }
+                  - { name: en, label: English, widget: string }
+              - { name: pkg, label: Pacote npm, widget: string, required: false, hint: A versão é lida do package-lock.json no build. }
+              - { name: version, label: Versão fixa, widget: string, required: false, hint: Só para o que não é pacote npm. }
+              - { name: url, label: Link, widget: string, type: url }
+              - name: note
+                label: Nota
+                widget: object
+                fields:
+                  - { name: pt, label: Português, widget: text }
+                  - { name: en, label: English, widget: text }
