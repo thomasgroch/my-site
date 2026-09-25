@@ -2,8 +2,10 @@
 # Painel de conteúdo (Sveltia CMS), em /admin/.
 #
 # - No site publicado: login com GitHub pelo OAuth do Netlify (base_url padrão
-#   do Sveltia). Cada "Salvar" vira um commit na main, e o deploy passa pelo
-#   `npm run verify` como qualquer outro.
+#   do Sveltia). Posts passam pelo Editorial Workflow: cada um vira um branch
+#   com PR, e o deploy preview do Netlify mostra os rascunhos (BLOG_DRAFTS=1,
+#   netlify.toml). Publicar é o merge. O resto salva direto na main. Todo
+#   deploy passa pelo `npm run verify`.
 # - No `npm run dev`: abra http://localhost:3000/admin/index.html num navegador
 #   Chromium e escolha "Work with Local Repository". Ele grava direto nos
 #   arquivos; o commit continua sendo seu.
@@ -13,7 +15,7 @@
 # src/data/resume.json, que ele regravaria só com os campos que conhece.
 #
 # Imagens em src/assets/<coleção>/<entrada>/, caminho relativo à entrada, que é
-# o que o image() do Astro espera.
+# o que o image() do Astro espera. O preview usa public/admin/preview.css.
 
 backend:
   name: github
@@ -39,9 +41,17 @@ slug:
   encoding: ascii
   clean_accents: true
 
+# Textos do site: pt e en lado a lado, um arquivo por idioma.
+i18n:
+  structure: multiple_files
+  locales: [pt, en]
+  default_locale: pt
+
 output:
-  # Campo opcional vazio sai do arquivo, em vez de virar '' ou null.
-  omit_empty_optional_fields: true
+  # Campo vazio fica como '': os esquemas tratam '' como ausente, e os textos
+  # do site precisam da chave, mesmo vazia (o tradutor devolve o nome da chave
+  # quando ela falta).
+  omit_empty_optional_fields: false
   # Os YAML existentes têm todas as strings entre aspas duplas.
   yaml:
     quote: double
@@ -51,7 +61,11 @@ collections:
     label: Blog
     label_singular: Post
     icon: article
-    description: Only in English. Drafts show up in `npm run dev` and stay out of the production build.
+    description: >-
+      Only in English. Each post in progress gets a branch, a pull request and a
+      Netlify deploy preview that shows drafts. Publishing merges it. `draft: true`
+      keeps a merged post out of production.
+    publish_mode: editorial_workflow
     folder: src/content/blog
     extension: mdx
     format: frontmatter
@@ -59,11 +73,18 @@ collections:
     slug:
       template: '{{title}}'
       editable: [create]
-    summary: '{{title}}'
-    sortable_fields: [pubDate, title]
+    summary: "{{draft | ternary('📝 ', '')}}{{title}}"
+    sortable_fields:
+      fields: [pubDate, title]
+      default: { field: pubDate, direction: descending }
     view_filters:
       - { label: Drafts, field: draft, pattern: true }
       - { label: Published, field: draft, pattern: false }
+    view_groups:
+      groups:
+        - { name: series, label: Series, field: series }
+        - { name: status, label: Draft, field: draft }
+    thumbnail: cover
     preview_path: blog/{{slug}}
     media_folder: ../../assets/blog/{{filename}}
     public_folder: ../../assets/blog/{{filename}}
@@ -89,6 +110,9 @@ collections:
           `<Wide>…</Wide>` and
           `<Embed src="https://…" title="What it shows" caption="…" wide />`.
 
+  - divider: true
+    name: portfolio
+
   - name: projects
     label: Projetos
     label_singular: Projeto
@@ -98,8 +122,11 @@ collections:
     format: yaml
     identifier_field: company
     slug: '{{company}}'
-    summary: '{{company}} · {{startDate}}'
-    sortable_fields: [startDate, company, order]
+    summary: '{{startDate}} · {{company}}'
+    sortable_fields:
+      fields: [startDate, company, order]
+      default: { field: startDate, direction: descending }
+    thumbnail: image
     media_folder: ../../assets/projects/{{filename}}
     public_folder: ../../assets/projects/{{filename}}
     fields:
@@ -139,10 +166,15 @@ collections:
     format: yaml
     identifier_field: name
     slug: '{{name}}'
-    summary: '{{name}} · {{group}}'
-    sortable_fields: [name, group, order]
+    summary: '{{name}}'
+    sortable_fields:
+      fields: [name, group, order]
+      default: { field: order }
     view_groups:
-      - { label: Grupo, field: group }
+      groups:
+        - { name: group, label: Grupo, field: group }
+      default: group
+    thumbnail: logo
     media_folder: ../../assets/stack/{{filename}}
     public_folder: ../../assets/stack/{{filename}}
     fields:
@@ -151,6 +183,81 @@ collections:
       - { name: href, label: Link, widget: string, type: url }
       - { name: logo, label: Logo, widget: image }
       - { name: order, label: Ordem, widget: number, value_type: int, default: 0, required: false }
+
+  - divider: true
+    name: site
+
+  - name: texts
+    label: Textos do site
+    icon: translate
+    description: Interface texts and bio from src/locales, Portuguese and English side by side. New keys go in the JSON files and here.
+    format: json
+    i18n: true
+    files:
+      - name: general
+        label: Geral
+        file: src/locales/general.{{locale}}.json
+        i18n: true
+        fields:
+          - { name: site_name, widget: string, i18n: true }
+          - { name: meta_description_home, widget: string, i18n: true }
+          - { name: meta_description_stack, widget: string, i18n: true }
+          - { name: meta_description_projects, widget: text, i18n: true }
+          - { name: meta_description_contact, widget: string, i18n: true }
+          - { name: meta_title, widget: string, i18n: true }
+          - { name: meta_intro, widget: text, i18n: true }
+          - { name: meta_description_meta, widget: text, i18n: true }
+          - { name: skip_to_content, widget: string, i18n: true }
+          - { name: theme_toggle, widget: string, i18n: true }
+          - { name: language, widget: string, i18n: true }
+          - { name: nav_about, widget: string, i18n: true }
+          - { name: nav_stack, widget: string, i18n: true }
+          - { name: nav_projects, widget: string, i18n: true }
+          - { name: nav_contact, widget: string, i18n: true }
+          - { name: nav_blog, widget: string, i18n: true }
+          - { name: nav_open_menu, widget: string, i18n: true }
+          - { name: role_profile, widget: string, i18n: true }
+          - { name: profile_description, widget: text, i18n: true }
+          - { name: stack_intro, widget: text, i18n: true }
+          - { name: stack_back, widget: string, i18n: true }
+          - { name: stack_front, widget: string, i18n: true }
+          - { name: stack_db, widget: string, i18n: true }
+          - { name: stack_infra, widget: string, i18n: true }
+          - { name: stack_misc, widget: string, i18n: true }
+          - { name: stack_history, widget: string, i18n: true }
+          - { name: stack_desc_back, widget: string, i18n: true, required: false }
+          - { name: stack_desc_front, widget: text, i18n: true }
+          - { name: stack_desc_db, widget: string, i18n: true, required: false }
+          - { name: stack_desc_infra, widget: text, i18n: true }
+          - { name: stack_desc_misc, widget: text, i18n: true }
+          - { name: stack_note, widget: text, i18n: true }
+          - { name: stack_history_description, widget: text, i18n: true }
+          - name: project
+            widget: object
+            i18n: true
+            fields:
+              - { name: type_0, widget: string, i18n: true }
+              - { name: type_1, widget: string, i18n: true }
+              - { name: type_2, widget: string, i18n: true }
+              - { name: type_3, widget: string, i18n: true }
+          - { name: nothing_here, widget: string, i18n: true }
+          - { name: goto_site, widget: string, i18n: true }
+          - { name: footer_build_with_node, widget: string, i18n: true }
+          - { name: footer_source, widget: string, i18n: true }
+      - name: contact
+        label: Formulário de contato
+        file: src/locales/contact.{{locale}}.json
+        i18n: true
+        fields:
+          - { name: name, widget: string, i18n: true }
+          - { name: email, widget: string, i18n: true }
+          - { name: telephone, widget: string, i18n: true }
+          - { name: city, widget: string, i18n: true }
+          - { name: help, widget: string, i18n: true }
+          - { name: optional, widget: string, i18n: true }
+          - { name: span_message, widget: text, i18n: true }
+          - { name: submit, widget: string, i18n: true }
+          - { name: sending, widget: string, i18n: true }
 
 singletons:
   - name: meta

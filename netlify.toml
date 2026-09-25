@@ -11,6 +11,11 @@
   # Astro 7 exige Node 22.12+.
   NODE_VERSION = "22"
 
+# Deploy preview (PR, inclusive os que o painel abre para cada post): mostra
+# os rascunhos, para revisar o post antes do merge. Produção continua sem eles.
+[context.deploy-preview.environment]
+  BLOG_DRAFTS = "1"
+
 [functions]
   directory = "functions/"
   node_bundler = "esbuild"

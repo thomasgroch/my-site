@@ -19,7 +19,11 @@ As decisões que o código sozinho não explica. O que é e onde fica está no R
 
 ## Painel de conteúdo
 
-- **No site** (`/admin/`): login com GitHub pelo OAuth do Netlify, o padrão do Sveltia. Cada "Salvar" é um commit na `main` com mensagem `content(<coleção>): ...`, e o deploy passa pelo `npm run verify` como qualquer outro: conteúdo inválido cancela a publicação. Também aceita login com um token do GitHub (fine-grained, só este repositório, Contents: read and write).
+- **No site** (`/admin/`): login com GitHub pelo OAuth do Netlify, o padrão do Sveltia. Também aceita um token do GitHub (fine-grained, só este repositório, com Contents e Pull requests em read and write).
+- **Posts passam pelo Editorial Workflow**: salvar cria um branch e um PR, e o Netlify gera um deploy preview com os rascunhos visíveis (`BLOG_DRAFTS=1` no contexto `deploy-preview` do `netlify.toml`). Publicar é o merge, feito pelo painel. Depois do merge, `draft: true` ainda segura o post fora de produção.
+- **O resto salva direto na `main`**, com mensagem `content(<coleção>): ...`. Todo deploy passa pelo `npm run verify`: conteúdo inválido cancela a publicação.
+- **Textos do site**: `src/locales/*.json` aparece no painel com pt e en lado a lado. O painel só grava os campos que conhece, então chave nova no JSON precisa do campo em `public/admin/config.yml`, na mesma ordem. O `test/admin.test.js` confere isso.
+- **Preview**: `public/admin/preview.css` imita a tipografia dos posts. Componentes MDX aparecem como texto; o post de verdade está no deploy preview.
 - **No `npm run dev`**: `http://localhost:3000/admin/index.html` num navegador Chromium, "Work with Local Repository", e escolha a pasta do projeto. Grava direto nos arquivos; o commit é seu.
 - **Configurar o OAuth**, uma vez:
   1. No GitHub, em Settings > Developer settings > OAuth Apps > New OAuth App: homepage `https://thomasdev.xyz` e callback `https://api.netlify.com/auth/done`. Gere um client secret.

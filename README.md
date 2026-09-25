@@ -24,7 +24,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 | Páginas | `src/pages/` (wrappers por idioma) e `src/components/routes/` (conteúdo) |
 | Blog (só em inglês) | posts MDX em `src/content/blog/`, páginas em `src/pages/blog/`, feed em `/rss.xml`. `draft: true` fica fora do build |
 | Esquemas do conteúdo | `src/content.config.js`: texto sempre em `{ pt, en }`; conteúdo inválido quebra o build |
-| Painel de conteúdo | Sveltia CMS em `/admin/` (`public/admin/config.yml`). No site, login com GitHub e cada "Salvar" é um commit; no `npm run dev`, grava direto nos arquivos. Configuração em `docs/arquitetura.md` |
+| Painel de conteúdo | Sveltia CMS em `/admin/` (`public/admin/config.yml`). No site, login com GitHub: posts viram PR com deploy preview dos rascunhos, o resto é commit direto; no `npm run dev`, grava nos arquivos. Configuração em `docs/arquitetura.md` |
 | Imagens | `src/assets/<coleção>/<entrada>/`, otimizadas pelo Astro no build |
 | Colofão em `/meta` | `src/content/meta.yaml`, com as versões lidas do `package-lock.json` no build |
 | Marca | monograma "TD" em `src/components/Monogram.astro`, `public/favicon.svg`, `public/og.png` |
