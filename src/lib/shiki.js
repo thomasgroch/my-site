@@ -6,6 +6,7 @@ import {
 
 // Cabeçalho dos blocos de código: nome do arquivo (```ts title="blog.js") ou a
 // linguagem, mais o botão de copiar. O clique é tratado em BlogPost.astro.
+// Blocos ```mermaid saem como diagrama, sem cabeçalho.
 function transformerCodeHeader() {
   return {
     name: 'code-header',
@@ -16,6 +17,12 @@ function transformerCodeHeader() {
       const title = this.options.meta?.__raw?.match(/title="([^"]+)"/)?.[1]
       const label = title ?? (lang && lang !== 'plaintext' && lang !== 'text' ? lang : '')
       const el = (tagName, properties, children = []) => ({ type: 'element', tagName, properties, children })
+      // ```mermaid vira diagrama no navegador (BlogPost.astro). O fonte fica no
+      // HTML como texto: é o que aparece sem JavaScript e no RSS.
+      if (lang === 'mermaid') {
+        root.children = [el('pre', { className: ['mermaid'], 'data-mermaid': this.source }, [{ type: 'text', value: this.source }])]
+        return
+      }
       root.children = [
         el('div', { className: ['code-block'] }, [
           el('div', { className: ['code-header'] }, [

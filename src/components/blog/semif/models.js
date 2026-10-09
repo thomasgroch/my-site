@@ -26,6 +26,18 @@ export const MODELS = {
     labelBase: 32,
     notice: '🏋️ The heavy one. Needs several GB of free GPU memory and storage.',
   },
+  // Outro motor (laya-worker.js): um encoder treinado só para decidir, na
+  // exportação ONNX da onnx-community. Não gera texto.
+  'laya-multilingual': {
+    name: 'Laya multilingual',
+    size: '678 MB',
+    bytes: 678_000_000,
+    runtime: 'laya',
+    page: 'https://huggingface.co/onnx-community/laya-multilingual-ONNX',
+    repo: 'onnx-community/laya-multilingual-ONNX',
+    revision: '46b77bbf5642fec5f14e540570228a8cbe8ab81f',
+    notice: '🎼 Not an LLM: an encoder trained only to decide. Fast, but it cannot write text.',
+  },
 }
 
 export const isMobileDevice = () =>

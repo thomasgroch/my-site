@@ -63,7 +63,7 @@ import { LADDER, money } from './quiz.js'
 </style>
 
 <script>
-  import { direct, subscribe } from './engine.js'
+  import { calibrated, subscribe } from './engine.js'
   import { LADDER, QUESTIONS, money, tierFor } from './quiz.js'
 
   const LIFELINES = { fifty: 1, ask: 2, skip: 3 }
@@ -233,10 +233,12 @@ import { LADDER, money } from './quiz.js'
       const options = visible.map((button) => button.dataset.option)
       say('📊 The audience is voting…')
       try {
-        const { probabilities, totalMs } = await direct({
+        const { probabilities, totalMs } = await calibrated({
           state: 'A contestant on a TV quiz show asks the studio audience to help with a general knowledge question. Pick the answer that is factually correct.',
           question: asked.text,
           options,
+          // Sem a pergunta, sobra só o viés de posição (engine.js).
+          neutral: { question: 'N/A' },
         })
         if (game.question !== asked) return
         const best = probabilities.indexOf(Math.max(...probabilities))

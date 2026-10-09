@@ -33,6 +33,17 @@
   .semif-status[data-kind='ok'] { color: var(--color-green-700); }
   .semif-status[data-kind='error'] { color: var(--color-red-600); }
 
+  /* Jogos em canvas (Pac-Man, cobrinha) e o direcional para toque. */
+  .semif-arcade { display: flex; justify-content: center; overflow: hidden; border-radius: 0.6rem; background: #070b14; padding: 0.5em 0; }
+  .semif-arcade canvas { display: block; touch-action: none; border-radius: 0 !important; }
+  .semif-pad { display: none; grid-template-columns: repeat(3, 3.2em); grid-template-areas: '. up .' 'left down right'; justify-content: center; gap: 0.35em; }
+  .semif-pad button { justify-content: center; padding: 0.6em 0; font-size: 1.1em; touch-action: manipulation; }
+  .semif-pad [data-dir='up'] { grid-area: up; }
+  .semif-pad [data-dir='left'] { grid-area: left; }
+  .semif-pad [data-dir='down'] { grid-area: down; }
+  .semif-pad [data-dir='right'] { grid-area: right; }
+  @media (pointer: coarse) { .semif-pad { display: grid; } }
+
   html.dark .semif-card, html.dark .semif-btn.semif-ghost { border-color: rgb(255 255 255 / 0.15); }
   html.dark .semif-btn.semif-ghost:hover:not(:disabled), html.dark .semif-stats div { background: rgb(255 255 255 / 0.06); }
   html.dark .semif-meter { background: rgb(255 255 255 / 0.1); }
