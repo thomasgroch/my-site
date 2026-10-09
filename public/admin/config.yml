@@ -94,6 +94,7 @@ collections:
       - { name: pubDate, label: Published, widget: datetime, type: date, format: YYYY-MM-DD, default: '{{now}}' }
       - { name: updatedDate, label: Updated, widget: datetime, type: date, format: YYYY-MM-DD, required: false }
       - { name: draft, label: Draft, widget: boolean, default: true, hint: Drafts show up in dev and stay out of the production build. }
+      - { name: lang, label: Language, widget: select, options: [en, pt], default: en, hint: 'Language of the text. Posts in pt get an audio narration (npm run narrate).' }
       - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string }, required: false }
       - { name: series, label: Series, widget: string, required: false, hint: Posts with the same series name link to each other. }
       - { name: seriesPart, label: Part, widget: number, value_type: int, min: 1, required: false, hint: 'Position in the series, starting at 1.' }
