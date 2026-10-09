@@ -1,5 +1,5 @@
 ---
-// Escolha e carga do modelo. Um por página: o laboratório e o jogo usam o
+// Escolha, carga e troca do modelo. Um por vez: o laboratório e o jogo usam o
 // mesmo (engine.js). Com prefer="fast", começa no menor modelo em qualquer
 // aparelho: no Pac-Man, latência importa mais que acerto.
 import Styles from './Styles.astro'
@@ -30,7 +30,7 @@ const { prefer } = Astro.props
 
 <script>
   import { MODELS, recommendedModel } from './models.js'
-  import { load, seconds, subscribe } from './engine.js'
+  import { load, seconds, status, subscribe } from './engine.js'
 
   for (const card of document.querySelectorAll('[data-semif-loader]')) {
     const $ = (selector) => card.querySelector(selector)
@@ -40,36 +40,33 @@ const { prefer } = Astro.props
       $('[data-status]').textContent = text
       $('[data-status]').dataset.kind = kind
     }
+    // Dá para trocar de modelo sem recarregar a página: o botão só trava
+    // durante a carga e enquanto o modelo escolhido já é o que está carregado.
     const render = () => {
       const model = MODELS[select.value]
+      const loading = status.state === 'loading'
+      const current = status.state === 'ready' && status.modelId === select.value
       $('[data-notice]').textContent = model.notice
-      button.textContent = `⬇️ Load ${model.name} (${model.size})`
+      select.disabled = loading || !navigator.gpu
+      button.disabled = loading || current || !navigator.gpu
+      button.textContent = loading ? '⏳ Loading…' : current ? '✅ Ready' : `${status.state === 'ready' ? '🔁 Switch to' : '⬇️ Load'} ${model.name} (${model.size})`
     }
 
     select.value = card.dataset.prefer === 'fast' ? 'qwen3-0.6b' : recommendedModel()
     select.addEventListener('change', render)
-    render()
 
-    if (!navigator.gpu) {
-      button.disabled = true
-      say('❌ This browser has no WebGPU, so the model cannot load.', 'error')
-    }
+    if (!navigator.gpu) say('❌ This browser has no WebGPU, so the model cannot load.', 'error')
 
     subscribe(({ state, name, error }) => {
-      select.disabled = button.disabled = state === 'loading' || state === 'ready' || !navigator.gpu
-      if (state === 'loading') button.textContent = '⏳ Loading…'
-      if (state === 'ready') {
-        button.textContent = '✅ Ready'
-        say(`✅ ${name} is loaded on your GPU. Scroll down and try it.`, 'ok')
-      }
-      if (state === 'error') {
-        render()
-        say(`❌ ${error}`, 'error')
-      }
+      render()
+      if (state === 'ready') say(`✅ ${name} is loaded on your GPU. Scroll down and try it.`, 'ok')
+      if (state === 'error') say(`❌ ${error}`, 'error')
     })
 
     button.addEventListener('click', async () => {
       say('📡 Fetching the model, or reading it from the browser cache…')
+      $('[data-meter]').style.width = '0%'
+      for (const key of ['percent', 'load-time', 'warmup']) $(`[data-${key}]`).textContent = '—'
       try {
         const result = await load(select.value, (event) => {
           if (event.phase === 'download' && event.total) {

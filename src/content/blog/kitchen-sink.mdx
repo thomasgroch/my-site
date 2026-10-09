@@ -121,6 +121,16 @@ Plain text without a language:
 No highlighting here.
 ```
 
+## Diagrams
+
+A `mermaid` code block becomes a diagram that follows the site theme:
+
+```mermaid
+flowchart LR
+  write[Write Markdown] --> build[Astro build] --> read[Reader]
+  build -. draft .-> preview[Deploy preview]
+```
+
 ## Callouts
 
 <Callout type="note">

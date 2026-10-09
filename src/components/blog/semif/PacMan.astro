@@ -32,18 +32,6 @@ import Styles from './Styles.astro'
   <p class="semif-muted" data-robot>🤖 The green ghost with the antenna asks the model which way to turn at every crossroads.</p>
 </div>
 
-<style is:global>
-  .semif-arcade { display: flex; justify-content: center; overflow: hidden; border-radius: 0.6rem; background: #070b14; padding: 0.5em 0; }
-  .semif-arcade canvas { display: block; touch-action: none; border-radius: 0 !important; }
-  .semif-pad { display: none; grid-template-columns: repeat(3, 3.2em); grid-template-areas: '. up .' 'left down right'; justify-content: center; gap: 0.35em; }
-  .semif-pad button { justify-content: center; padding: 0.6em 0; font-size: 1.1em; touch-action: manipulation; }
-  .semif-pad [data-dir='up'] { grid-area: up; }
-  .semif-pad [data-dir='left'] { grid-area: left; }
-  .semif-pad [data-dir='down'] { grid-area: down; }
-  .semif-pad [data-dir='right'] { grid-area: right; }
-  @media (pointer: coarse) { .semif-pad { display: grid; } }
-</style>
-
 <script>
   import { createGame, DIRECTIONS } from './pacman.js'
   import { subscribe } from './engine.js'

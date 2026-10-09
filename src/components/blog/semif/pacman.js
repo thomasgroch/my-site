@@ -3,7 +3,7 @@
 // modelo a direção do próximo cruzamento assim que deixa o anterior; se a
 // resposta ainda não chegou, ele para ali, pensando. Essa espera é a latência
 // do modelo, visível no labirinto.
-import { direct, status as brain } from './engine.js'
+import { calibrated, status as brain } from './engine.js'
 
 // # parede, _ vazio fora do labirinto, - porta da casa dos fantasmas,
 // . pastilha, o energizador. A linha 9 é o túnel: as bordas se ligam.
@@ -262,12 +262,14 @@ export function createGame(canvas, { onHud, onRobot }) {
       dx && `${plural(Math.abs(dx), 'tile')} to the ${dx < 0 ? 'left' : 'right'}`,
     ].filter(Boolean)
     const where = parts.length ? `${parts.join(' and ')} from you` : 'right here'
+    const goal = plan.frightened ? 'Pac-Man just ate a power pellet, so you are scared and must get away from him.' : 'You want to catch him.'
+    const intro = 'You are a ghost in a Pac-Man maze, standing at a crossroads.'
     return {
-      state: `You are a ghost in a Pac-Man maze, standing at a crossroads. Pac-Man is ${where}. ${
-        plan.frightened ? 'Pac-Man just ate a power pellet, so you are scared and must get away from him.' : 'You want to catch him.'
-      }`,
+      state: `${intro} Pac-Man is ${where}. ${goal}`,
       question: plan.frightened ? 'Which way takes you away from Pac-Man?' : 'Which way takes you toward Pac-Man?',
       options: plan.options.map((d) => d.name),
+      // Sem a posição do Pac-Man, sobra só o viés de posição (engine.js).
+      neutral: { state: `${intro} Pac-Man is somewhere in the maze. ${goal}` },
     }
   }
 
@@ -280,7 +282,7 @@ export function createGame(canvas, { onHud, onRobot }) {
       Object.assign(plan, { status: 'ready', choice: randomOf(hit.options), probs: null })
       return report()
     }
-    direct(promptFor(plan)).then(
+    calibrated(promptFor(plan)).then(
       ({ probabilities, totalMs }) => {
         const best = probabilities.indexOf(Math.max(...probabilities))
         Object.assign(plan, { status: 'ready', choice: hit.options[best], probs: probabilities, ms: totalMs })
