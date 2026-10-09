@@ -37,6 +37,7 @@ npm run dev      # site em :3000 + funções em :8888 (proxy pelo Vite)
 npm run verify   # a pipeline inteira: lint, build, testes e verificações
 npm run build    # só gera dist/
 npm run preview  # serve dist/ em :3000
+npm run narrate  # MP3 dos posts em português (Kokoro local; ver docs/arquitetura.md)
 npm run test:e2e # cypress; precisa do dev rodando em outro terminal
 ```
 

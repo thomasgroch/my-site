@@ -1,11 +1,12 @@
 ---
 import { Image } from 'astro:assets'
 import { formatDate, readingTime, tableOfContents } from '@/lib/blog.js'
+import Listen from '@/components/blog/Listen.astro'
 
 // Moldura de um post: cabeçalho, capa, sumário e o conteúdo no <slot />.
 // Os estilos de leitura abaixo só entram nas páginas de post.
 const { post, headings = [], series = [] } = Astro.props
-const { title, description, pubDate, updatedDate, tags, cover, coverAlt, draft } = post.data
+const { title, description, pubDate, updatedDate, tags, cover, coverAlt, draft, lang } = post.data
 // Posição deste post na série (ver seriesOf em src/lib/blog.js).
 const part = series.findIndex((entry) => entry.id === post.id)
 const next = series[part + 1]
@@ -42,6 +43,8 @@ const toc = tableOfContents(headings)
       </ul>
     )}
   </header>
+
+  <Listen slug={post.id} lang={lang} title={title} />
 
   {cover && <Image src={cover} alt={coverAlt ?? ''} width={768} densities={[1, 2]} loading="eager" class="mt-8 w-full rounded-lg" />}
 
@@ -106,11 +109,11 @@ const toc = tableOfContents(headings)
 
   .post-content blockquote { border-left: 3px solid var(--color-green-400); border-radius: 0 0.5rem 0.5rem 0; background: rgb(74 222 128 / 0.07); padding: 0.75em 1.25em; }
   .post-content blockquote > * + * { margin-top: 0.75em; }
-  .post-content blockquote cite { font-size: 0.9em; font-style: normal; color: var(--color-neutral-500); }
+  .post-content blockquote cite { font-size: 0.9em; font-style: normal; color: var(--color-neutral-600); }
 
   .post-content hr { margin-block: 2.5em; border-color: rgb(0 0 0 / 0.1); }
   .post-content img, .post-content iframe { border-radius: 0.5rem; }
-  .post-content figcaption { margin-top: 0.6em; text-align: center; font-size: 0.85em; color: var(--color-neutral-500); }
+  .post-content figcaption { margin-top: 0.6em; text-align: center; font-size: 0.85em; color: var(--color-neutral-600); }
   .post-content .embed iframe { display: block; width: 100%; border: 1px solid rgb(0 0 0 / 0.1); background: white; }
 
   /* Sai da coluna quando há espaço; em telas estreitas ocupa a largura toda. */
@@ -136,9 +139,17 @@ const toc = tableOfContents(headings)
   .post-content .footnotes li + li { margin-top: 0.5em; }
   .post-content [data-footnote-ref] { text-decoration: none; font-weight: 600; }
 
+  /* Diagramas mermaid: sem moldura de código; o fonte só aparece sem JS. */
+  .post-content pre.mermaid { overflow-x: auto; padding: 0; background: none; font-size: 0.8em; line-height: 1.5; white-space: pre-wrap; }
+  /* Mesma fonte e tamanho com que o mermaid mediu os rótulos. */
+  .post-content pre.mermaid[data-rendered] { text-align: center; font-family: var(--font-sans); font-size: 16px; white-space: normal; }
+  /* O mermaid mede os rótulos fora do post, onde <p> tem peso 300. */
+  .post-content pre.mermaid p { font-weight: 300; }
+  .post-content pre.mermaid svg { max-width: 100%; height: auto; }
+
   /* Blocos de código: cabeçalho gerado em src/lib/shiki.js. */
   .post-content .code-block { overflow: hidden; border: 1px solid rgb(0 0 0 / 0.1); border-radius: 0.75rem; }
-  .post-content .code-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgb(0 0 0 / 0.1); padding: 0.35em 0.5em 0.35em 1em; font-family: var(--font-mono); font-size: 0.75em; color: var(--color-neutral-500); }
+  .post-content .code-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgb(0 0 0 / 0.1); padding: 0.35em 0.5em 0.35em 1em; font-family: var(--font-mono); font-size: 0.75em; color: var(--color-neutral-600); }
   .post-content .code-lang { text-transform: lowercase; }
   .post-content .code-title { color: inherit; font-weight: 600; }
   .post-content .code-copy { border-radius: 0.25rem; padding: 0.2em 0.6em; }
@@ -155,7 +166,7 @@ const toc = tableOfContents(headings)
   html.dark .post-content :not(pre) > code, html.dark .post-content .code-copy:hover { background: rgb(255 255 255 / 0.1); }
   html.dark .post-content :is(hr, th, td, details, .footnotes, .code-block, .code-header, .embed iframe) { border-color: rgb(255 255 255 / 0.15); }
   html.dark .post-content kbd { border-color: rgb(255 255 255 / 0.25); }
-  html.dark .post-content :is(figcaption, .code-header) { color: var(--color-neutral-400); }
+  html.dark .post-content :is(cite, figcaption, .code-header) { color: var(--color-neutral-400); }
 
   /* Código com dois temas do Shiki (astro.config.mjs, defaultColor: false):
      segue a classe `dark` do site, não a preferência do sistema. */
@@ -185,4 +196,27 @@ const toc = tableOfContents(headings)
     button.textContent = 'Copied'
     setTimeout(() => { button.textContent = 'Copy' }, 1500)
   })
+
+  // Diagramas ```mermaid (src/lib/shiki.js). A biblioteca é grande, então só
+  // é baixada nas páginas que têm um diagrama, e ele é redesenhado quando o
+  // tema do site muda.
+  const diagrams = [...document.querySelectorAll('pre[data-mermaid]')]
+  if (diagrams.length) {
+    const { default: mermaid } = await import('mermaid')
+    const draw = async () => {
+      const dark = document.documentElement.classList.contains('dark')
+      mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'neutral', fontFamily: getComputedStyle(document.body).fontFamily, flowchart: { useMaxWidth: true, wrappingWidth: 320 } })
+      for (const [index, pre] of diagrams.entries()) {
+        try {
+          const { svg } = await mermaid.render(`mermaid-${index}-${dark ? 'd' : 'l'}`, pre.dataset.mermaid)
+          pre.innerHTML = svg
+          pre.dataset.rendered = ''
+        } catch (error) {
+          console.error('Mermaid:', error)
+        }
+      }
+    }
+    await draw()
+    new MutationObserver(draw).observe(document.documentElement, { attributeFilter: ['class'] })
+  }
 </script>

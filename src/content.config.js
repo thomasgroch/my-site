@@ -101,6 +101,9 @@ const blog = defineCollection({
       pubDate: z.coerce.date(),
       updatedDate: z.preprocess(blank, z.coerce.date().optional()),
       draft: z.boolean().default(false),
+      // Idioma do texto. Decide a voz da narração (scripts/narrate.mjs); por
+      // ora só `pt` tem voz.
+      lang: z.enum(['en', 'pt']).default('en'),
       tags: z.array(text).default([]),
       // Série: posts com o mesmo `series` ganham navegação entre si, na ordem
       // de `seriesPart` (ver seriesOf em src/lib/blog.js).

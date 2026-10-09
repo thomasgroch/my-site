@@ -1,0 +1,132 @@
+---
+// Player da narração do post: public/audio/<slug>.mp3 e .vtt, gerados por
+// scripts/narrate.mjs. Só aparece quando o slug está em src/data/narration.json.
+//
+// Sem JavaScript: o <audio controls> nativo. Com JavaScript, ele some e ficam
+// um botão de uma linha no cabeçalho e, enquanto se ouve, uma pílula fixa no
+// canto com pausa e tempo. Atalhos: Espaço ou K pausa e continua (Espaço só
+// depois de começar, para não roubar a rolagem), J e L voltam e avançam 10 s.
+// Karaokê: a palavra sendo lida ganha a classe tt-current-word, e um duplo
+// clique em qualquer palavra do post leva o áudio até ela
+// (public/vendor/transcript-tracer.js, carregado no primeiro play).
+import manifest from '@/data/narration.json'
+
+const { slug, lang = 'pt', title } = Astro.props
+const entry = manifest[slug]
+const LABELS = {
+  pt: {
+    listen: 'Ouvir este post',
+    pause: 'Pausar',
+    resume: 'Continuar',
+    player: 'Narração de',
+    pill: 'Pausar ou continuar a narração',
+    hint: 'Espaço pausa · J e L pulam 10 s · duplo clique numa palavra vai até ela',
+  },
+}
+const labels = LABELS[lang] ?? LABELS.pt
+const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
+---
+{entry && (
+  <div data-listen data-tt-ignore data-labels={JSON.stringify(labels)} data-seconds={entry.seconds} class="mt-4 text-sm">
+    <audio controls preload="none" src={`/audio/${slug}.mp3`} class="w-full" aria-label={`${labels.player} ${title}`}>
+      <track kind="metadata" src={`/audio/${slug}.vtt`} />
+    </audio>
+    <button type="button" hidden data-listen-toggle title={labels.hint} class="rounded-full border border-neutral-300 px-3 py-1 font-semibold hover:border-green-400 dark:border-neutral-600 dark:hover:border-green-400">
+      🎧 {labels.listen} <span class="font-normal text-neutral-500 dark:text-neutral-400">· {minutes} min</span>
+    </button>
+    <span hidden data-listen-hint class="ml-2 text-xs text-neutral-500 dark:text-neutral-400">{labels.hint}</span>
+    <button type="button" hidden data-listen-pill aria-label={labels.pill} title={labels.hint} class="fixed right-4 bottom-4 z-40 rounded-full border border-neutral-300 bg-white/90 px-3 py-1.5 font-semibold tabular-nums shadow backdrop-blur hover:border-green-400 dark:border-neutral-600 dark:bg-neutral-900/90">
+      <span data-icon>⏸</span> <span data-time></span>
+    </button>
+  </div>
+)}
+
+<style is:global>
+  .tt-transcript { touch-action: manipulation; }
+  .tt-current-word { border-radius: 0.2em; background: rgb(74 222 128 / 0.35); box-shadow: 0 0 0 0.15em rgb(74 222 128 / 0.35); }
+</style>
+
+<script>
+  const box = document.querySelector('[data-listen]')
+  if (box) {
+    const labels = JSON.parse(box.dataset.labels)
+    const audio = box.querySelector('audio')
+    const toggle = box.querySelector('[data-listen-toggle]')
+    const pill = box.querySelector('[data-listen-pill]')
+    const seconds = Number(box.dataset.seconds)
+
+    // Com JavaScript, a interface compacta substitui os controles nativos.
+    audio.controls = false
+    audio.hidden = true
+    toggle.hidden = false
+    box.querySelector('[data-listen-hint]').hidden = false
+
+    const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
+    let started = false
+    const render = () => {
+      const playing = !audio.paused
+      toggle.firstChild.textContent = started ? (playing ? `⏸ ${labels.pause} ` : `▶ ${labels.resume} `) : `🎧 ${labels.listen} `
+      pill.hidden = !started
+      pill.querySelector('[data-icon]').textContent = playing ? '⏸' : '▶'
+      pill.querySelector('[data-time]').textContent = `${mmss(audio.currentTime)} / ${mmss(audio.duration || seconds)}`
+    }
+
+    // Karaokê: a lib precisa estar carregada antes do primeiro play para
+    // ouvir o evento. Se falhar, o áudio toca do mesmo jeito.
+    const tracer = async () => {
+      const article = box.closest('article')
+      if (!article || article.classList.contains('tt-transcript')) return
+      article.classList.add('tt-transcript')
+      article.dataset.ttMediaUrls = audio.getAttribute('src')
+      try {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = '/vendor/transcript-tracer.js'
+          script.onload = resolve
+          script.onerror = reject
+          document.head.append(script)
+        })
+        window.loadTranscriptTracer({ clickable: false })
+      } catch {
+        /* sem karaokê */
+      }
+    }
+    const playPause = async () => {
+      if (!audio.paused) return audio.pause()
+      await tracer()
+      started = true
+      audio.play().catch(() => {})
+      render()
+    }
+
+    toggle.addEventListener('click', playPause)
+    pill.addEventListener('click', playPause)
+    for (const event of ['play', 'pause', 'timeupdate', 'durationchange']) audio.addEventListener(event, render)
+    audio.addEventListener('ended', () => {
+      started = false
+      render()
+    })
+
+    // Atalhos, fora de campos de texto e sem modificadores.
+    document.addEventListener('keydown', (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey || event.defaultPrevented) return
+      if (event.target.closest('input, textarea, select, [contenteditable]')) return
+      const key = event.key.toLowerCase()
+      if (key === 'k' || (key === ' ' && started)) playPause()
+      else if (key === 'j' && started) audio.currentTime = Math.max(0, audio.currentTime - 10)
+      else if (key === 'l' && started) audio.currentTime = Math.min(audio.duration || seconds, audio.currentTime + 10)
+      else return
+      event.preventDefault()
+    })
+
+    // Duplo clique numa palavra: vai para ela, ou para a última palavra com
+    // tempo antes dela (cabeçalhos do sumário, por exemplo, não têm tempo).
+    document.addEventListener('dblclick', (event) => {
+      const word = event.target.closest('.tt-transcript .tt-word')
+      if (!word || !window.handleWordClick) return
+      const timed = [...word.closest('.tt-transcript').querySelectorAll('.tt-word[data-tt-word]')].filter((el) => el.dataset.ttWord !== '')
+      const target = timed.findLast((el) => el === word || el.compareDocumentPosition(word) & Node.DOCUMENT_POSITION_FOLLOWING)
+      if (target) window.handleWordClick({ currentTarget: target })
+    })
+  }
+</script>
