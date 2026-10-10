@@ -15,6 +15,12 @@
   directory = "functions/"
   node_bundler = "esbuild"
 
+# Rascunhos do blog só abrem com o cookie `draft` (ver o arquivo). Precisa da
+# variável DRAFT_KEY no painel do Netlify.
+[[edge_functions]]
+  path = "/blog/*"
+  function = "drafts"
+
 [dev]
   command = "npm run dev:front"
   targetPort = 3000
