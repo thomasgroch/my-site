@@ -1,10 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
-import { byNewest, formatDate, isVisible, readingTime } from '@/lib/blog.js'
+import { byNewest, formatDate, isListed, readingTime } from '@/lib/blog.js'
 
 // Blog só em inglês: URL sem prefixo de idioma e sem versões alternativas.
-const posts = (await getCollection('blog', isVisible)).sort(byNewest)
+const posts = (await getCollection('blog', isListed)).sort(byNewest)
 ---
 <Layout locale="en" path="/blog" alternates={false} title="Blog" description="Posts about web development by Thomas Dev.">
   <section class="mx-auto max-w-2xl py-8">

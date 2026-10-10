@@ -3,9 +3,9 @@
 #
 # - No site publicado: login com GitHub pelo OAuth do Netlify (base_url padrão
 #   do Sveltia). Posts passam pelo Editorial Workflow: cada um vira um branch
-#   com PR, e o deploy preview do Netlify mostra os rascunhos (BLOG_DRAFTS=1,
-#   netlify.toml). Publicar é o merge. O resto salva direto na main. Todo
-#   deploy passa pelo `npm run verify`.
+#   com PR e um deploy preview do Netlify. Publicar é o merge; `draft: true`
+#   publica sem listar (a URL responde, com noindex). O resto salva direto na
+#   main. Todo deploy passa pelo `npm run verify`.
 # - No `npm run dev`: abra http://localhost:3000/admin/index.html num navegador
 #   Chromium e escolha "Work with Local Repository". Ele grava direto nos
 #   arquivos; o commit continua sendo seu.
@@ -63,8 +63,8 @@ collections:
     icon: article
     description: >-
       Only in English. Each post in progress gets a branch, a pull request and a
-      Netlify deploy preview that shows drafts. Publishing merges it. `draft: true`
-      keeps a merged post out of production.
+      Netlify deploy preview. Publishing merges it. `draft: true` publishes the post
+      unlisted: the URL works (noindex), but it stays out of the list, feed and sitemap.
     publish_mode: editorial_workflow
     folder: src/content/blog
     extension: mdx
@@ -93,7 +93,7 @@ collections:
       - { name: description, label: Description, widget: text }
       - { name: pubDate, label: Published, widget: datetime, type: date, format: YYYY-MM-DD, default: '{{now}}' }
       - { name: updatedDate, label: Updated, widget: datetime, type: date, format: YYYY-MM-DD, required: false }
-      - { name: draft, label: Draft, widget: boolean, default: true, hint: Drafts show up in dev and stay out of the production build. }
+      - { name: draft, label: Draft, widget: boolean, default: true, hint: 'Drafts are published unlisted: the URL works (noindex), but they stay out of the list, feed and sitemap.' }
       - { name: lang, label: Language, widget: select, options: [en, pt], default: en, hint: 'Language of the text. Posts in pt get an audio narration (npm run narrate).' }
       - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string }, required: false }
       - { name: series, label: Series, widget: string, required: false, hint: Posts with the same series name link to each other. }

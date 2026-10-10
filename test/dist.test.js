@@ -179,9 +179,12 @@ describe('blog', () => {
     expect(feed).toContain('<language>en</language>')
   })
 
-  it('rascunho não entra no feed, e só é publicado se o build pedir', () => {
+  it('rascunho é publicado sem ser listado: com noindex, fora da lista, do feed e do sitemap', () => {
+    expect(existsSync(`${DIST}/blog/hello-world/index.html`)).toBe(true)
+    expect(page('/blog/hello-world/index.html').querySelector('meta[name="robots"]').getAttribute('content')).toBe('noindex')
+    expect(doc().querySelector('a[href="/blog/hello-world"]')).toBeNull()
     expect(readFileSync(`${DIST}/rss.xml`, 'utf8')).not.toContain('hello-world')
-    expect(existsSync(`${DIST}/blog/hello-world/index.html`)).toBe(process.env.BLOG_DRAFTS === '1')
+    expect(readFileSync(`${DIST}/sitemap-0.xml`, 'utf8')).not.toContain('hello-world')
   })
 
   it('o painel do Sveltia é estático, fora dos buscadores', () => {
