@@ -1,1 +1,4 @@
+# Sobe os objetos do Git LFS (public/audio/*.mp3) antes do push; o husky
+# ocupa o hook, então a linha do LFS fica aqui.
+git lfs pre-push "$@"
 npm run verify
