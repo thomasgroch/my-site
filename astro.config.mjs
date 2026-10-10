@@ -4,6 +4,10 @@ import tailwindcss from '@tailwindcss/vite'
 import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import { shikiTransformers } from './src/lib/shiki.js'
+import { draftSlugs } from './src/lib/blog.js'
+
+// Rascunhos do blog são publicados sem ser listados: ficam fora do sitemap.
+const drafts = draftSlugs().map((slug) => `/blog/${slug}/`)
 
 export default defineConfig({
   site: 'https://thomasdev.xyz',
@@ -15,7 +19,7 @@ export default defineConfig({
         defaultLocale: 'pt',
         locales: { pt: 'pt-BR', en: 'en' },
       },
-      filter: (page) => !page.includes('/404'),
+      filter: (page) => !page.includes('/404') && !drafts.some((path) => page.endsWith(path)),
     }),
   ],
   markdown: {

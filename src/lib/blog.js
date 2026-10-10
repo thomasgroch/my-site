@@ -1,16 +1,26 @@
-// Funções puras do blog, sem dependência do Astro, para poderem ser testadas
-// em Node (test/blog.test.js).
+// Funções do blog sem dependência do Astro, para poderem ser testadas em Node
+// (test/blog.test.js).
+import { readdirSync, readFileSync } from 'node:fs'
+import { basename, extname, join } from 'node:path'
+import { frontmatterValue, splitFrontmatter } from './narration.js'
 
 const WORDS_PER_MINUTE = 220
 
-// Rascunhos aparecem no `astro dev`. No build de produção ficam de fora, a
-// menos que se peça explicitamente: BLOG_DRAFTS=1 npm run build.
-export function includeDrafts() {
-  return Boolean(import.meta.env?.DEV) || process.env.BLOG_DRAFTS === '1'
+// Rascunhos (`draft: true`) são publicados, mas não listados: a URL responde
+// (com noindex, ver [slug].astro), e o post fica fora da lista, do feed e do
+// sitemap. No `astro dev` a lista os mostra, para achá-los.
+export function isListed(post) {
+  return Boolean(import.meta.env?.DEV) || !post.data.draft
 }
 
-export function isVisible(post) {
-  return includeDrafts() || !post.data.draft
+// Slugs dos rascunhos, lidos do disco: o sitemap é montado em astro.config.mjs,
+// antes de as coleções existirem.
+export function draftSlugs(dir = 'src/content/blog') {
+  return readdirSync(dir)
+    .filter((name) => ['.md', '.mdx'].includes(extname(name)))
+    .filter((name) => frontmatterValue(splitFrontmatter(readFileSync(join(dir, name), 'utf8')).frontmatter, 'draft') === 'true')
+    .map((name) => basename(name, extname(name)))
+    .sort()
 }
 
 export function byNewest(a, b) {
@@ -30,13 +40,14 @@ export function readingTime(body = '') {
 }
 
 // Partes da série de `post`, na ordem de `seriesPart` e, no empate, da data.
-// Vazio quando o post não faz parte de uma série.
+// Vazio quando o post não faz parte de uma série. Outras partes em rascunho
+// ficam de fora (não estão listadas); o próprio post entra mesmo em rascunho.
 export function seriesOf(post, posts = []) {
   const name = post.data.series
   if (!name) return []
   const part = (entry) => entry.data.seriesPart ?? Infinity
   return posts
-    .filter((entry) => entry.data.series === name)
+    .filter((entry) => entry.data.series === name && (entry.id === post.id || !entry.data.draft))
     .sort((a, b) => part(a) - part(b) || a.data.pubDate - b.data.pubDate)
 }
 

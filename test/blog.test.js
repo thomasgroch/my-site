@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { byNewest, formatDate, readingTime, seriesOf, tableOfContents } from '../src/lib/blog.js'
+import { byNewest, draftSlugs, formatDate, readingTime, seriesOf, tableOfContents } from '../src/lib/blog.js'
 
 describe('tempo de leitura', () => {
   it('tem mínimo de um minuto', () => {
@@ -56,8 +56,22 @@ describe('série', () => {
     expect(seriesOf(posts[0], posts).map((p) => p.id)).toEqual(['a', 'b', 'c'])
   })
 
+  it('outra parte em rascunho fica de fora; o próprio post entra mesmo em rascunho', () => {
+    const draft = (id, part) => ({ id, data: { series: 'X', seriesPart: part, pubDate: new Date('2026-09-24'), draft: true } })
+    const posts = [post('a', 'X', 1), draft('b', 2), draft('c', 3)]
+    expect(seriesOf(posts[0], posts).map((p) => p.id)).toEqual(['a'])
+    expect(seriesOf(posts[2], posts).map((p) => p.id)).toEqual(['a', 'c'])
+  })
+
   it('sem número de parte, vai para o fim, por data', () => {
     const posts = [post('late', 'X', undefined, '2026-10-02'), post('early', 'X', undefined, '2026-10-01'), post('first', 'X', 1)]
     expect(seriesOf(posts[0], posts).map((p) => p.id)).toEqual(['first', 'early', 'late'])
+  })
+})
+
+describe('rascunhos', () => {
+  it('lê os slugs dos rascunhos do disco, para o sitemap', () => {
+    expect(draftSlugs()).toContain('hello-world')
+    expect(draftSlugs()).toEqual([...draftSlugs()].sort())
   })
 })

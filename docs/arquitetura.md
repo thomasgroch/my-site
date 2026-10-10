@@ -20,7 +20,7 @@ As decisões que o código sozinho não explica. O que é e onde fica está no R
 ## Painel de conteúdo
 
 - **No site** (`/admin/`): login com GitHub pelo OAuth do Netlify, o padrão do Sveltia. Também aceita um token do GitHub (fine-grained, só este repositório, com Contents e Pull requests em read and write).
-- **Posts passam pelo Editorial Workflow**: salvar cria um branch e um PR, e o Netlify gera um deploy preview com os rascunhos visíveis (`BLOG_DRAFTS=1` no contexto `deploy-preview` do `netlify.toml`). Publicar é o merge, feito pelo painel. Depois do merge, `draft: true` ainda segura o post fora de produção.
+- **Posts passam pelo Editorial Workflow**: salvar cria um branch e um PR, e o Netlify gera um deploy preview. Publicar é o merge, feito pelo painel. Depois do merge, `draft: true` publica o post sem listá-lo (ver Idiomas): a URL definitiva já responde, com `noindex`.
 - **O resto salva direto na `main`**, com mensagem `content(<coleção>): ...`. Todo deploy passa pelo `npm run verify`: conteúdo inválido cancela a publicação.
 - **Textos do site**: `src/locales/*.json` aparece no painel com pt e en lado a lado. O painel só grava os campos que conhece, então chave nova no JSON precisa do campo em `public/admin/config.yml`, na mesma ordem. O `test/admin.test.js` confere isso.
 - **Preview**: `public/admin/preview.css` imita a tipografia dos posts. Componentes MDX aparecem como texto; o post de verdade está no deploy preview.
@@ -33,7 +33,7 @@ As decisões que o código sozinho não explica. O que é e onde fica está no R
 ## Idiomas
 
 - `/` é pt-BR e `/en/` é inglês, com prefixo de URL e um tradutor próprio (`src/i18n/`). A primeira visita segue o idioma do navegador. `/jp/*` responde 301 para `/en/*`.
-- O blog existe só em inglês, em `/blog`, sem prefixo: `Layout` recebe `alternates={false}`. Rascunhos (`draft: true`) aparecem no dev, ficam fora do build e nunca entram no feed. `BLOG_DRAFTS=1` os inclui no build. Posts com o mesmo `series` formam uma série: cada um ganha a lista das partes, na ordem de `seriesPart`, e o link para a próxima (`seriesOf` em `src/lib/blog.js`).
+- O blog existe só em inglês, em `/blog`, sem prefixo: `Layout` recebe `alternates={false}`. Rascunhos (`draft: true`) são publicados sem ser listados: a URL responde, com `noindex`, mas o post fica fora da lista, do feed e do sitemap, e as outras partes da série só o mostram para ele mesmo (`isListed`, `seriesOf` e `draftSlugs` em `src/lib/blog.js`). É o jeito de rever um post no endereço definitivo antes de tirá-lo do rascunho; quem tiver o link vê. No `astro dev`, a lista mostra os rascunhos. Posts com o mesmo `series` formam uma série: cada um ganha a lista das partes, na ordem de `seriesPart`, e o link para a próxima (`seriesOf` em `src/lib/blog.js`).
 
 ## Narração
 

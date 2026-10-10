@@ -22,7 +22,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 | Bio e textos da interface | `src/locales/*.json` |
 | Textos do formulário e dos e-mails | `src/lib/contact-messages.mjs` (compartilhado com a função) |
 | Páginas | `src/pages/` (wrappers por idioma) e `src/components/routes/` (conteúdo) |
-| Blog (só em inglês) | posts MDX em `src/content/blog/`, páginas em `src/pages/blog/`, feed em `/rss.xml`. `draft: true` fica fora do build |
+| Blog (só em inglês) | posts MDX em `src/content/blog/`, páginas em `src/pages/blog/`, feed em `/rss.xml`. `draft: true` publica sem listar: a URL responde com `noindex`, fora da lista, do feed e do sitemap |
 | Esquemas do conteúdo | `src/content.config.js`: texto sempre em `{ pt, en }`; conteúdo inválido quebra o build |
 | Painel de conteúdo | Sveltia CMS em `/admin/` (`public/admin/config.yml`). No site, login com GitHub: posts viram PR com deploy preview dos rascunhos, o resto é commit direto; no `npm run dev`, grava nos arquivos. Configuração em `docs/arquitetura.md` |
 | Imagens | `src/assets/<coleção>/<entrada>/`, otimizadas pelo Astro no build |
