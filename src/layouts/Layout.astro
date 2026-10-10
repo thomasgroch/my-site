@@ -8,7 +8,9 @@ import { LOCALES, LOCALE_TAGS, OG_LOCALES, createTranslator, localePath } from '
 // canonical, hreflang e os links de troca de idioma a partir dele.
 // `alternates={false}` é para páginas de um idioma só (o blog): a URL não leva
 // prefixo, não há hreflang e o rodapé não mostra a troca de idioma.
-const { locale = 'pt', path = '/', title, description, noindex = false, alternates = true, ogType = 'website' } = Astro.props
+// `lang` é o idioma do conteúdo quando difere do da interface (um post em
+// português no blog em inglês): só muda o <html lang>.
+const { locale = 'pt', path = '/', title, description, noindex = false, alternates = true, ogType = 'website', lang = LOCALE_TAGS[locale] } = Astro.props
 const t = createTranslator(locale)
 const siteName = t('general.site_name')
 const pageTitle = title ? `${title} | ${siteName}` : siteName
@@ -17,7 +19,7 @@ const absolute = (l) => new URL(localePath(l, path), Astro.site).href
 const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
 ---
 <!doctype html>
-<html lang={LOCALE_TAGS[locale]}>
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -6,6 +6,7 @@ import Wide from '@/components/blog/Wide.astro'
 import Embed from '@/components/blog/Embed.astro'
 import { getCollection, render } from 'astro:content'
 import { isVisible, seriesOf } from '@/lib/blog.js'
+import { LOCALE_TAGS } from '@/i18n'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', isVisible)
@@ -17,6 +18,7 @@ const { Content, headings } = await render(post)
 ---
 <Layout
   locale="en"
+  lang={LOCALE_TAGS[post.data.lang]}
   path={`/blog/${post.id}`}
   alternates={false}
   noindex={post.data.draft}

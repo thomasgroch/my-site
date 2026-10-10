@@ -3,12 +3,14 @@
 // scripts/narrate.mjs. Só aparece quando o slug está em src/data/narration.json.
 //
 // Sem JavaScript: o <audio controls> nativo. Com JavaScript, ele some e ficam
-// um botão de uma linha no cabeçalho e, enquanto se ouve, uma pílula fixa no
-// canto com pausa e tempo. Atalhos: Espaço ou K pausa e continua (Espaço só
-// depois de começar, para não roubar a rolagem), J e L voltam e avançam 10 s.
-// Karaokê: a palavra sendo lida ganha a classe tt-current-word, e um duplo
-// clique em qualquer palavra do post leva o áudio até ela
-// (public/vendor/transcript-tracer.js, carregado no primeiro play).
+// um botão de uma linha no cabeçalho e, enquanto se ouve, um painel fixo no
+// canto com pausa, tempo, barra de progresso e o botão "Rolar junto", que
+// mantém a palavra lida à vista (ligado por padrão; a escolha fica no
+// localStorage). Atalhos: Espaço ou K pausa e continua (Espaço só depois de
+// começar, para não roubar a rolagem), J e L voltam e avançam 10 s, S liga e
+// desliga a rolagem. Karaokê: a palavra sendo lida ganha a classe
+// tt-current-word, e um duplo clique em qualquer palavra do post leva o áudio
+// até ela (public/vendor/transcript-tracer.js, carregado no primeiro play).
 import manifest from '@/data/narration.json'
 
 const { slug, lang = 'pt', title } = Astro.props
@@ -18,9 +20,10 @@ const LABELS = {
     listen: 'Ouvir este post',
     pause: 'Pausar',
     resume: 'Continuar',
+    follow: 'Rolar junto',
     player: 'Narração de',
-    pill: 'Pausar ou continuar a narração',
-    hint: 'Espaço pausa · J e L pulam 10 s · duplo clique numa palavra vai até ela',
+    panel: 'Controles da narração',
+    hint: 'Espaço pausa · J e L pulam 10 s · S liga a rolagem · duplo clique numa palavra vai até ela',
   },
 }
 const labels = LABELS[lang] ?? LABELS.pt
@@ -35,9 +38,17 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
       🎧 {labels.listen} <span class="font-normal text-neutral-500 dark:text-neutral-400">· {minutes} min</span>
     </button>
     <span hidden data-listen-hint class="ml-2 text-xs text-neutral-500 dark:text-neutral-400">{labels.hint}</span>
-    <button type="button" hidden data-listen-pill aria-label={labels.pill} title={labels.hint} class="fixed right-4 bottom-4 z-40 rounded-full border border-neutral-300 bg-white/90 px-3 py-1.5 font-semibold tabular-nums shadow backdrop-blur hover:border-green-400 dark:border-neutral-600 dark:bg-neutral-900/90">
-      <span data-icon>⏸</span> <span data-time></span>
-    </button>
+
+    <div hidden data-listen-panel role="group" aria-label={labels.panel} class="fixed right-4 bottom-4 z-40 flex items-center gap-1 overflow-hidden rounded-full border border-neutral-300 bg-white/95 p-1 shadow-lg backdrop-blur dark:border-neutral-600 dark:bg-neutral-900/95">
+      <button type="button" data-play title="Espaço / K" class="rounded-full px-3 py-1 font-semibold hover:bg-green-100 dark:hover:bg-neutral-700">
+        <span data-icon>⏸</span> <span data-label>{labels.pause}</span>
+      </button>
+      <span data-time class="px-1 text-neutral-500 tabular-nums dark:text-neutral-400"></span>
+      <button type="button" data-follow aria-pressed="true" title="S" class="rounded-full px-3 py-1 hover:bg-green-100 aria-pressed:bg-green-100 aria-pressed:text-green-700 dark:hover:bg-neutral-700 dark:aria-pressed:bg-green-900 dark:aria-pressed:text-green-200">
+        📜 {labels.follow}
+      </button>
+      <span data-progress class="absolute inset-x-3 bottom-0 h-0.5 rounded bg-green-400" style="width: 0"></span>
+    </div>
   </div>
 )}
 
@@ -50,10 +61,12 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
   const box = document.querySelector('[data-listen]')
   if (box) {
     const labels = JSON.parse(box.dataset.labels)
+    const seconds = Number(box.dataset.seconds)
     const audio = box.querySelector('audio')
     const toggle = box.querySelector('[data-listen-toggle]')
-    const pill = box.querySelector('[data-listen-pill]')
-    const seconds = Number(box.dataset.seconds)
+    const panel = box.querySelector('[data-listen-panel]')
+    const followButton = panel.querySelector('[data-follow]')
+    const FOLLOW_KEY = 'narration-follow'
 
     // Com JavaScript, a interface compacta substitui os controles nativos.
     audio.controls = false
@@ -61,14 +74,47 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
     toggle.hidden = false
     box.querySelector('[data-listen-hint]').hidden = false
 
-    const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
     let started = false
+    let follow = true
+    try {
+      follow = localStorage.getItem(FOLLOW_KEY) !== 'off'
+    } catch {
+      /* sem localStorage: fica ligado */
+    }
+
+    const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
     const render = () => {
       const playing = !audio.paused
+      const total = audio.duration || seconds
       toggle.firstChild.textContent = started ? (playing ? `⏸ ${labels.pause} ` : `▶ ${labels.resume} `) : `🎧 ${labels.listen} `
-      pill.hidden = !started
-      pill.querySelector('[data-icon]').textContent = playing ? '⏸' : '▶'
-      pill.querySelector('[data-time]').textContent = `${mmss(audio.currentTime)} / ${mmss(audio.duration || seconds)}`
+      panel.hidden = !started
+      panel.querySelector('[data-icon]').textContent = playing ? '⏸' : '▶'
+      panel.querySelector('[data-label]').textContent = playing ? labels.pause : labels.resume
+      panel.querySelector('[data-time]').textContent = `${mmss(audio.currentTime)} / ${mmss(total)}`
+      panel.querySelector('[data-progress]').style.width = `${(100 * audio.currentTime) / total}%`
+      followButton.setAttribute('aria-pressed', String(follow))
+    }
+
+    // Rolagem: quando a palavra lida sai da faixa confortável da tela, ela
+    // volta ao centro. Cada palavra só provoca uma rolagem.
+    let scrolledFor = null
+    const keepInView = () => {
+      if (!follow || audio.paused) return
+      const word = document.querySelector('.tt-current-word')
+      if (!word || word === scrolledFor) return
+      scrolledFor = word
+      const { top, bottom } = word.getBoundingClientRect()
+      if (top < innerHeight * 0.2 || bottom > innerHeight * 0.7) word.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    }
+    const setFollow = (value) => {
+      follow = value
+      try {
+        localStorage.setItem(FOLLOW_KEY, follow ? 'on' : 'off')
+      } catch {
+        /* sem localStorage */
+      }
+      render()
+      keepInView()
     }
 
     // Karaokê: a lib precisa estar carregada antes do primeiro play para
@@ -100,8 +146,13 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
     }
 
     toggle.addEventListener('click', playPause)
-    pill.addEventListener('click', playPause)
-    for (const event of ['play', 'pause', 'timeupdate', 'durationchange']) audio.addEventListener(event, render)
+    panel.querySelector('[data-play]').addEventListener('click', playPause)
+    followButton.addEventListener('click', () => setFollow(!follow))
+    for (const event of ['play', 'pause', 'durationchange']) audio.addEventListener(event, render)
+    audio.addEventListener('timeupdate', () => {
+      render()
+      keepInView()
+    })
     audio.addEventListener('ended', () => {
       started = false
       render()
@@ -115,6 +166,7 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
       if (key === 'k' || (key === ' ' && started)) playPause()
       else if (key === 'j' && started) audio.currentTime = Math.max(0, audio.currentTime - 10)
       else if (key === 'l' && started) audio.currentTime = Math.min(audio.duration || seconds, audio.currentTime + 10)
+      else if (key === 's' && started) setFollow(!follow)
       else return
       event.preventDefault()
     })
