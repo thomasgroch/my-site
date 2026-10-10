@@ -187,6 +187,13 @@ describe('blog', () => {
     expect(readFileSync(`${DIST}/sitemap-0.xml`, 'utf8')).not.toContain('hello-world')
   })
 
+  it('a lista com rascunhos existe em /blog/drafts, fechada (noindex) e fora do sitemap', () => {
+    const drafts = page('/blog/drafts/index.html')
+    expect(drafts.querySelector('meta[name="robots"]').getAttribute('content')).toBe('noindex')
+    expect(drafts.querySelector('a[href="/blog/hello-world"]')).not.toBeNull()
+    expect(readFileSync(`${DIST}/sitemap-0.xml`, 'utf8')).not.toContain('/blog/drafts')
+  })
+
   it('o painel do Sveltia é estático, fora dos buscadores', () => {
     expect(existsSync(`${DIST}/admin/config.yml`)).toBe(true)
     expect(readFileSync(`${DIST}/admin/index.html`, 'utf8')).toContain('<meta name="robots" content="noindex" />')
