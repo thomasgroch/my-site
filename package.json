@@ -17,7 +17,7 @@
     "check:css": "node scripts/check-classes.mjs",
     "measure": "node scripts/measure.mjs",
     "narrate": "node scripts/narrate.mjs",
-    "prepare": "husky"
+    "prepare": "husky && (git lfs install --local --skip-repo && git lfs pull || true)"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",
