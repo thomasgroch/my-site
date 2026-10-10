@@ -6,8 +6,9 @@ import mdx from '@astrojs/mdx'
 import { shikiTransformers } from './src/lib/shiki.js'
 import { draftSlugs } from './src/lib/blog.js'
 
-// Rascunhos do blog são publicados sem ser listados: ficam fora do sitemap.
-const drafts = draftSlugs().map((slug) => `/blog/${slug}/`)
+// Rascunhos do blog são publicados sem ser listados: ficam fora do sitemap,
+// junto com a lista que os inclui (/blog/drafts/).
+const drafts = [...draftSlugs(), 'drafts'].map((slug) => `/blog/${slug}/`)
 
 export default defineConfig({
   site: 'https://thomasdev.xyz',

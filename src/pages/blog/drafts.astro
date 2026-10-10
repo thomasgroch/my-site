@@ -1,0 +1,15 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PostList from '@/components/blog/PostList.astro'
+import { getCollection } from 'astro:content'
+import { byNewest } from '@/lib/blog.js'
+
+// A lista do blog com os rascunhos. Ninguém linka para cá: a Edge Function
+// (netlify/edge-functions/drafts.js) serve esta página no lugar de /blog/
+// para quem tem o cookie `draft`, e o `noindex` a fecha para quem não tem.
+// `path="/blog"` mantém menu e canonical iguais aos da lista pública.
+const posts = (await getCollection('blog')).sort(byNewest)
+---
+<Layout locale="en" path="/blog" alternates={false} noindex title="Blog" description="Posts about web development by Thomas Dev.">
+  <PostList posts={posts} drafts />
+</Layout>
