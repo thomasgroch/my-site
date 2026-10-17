@@ -9,7 +9,6 @@
 // A leitura é a calibrada do engine.js: sem ela, um modelo pequeno escolhe
 // sempre a primeira opção e a cobra sobe até a parede.
 import { calibrated, warmUp, status as brain } from './engine.js'
-import { createLearner, sample } from './learner.js'
 
 const N = 15
 // Passos por segundo: o controle de velocidade vai de SPEEDS.min a SPEEDS.max.
@@ -55,7 +54,7 @@ const promptOf = () => PROMPTS[brain.runtime] ?? PROMPTS.wllama
 // Folga sobre a latência média ao escolher a que distância perguntar.
 const MARGIN = 1.25
 
-export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
+export function createGame(canvas, { onHud, onRobot }) {
   const ctx = canvas.getContext('2d')
   let T = 20
   let dpr = 1
@@ -76,15 +75,10 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
   let death = null
   let plan = null
   let measured = null
-  // Aprendizado (learner.js): desligado, a cobra joga só com o modelo.
-  let learning = false
-  let learner = null
-  let credit = null
   const stats = { decisions: 0, totalMs: 0, waitMs: 0, late: 0, reflex: 0, last: null }
 
   const head = () => snake[0]
   const hud = () => onHud({ score, best, games, phase, paused, pilot, death })
-  const showLearning = () => onLearn({ on: learning, weights: learner?.weights ?? null, games: learner?.games ?? [] })
   const report = () => onRobot({ ...stats, brain: brain.state === 'ready' ? brain.name : null, pending: plan?.status === 'pending', ahead: ahead(), pilot })
 
   // O rabo sai da casa no mesmo passo, então não conta como obstáculo.
@@ -138,7 +132,6 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
     score = 0
     death = null
     plan = null
-    credit = null
     stats.last = null
     placeFood()
     phase = 'playing'
@@ -198,8 +191,7 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
     const spot = decisionTile()
     if (!spot) return
     const { tile } = spot
-    const moves = openDirections(spot.body, dir)
-    const options = moves.map((move) => move.d)
+    const options = openDirections(spot.body, dir).map((move) => move.d)
     if (!options.length) return
     const next = { tile, options, status: 'pending' }
     plan = next
@@ -211,20 +203,7 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
     calibrated(promptFor(tile, options)).then(
       ({ probabilities: probs, totalMs }) => {
         if (plan !== next) return
-        Object.assign(next, { status: 'ready', choice: options[probs.indexOf(Math.max(...probs))], probs, modelProbs: probs, ms: totalMs })
-        if (learning && learner) {
-          // A camada decide: a opinião do modelo vira um sinal entre quatro.
-          const distance = (tile) => Math.abs(food.x - tile.x) + Math.abs(food.y - tile.y)
-          const rows = moves.map(({ d, space }, i) => ({
-            model: Math.max(-6, Math.log(probs[i] + 1e-9)),
-            food: Math.sign(distance(tile) - distance(add(tile, d))),
-            room: Math.min(1, space / (2 * spot.body.length)),
-            straight: d === dir ? 1 : 0,
-          }))
-          const chosen = learner.policy(rows)
-          const index = sample(chosen)
-          Object.assign(next, { choice: options[index], probs: chosen, learn: { rows, probs: chosen, chosen: index } })
-        }
+        Object.assign(next, { status: 'ready', choice: options[probs.indexOf(Math.max(...probs))], probs, ms: totalMs })
         stats.decisions += 1
         stats.totalMs += totalMs
         stats.waitMs += performance.now() - asked
@@ -249,11 +228,8 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
       if (safe.length && (!safe.includes(dir) || Math.random() < 0.25)) want = randomOf(safe)
     } else if (pilot === 'model' && plan && same(head(), plan.tile)) {
       // Chegou à casa da decisão. Sem resposta, segue reto e pergunta de novo.
-      if (plan.status === 'ready') {
-        want = plan.choice
-        settle(0)
-        if (plan.learn) credit = { ...plan.learn, distance: distanceToFood(), steps: 0 }
-      } else stats.late += 1
+      if (plan.status === 'ready') want = plan.choice
+      else stats.late += 1
       plan = null
     }
     if (want && !opposite(want, dir)) dir = want
@@ -272,9 +248,7 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
     const hit = hazard(next)
     if (hit) return die(hit)
     snake.unshift(next)
-    if (credit) credit.steps += 1
     if (food && same(next, food)) {
-      settle(1)
       score += 1
       best = Math.max(best, score)
       placeFood()
@@ -286,25 +260,7 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
     think()
   }
 
-  const distanceToFood = () => (food ? Math.abs(food.x - head().x) + Math.abs(food.y - head().y) : 0)
-
-  // Fecha a conta da última decisão: +1 se comeu, −1 se morreu, e no meio um
-  // pouco pelo quanto a cobra chegou mais perto da comida por passo.
-  function settle(bonus) {
-    if (!credit) return
-    const closer = (credit.distance - distanceToFood()) / Math.max(1, credit.steps)
-    const reward = bonus || 0.3 * Math.max(-1, Math.min(1, closer))
-    learner.learn(credit.rows, credit.probs, credit.chosen, reward)
-    credit = null
-    showLearning()
-  }
-
   function die(cause) {
-    settle(-1)
-    if (learning && learner && pilot === 'model' && brain.state === 'ready') {
-      learner.endGame(score)
-      showLearning()
-    }
     phase = 'over'
     clock = 0
     games += 1
@@ -450,7 +406,6 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
     pilot = value
     want = null
     plan = null
-    credit = null
     hud()
     report()
     think()
@@ -481,16 +436,6 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
       loop()
     },
     setPilot,
-    setLearning(value) {
-      learning = value
-      credit = null
-      showLearning()
-    },
-    forget() {
-      learner?.forget()
-      credit = null
-      showLearning()
-    },
     // Mais rápido, o modelo tem menos tempo: pergunta de mais longe, faz
     // curvas mais abertas e chega atrasado mais vezes.
     setSpeed(stepsPerSecond) {
@@ -518,10 +463,6 @@ export function createGame(canvas, { onHud, onRobot, onLearn = () => {} }) {
         measured = brain.modelId
         Object.assign(stats, { decisions: 0, totalMs: 0, waitMs: 0, late: 0, reflex: 0, last: null })
         plan = null
-        // Cada modelo tem a sua camada: o que vale para um não vale para outro.
-        learner = createLearner(`semif-snake-learner:${brain.modelId}`)
-        credit = null
-        showLearning()
       }
       if (brain.state === 'ready') {
         const prompt = promptOf()
