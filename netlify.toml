@@ -17,6 +17,11 @@
 
 # Rascunhos do blog só abrem com o cookie `draft` (ver o arquivo). Precisa da
 # variável DRAFT_KEY no painel do Netlify.
+# "/blog/*" não casa com "/blog" sem barra, por isso as duas rotas.
+[[edge_functions]]
+  path = "/blog"
+  function = "drafts"
+
 [[edge_functions]]
   path = "/blog/*"
   function = "drafts"
