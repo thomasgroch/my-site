@@ -3,6 +3,7 @@
 // controle. Funciona sem modelo: a cobra só vira ao acaso até um ser carregado.
 import Styles from './Styles.astro'
 import { SPEEDS } from './snake.js'
+import { SIGNALS } from './learner.js'
 ---
 <Styles />
 <div class="semif-card" data-semif-snake>
@@ -38,15 +39,42 @@ import { SPEEDS } from './snake.js'
     <div><dt>⏰ Late · 🫨 reflex</dt><dd data-lag>0 · 0</dd></div>
   </dl>
   <p class="semif-muted" data-robot>🤖 The model is asked about a turn a few tiles ahead. If the answer is late, the snake keeps going straight, and only dodges by reflex when the next tile would kill it.</p>
+  <div class="semif-learn">
+    <div class="semif-row">
+      <label class="semif-row"><input type="checkbox" data-learn /> <strong>📈 Learn from every game</strong></label>
+      <button type="button" class="semif-btn semif-ghost" data-forget>🗑️ Forget</button>
+    </div>
+    <div class="semif-bars" data-weights>
+      {SIGNALS.map(({ key, label }) => (
+        <>
+          <b>{label}</b>
+          <div class="semif-meter" data-signal={key}><i></i></div>
+          <em data-value={key}>—</em>
+        </>
+      ))}
+    </div>
+    <svg class="semif-curve" data-curve viewBox="0 0 300 60" preserveAspectRatio="none" role="img" aria-label="Apples per game while learning"></svg>
+    <p class="semif-muted" data-learn-note>Off: the snake plays on the model alone. On: a small layer on top learns how much to trust each signal, and gets saved in this browser.</p>
+  </div>
 </div>
 
 <style is:global>
   .semif-speed input { flex: 1 1 8em; min-width: 0; accent-color: var(--color-green-500); }
+  .semif-learn { border-top: 1px solid rgb(0 0 0 / 0.1); padding-top: 0.85em; }
+  .semif-learn > * + * { margin-top: 0.6em; }
+  .semif-learn input { accent-color: var(--color-green-500); }
+  .semif-learn [data-negative] { background: var(--color-red-400); }
+  .semif-curve { display: block; width: 100%; height: 3.5em; overflow: visible; }
+  .semif-curve polyline { fill: none; vector-effect: non-scaling-stroke; }
+  .semif-curve .semif-games { stroke: var(--color-neutral-400); stroke-width: 1; }
+  .semif-curve .semif-average { stroke: var(--color-green-500); stroke-width: 2.5; }
+  html.dark .semif-learn { border-color: rgb(255 255 255 / 0.15); }
   .semif-speed [data-speed-label] { min-width: 5.5em; font-variant-numeric: tabular-nums; }
 </style>
 
 <script>
   import { createGame, DIRECTIONS } from './snake.js'
+  import { SIGNALS } from './learner.js'
   import { subscribe } from './engine.js'
 
   const KEYS = { ArrowUp: 'up', KeyW: 'up', ArrowLeft: 'left', KeyA: 'left', ArrowDown: 'down', KeyS: 'down', ArrowRight: 'right', KeyD: 'right' }
@@ -58,6 +86,7 @@ import { SPEEDS } from './snake.js'
     const startButton = $('[data-start]')
     const pauseButton = $('[data-pause]')
     const pilotButton = $('[data-pilot]')
+    const learnBox = $('[data-learn]')
     let ended = ''
 
     const game = createGame(canvas, {
@@ -70,6 +99,30 @@ import { SPEEDS } from './snake.js'
         pilotButton.textContent = pilot === 'you' ? '🤖 Give it back' : '🕹️ Take over'
         startButton.textContent = phase === 'idle' ? '▶️ Start' : phase === 'over' && pilot === 'you' ? '🔁 Play again' : '🔄 Restart'
         ended = phase !== 'over' ? '' : death ? `💥 ${pilot === 'you' ? 'You' : 'The snake'} hit ${death} with ${score} 🍎. ` : '🏆 The board is full. '
+      },
+      onLearn({ on, weights, games }) {
+        learnBox.checked = on
+        for (const { key } of SIGNALS) {
+          const value = weights?.[key] ?? 0
+          const bar = card.querySelector(`[data-signal="${key}"] i`)
+          bar.style.width = `${Math.min(100, (Math.abs(value) / 4) * 100)}%`
+          bar.toggleAttribute('data-negative', value < 0)
+          card.querySelector(`[data-value="${key}"]`).textContent = weights ? value.toFixed(2) : '—'
+        }
+        // Maçãs por partida e a média das últimas 10.
+        const curve = $('[data-curve]')
+        const most = Math.max(5, ...games)
+        const x = (i) => (games.length < 2 ? 0 : (i / (games.length - 1)) * 300)
+        const y = (v) => 58 - (v / most) * 56
+        const average = games.map((_, i) => games.slice(Math.max(0, i - 9), i + 1).reduce((a, b) => a + b, 0) / Math.min(10, i + 1))
+        const line = (values) => values.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')
+        curve.innerHTML = games.length > 1 ? `<polyline class="semif-games" points="${line(games)}"/><polyline class="semif-average" points="${line(average)}"/>` : ''
+        const mean = (list) => (list.reduce((a, b) => a + b, 0) / list.length).toFixed(1)
+        $('[data-learn-note]').textContent = games.length >= 10
+          ? `${games.length} games learned · first 10: ${mean(games.slice(0, 10))} 🍎 per game · last 10: ${mean(games.slice(-10))} 🍎`
+          : on
+            ? `Learning… ${games.length} of 10 games before comparing. The thick line is the 10-game average.`
+            : 'Off: the snake plays on the model alone. On: a small layer on top learns how much to trust each signal, and gets saved in this browser.'
       },
       onRobot({ brain, decisions, totalMs, late, reflex, ahead, last, pending, pilot }) {
         $('[data-brain]').textContent = pilot === 'you' ? '🕹️ you' : (brain ?? '🎲 none')
@@ -101,6 +154,9 @@ import { SPEEDS } from './snake.js'
     startButton.addEventListener('click', () => game.start())
     pauseButton.addEventListener('click', () => game.setPaused(!game.paused))
     pilotButton.addEventListener('click', () => game.setPilot(game.pilot === 'you' ? 'model' : 'you'))
+    learnBox.addEventListener('change', () => game.setLearning(learnBox.checked))
+    $('[data-forget]').addEventListener('click', () => game.forget())
+
     // Alguns navegadores devolvem o valor antigo do controle ao recarregar.
     const speed = $('[data-speed]')
     const applySpeed = () => {
