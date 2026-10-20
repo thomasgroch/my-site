@@ -28,7 +28,7 @@ const type = t(`general.project.type_${item.type}`)
     <p class="text-sm text-neutral-500 dark:text-neutral-400">{item.position[locale]}</p>
     <p class="text-neutral-700 dark:text-neutral-300">{item.summary[locale]}</p>
     <div class="mt-auto flex items-center justify-between pt-3 text-sm text-neutral-500">
-      <span class="rounded-sm bg-green-100 px-2 py-0.5 text-green-600 dark:bg-neutral-700 dark:text-green-400">{type}</span>
+      <span class="chip">{type}</span>
       <time datetime={item.startDate}>{item.startDate}</time>
     </div>
   </div>

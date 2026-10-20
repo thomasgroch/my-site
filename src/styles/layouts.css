@@ -1,0 +1,28 @@
+/* Primitivas de composição (Every Layout): só arranjo, nunca cor ou tipo.
+   Ajuste pela custom property, no <style> de quem usa, não por variante. */
+.stack {
+  --gap: var(--space-4);
+  > * + * {
+    margin-block-start: var(--gap);
+  }
+}
+
+.cluster {
+  --gap: var(--space-2) var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.center {
+  max-inline-size: var(--measure);
+  margin-inline: auto;
+}
+
+.grid {
+  --min: 13em;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--min), 100%), 1fr));
+}

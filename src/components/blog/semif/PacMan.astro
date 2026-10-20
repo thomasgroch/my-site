@@ -4,32 +4,32 @@
 import Styles from './Styles.astro'
 ---
 <Styles />
-<div class="semif-card" data-semif-pacman>
-  <div class="semif-row">
-    <p class="semif-kicker">👻 Pac-Man vs. 🤖</p>
-    <span class="semif-muted" data-hud>🟡🟡🟡 · Score 0 · Level 1</span>
+<div class="card stack semif" data-semif-pacman>
+  <div class="cluster">
+    <p class="kicker">👻 Pac-Man vs. 🤖</p>
+    <span class="muted" data-hud>🟡🟡🟡 · Score 0 · Level 1</span>
   </div>
   <div class="semif-arcade" data-wrap>
     <canvas data-canvas role="img" aria-label="Pac-Man maze. Use the arrow keys, WASD, swipes or the buttons below to move."></canvas>
   </div>
-  <div class="semif-row">
-    <button type="button" class="semif-btn" data-start>▶️ Start</button>
-    <button type="button" class="semif-btn semif-ghost" data-pause disabled>⏸️ Pause</button>
-    <span class="semif-muted">⌨️ Arrows or WASD · P pauses · 📱 swipe</span>
+  <div class="cluster">
+    <button type="button" class="btn" data-start>▶️ Start</button>
+    <button type="button" class="btn" data-variant="ghost" data-pause disabled>⏸️ Pause</button>
+    <span class="muted">⌨️ Arrows or WASD · P pauses · 📱 swipe</span>
   </div>
   <div class="semif-pad" data-pad>
-    <button type="button" class="semif-btn semif-ghost" data-dir="up" aria-label="Up">⬆️</button>
-    <button type="button" class="semif-btn semif-ghost" data-dir="left" aria-label="Left">⬅️</button>
-    <button type="button" class="semif-btn semif-ghost" data-dir="down" aria-label="Down">⬇️</button>
-    <button type="button" class="semif-btn semif-ghost" data-dir="right" aria-label="Right">➡️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="up" aria-label="Up">⬆️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="left" aria-label="Left">⬅️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="down" aria-label="Down">⬇️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="right" aria-label="Right">➡️</button>
   </div>
-  <dl class="semif-stats">
+  <dl class="grid semif-stats">
     <div><dt>🧠 Brain</dt><dd data-brain>🎲 none</dd></div>
     <div><dt>🎯 Decisions</dt><dd data-decisions>0</dd></div>
     <div><dt>⏱️ Avg. think</dt><dd data-think>—</dd></div>
     <div><dt>💭 Waited · gave up</dt><dd data-waits>0 · 0</dd></div>
   </dl>
-  <p class="semif-muted" data-robot>🤖 The green ghost with the antenna asks the model which way to turn at every crossroads.</p>
+  <p class="muted" data-robot>🤖 The green ghost with the antenna asks the model which way to turn at every crossroads.</p>
 </div>
 
 <script>

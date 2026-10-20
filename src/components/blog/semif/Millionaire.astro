@@ -7,58 +7,53 @@ import Styles from './Styles.astro'
 import { LADDER, money } from './quiz.js'
 ---
 <Styles />
-<div class="semif-card" data-semif-show>
-  <div class="semif-row">
-    <p class="semif-kicker">💰 Show do Milhão</p>
-    <span class="semif-muted" data-level></span>
+<div class="card stack semif" data-semif-show>
+  <div class="cluster">
+    <p class="kicker">💰 Show do Milhão</p>
+    <span class="muted" data-level></span>
   </div>
   <ol class="semif-ladder" data-ladder>
     {LADDER.map((value) => <li>{money(value)}</li>)}
   </ol>
-  <dl class="semif-stats">
+  <dl class="grid semif-stats">
     <div><dt>🛑 Stop</dt><dd data-if-stop>—</dd></div>
     <div><dt>❌ Wrong</dt><dd data-if-wrong>—</dd></div>
     <div><dt>✅ Right</dt><dd data-if-right>—</dd></div>
   </dl>
   <p class="semif-question" data-question></p>
-  <div class="semif-answers" data-answers></div>
-  <div class="semif-row" data-confirm hidden>
+  <div class="grid semif-answers" data-answers></div>
+  <div class="cluster" data-confirm hidden>
     <strong>🎙️ Is that your final answer?</strong>
-    <button type="button" class="semif-btn" data-yes>✅ Final answer</button>
-    <button type="button" class="semif-btn semif-ghost" data-no>↩️ Let me think</button>
+    <button type="button" class="btn" data-yes>✅ Final answer</button>
+    <button type="button" class="btn" data-variant="ghost" data-no>↩️ Let me think</button>
   </div>
   <div class="semif-bars" data-audience hidden></div>
-  <div class="semif-row" data-lifelines>
-    <button type="button" class="semif-btn semif-ghost" data-fifty>✂️ 50:50 <small data-left></small></button>
-    <button type="button" class="semif-btn semif-ghost" data-ask>📊 Audience <small data-left></small></button>
-    <button type="button" class="semif-btn semif-ghost" data-skip>⏭️ Skip <small data-left></small></button>
-    <button type="button" class="semif-btn semif-ghost" data-stop>🛑 Stop</button>
+  <div class="cluster" data-lifelines>
+    <button type="button" class="btn" data-variant="ghost" data-fifty>✂️ 50:50 <small data-left></small></button>
+    <button type="button" class="btn" data-variant="ghost" data-ask>📊 Audience <small data-left></small></button>
+    <button type="button" class="btn" data-variant="ghost" data-skip>⏭️ Skip <small data-left></small></button>
+    <button type="button" class="btn" data-variant="ghost" data-stop>🛑 Stop</button>
   </div>
-  <p class="semif-status" data-status></p>
-  <button type="button" class="semif-btn" data-restart hidden>🔁 Play again</button>
+  <p class="status" data-status></p>
+  <button type="button" class="btn" data-restart hidden>🔁 Play again</button>
 </div>
 
 <style is:global>
   .semif-ladder { display: flex; flex-wrap: wrap; gap: 0.3em; list-style: none !important; padding-left: 0 !important; font-size: 0.8em; font-variant-numeric: tabular-nums; }
-  .semif-ladder li { margin: 0 !important; border-radius: 99px; background: rgb(0 0 0 / 0.05); padding: 0.1em 0.6em; color: var(--color-neutral-500); }
-  .semif-ladder li[data-state='won'] { background: rgb(74 222 128 / 0.2); color: inherit; }
-  .semif-ladder li[data-state='current'] { background: var(--color-green-600); color: white; font-weight: 600; }
+  .semif-ladder li { margin: 0 !important; border-radius: 99px; background: color-mix(in srgb, var(--color-text) 6%, transparent); padding: 0.1em 0.6em; color: var(--color-text-muted); }
+  .semif-ladder li[data-state='won'] { background: color-mix(in srgb, var(--color-accent) 20%, transparent); color: inherit; }
+  .semif-ladder li[data-state='current'] { background: var(--color-ok); color: var(--color-bg); font-weight: 600; }
   .semif-question { font-size: 1.2em; font-weight: 600; line-height: 1.35; text-wrap: balance; }
-  .semif-answers { display: grid; gap: 0.5em; grid-template-columns: repeat(auto-fit, minmax(13em, 1fr)); }
-  .semif-answers button { display: flex; gap: 0.6em; border: 1px solid rgb(0 0 0 / 0.15); border-radius: 0.6rem; padding: 0.6em 0.9em; text-align: left; transition: background 150ms, border-color 150ms, opacity 150ms; }
-  .semif-answers button b { color: var(--color-green-600); }
-  .semif-answers button:hover:not(:disabled) { border-color: var(--color-green-400); }
+  .semif-answers { gap: 0.5em; }
+  .semif-answers button { display: flex; gap: 0.6em; border: 1px solid var(--color-line); border-radius: 0.6rem; padding: 0.6em 0.9em; text-align: left; transition: background 150ms, border-color 150ms, opacity 150ms; }
+  .semif-answers button b { color: var(--color-ok); }
+  .semif-answers button:hover:not(:disabled) { border-color: var(--color-accent); }
   .semif-answers button:disabled { cursor: default; }
-  .semif-answers button[data-state='picked'] { border-color: var(--color-amber-400); background: rgb(251 191 36 / 0.15); }
-  .semif-answers button[data-state='right'] { border-color: var(--color-green-500); background: rgb(74 222 128 / 0.25); }
-  .semif-answers button[data-state='wrong'] { border-color: var(--color-red-400); background: rgb(248 113 113 / 0.2); }
+  .semif-answers button[data-state='picked'] { border-color: var(--color-warning); background: color-mix(in srgb, var(--color-warning) 15%, transparent); }
+  .semif-answers button[data-state='right'] { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 25%, transparent); }
+  .semif-answers button[data-state='wrong'] { border-color: var(--color-error); background: color-mix(in srgb, var(--color-error) 20%, transparent); }
   .semif-answers button[data-state='gone'] { visibility: hidden; }
   .semif-answers button[data-state='dim'] { opacity: 0.45; }
-  html.dark .semif-ladder li { background: rgb(255 255 255 / 0.07); color: var(--color-neutral-400); }
-  html.dark .semif-ladder li[data-state='won'] { background: rgb(74 222 128 / 0.18); color: inherit; }
-  html.dark .semif-ladder li[data-state='current'] { background: var(--color-green-600); color: white; }
-  html.dark .semif-answers button { border-color: rgb(255 255 255 / 0.18); }
-  html.dark .semif-answers button b { color: var(--color-green-400); }
   @media (prefers-reduced-motion: reduce) { .semif-answers button { transition: none; } }
 </style>
 
@@ -249,7 +244,7 @@ import { LADDER, money } from './quiz.js'
             label.innerHTML = `<b>${visible[index].querySelector('b').textContent}</b> <small></small>`
             label.querySelector('small').textContent = option
             const bar = document.createElement('div')
-            bar.className = 'semif-meter'
+            bar.className = 'meter'
             bar.innerHTML = `<i style="width:${Math.max(1, probabilities[index] * 100)}%"></i>`
             const score = document.createElement('em')
             score.textContent = `${Math.round(probabilities[index] * 100)}%`

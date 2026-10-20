@@ -15,18 +15,18 @@ const bio = t('general.profile_description').split('\n').map((s) => s.trim()).fi
     <Monogram class="h-36 w-36 text-green-400" />
     <h1 class="mt-6 text-3xl font-semibold text-green-400">{basics.name}</h1>
     <p class="mt-2 text-neutral-500 dark:text-neutral-400">
-      {t('general.role_profile')}, <span class="rounded-sm bg-green-100 px-1 text-green-500 dark:bg-neutral-700 dark:text-green-400">{basics.label}</span>
+      {t('general.role_profile')}, <span class="chip">{basics.label}</span>
     </p>
 
     <SocialLinks profiles={basics.profiles} />
 
-    <div class="max-w-2xl space-y-4 text-neutral-600 dark:text-neutral-300">
+    <div class="stack max-w-2xl text-neutral-600 dark:text-neutral-300">
       {bio.map((paragraph) => <p>{paragraph}</p>)}
     </div>
 
     <div class="mt-10 flex flex-wrap justify-center gap-4">
-      <a class="btn" href={localePath(locale, '/projetos')}>{t('general.nav_projects')}</a>
-      <a class="btn" href={localePath(locale, '/contato')}>{t('general.nav_contact')}</a>
+      <a class="btn text-base" href={localePath(locale, '/projetos')}>{t('general.nav_projects')}</a>
+      <a class="btn text-base" href={localePath(locale, '/contato')}>{t('general.nav_contact')}</a>
     </div>
   </section>
 </Layout>

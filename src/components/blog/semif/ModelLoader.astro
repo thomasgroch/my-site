@@ -8,24 +8,24 @@ import { MODELS } from './models.js'
 const { prefer } = Astro.props
 ---
 <Styles />
-<div class="semif-card" data-semif-loader data-prefer={prefer}>
-  <p class="semif-kicker">Model</p>
-  <div class="semif-row">
+<div class="card stack semif" data-semif-loader data-prefer={prefer}>
+  <p class="kicker">Model</p>
+  <div class="cluster">
     <select data-model class="rounded-lg border-neutral-300 bg-transparent py-1.5 text-[0.95em] dark:border-neutral-600">
       {Object.entries(MODELS).map(([id, model]) => <option value={id}>{model.name} · {model.size}</option>)}
     </select>
-    <button type="button" class="semif-btn" data-load>⬇️ Load</button>
+    <button type="button" class="btn" data-load>⬇️ Load</button>
   </div>
-  <p class="semif-muted" data-notice></p>
+  <p class="muted" data-notice></p>
   <div>
-    <div class="semif-row semif-muted"><span>📦 Download</span><span data-percent>—</span></div>
-    <div class="semif-meter mt-1"><i data-meter></i></div>
+    <div class="cluster muted"><span>📦 Download</span><span data-percent>—</span></div>
+    <div class="meter"><i data-meter></i></div>
   </div>
-  <dl class="semif-stats">
+  <dl class="grid semif-stats">
     <div><dt>⏱️ Model load</dt><dd data-load-time>—</dd></div>
     <div><dt>🔥 Warmup</dt><dd data-warmup>—</dd></div>
   </dl>
-  <p class="semif-status" data-status>💤 No model loaded. Everything runs on your GPU; nothing is sent anywhere.</p>
+  <p class="status" data-status>💤 No model loaded. Everything runs on your GPU; nothing is sent anywhere.</p>
 </div>
 
 <script>

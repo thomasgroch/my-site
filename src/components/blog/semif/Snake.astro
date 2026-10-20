@@ -5,39 +5,39 @@ import Styles from './Styles.astro'
 import { SPEEDS } from './snake.js'
 ---
 <Styles />
-<div class="semif-card" data-semif-snake>
-  <div class="semif-row">
-    <p class="semif-kicker">🐍 Snake, played by 🤖</p>
-    <span class="semif-muted" data-hud>🍎 0 · Best 0 · Game 1</span>
+<div class="card stack semif" data-semif-snake>
+  <div class="cluster">
+    <p class="kicker">🐍 Snake, played by 🤖</p>
+    <span class="muted" data-hud>🍎 0 · Best 0 · Game 1</span>
   </div>
   <div class="semif-arcade" data-wrap>
     <canvas data-canvas role="img" aria-label="Snake board. The model plays; use the arrow keys, WASD, swipes or the buttons below to take over."></canvas>
   </div>
-  <div class="semif-row">
-    <button type="button" class="semif-btn" data-start>▶️ Start</button>
-    <button type="button" class="semif-btn semif-ghost" data-pause disabled>⏸️ Pause</button>
-    <button type="button" class="semif-btn semif-ghost" data-pilot disabled>🕹️ Take over</button>
-    <span class="semif-muted">⌨️ Arrows or WASD take over · P pauses · 📱 swipe</span>
+  <div class="cluster">
+    <button type="button" class="btn" data-start>▶️ Start</button>
+    <button type="button" class="btn" data-variant="ghost" data-pause disabled>⏸️ Pause</button>
+    <button type="button" class="btn" data-variant="ghost" data-pilot disabled>🕹️ Take over</button>
+    <span class="muted">⌨️ Arrows or WASD take over · P pauses · 📱 swipe</span>
   </div>
-  <label class="semif-row semif-speed">
+  <label class="cluster semif-speed">
     <span>🐢</span>
     <input type="range" data-speed min={SPEEDS.min} max={SPEEDS.max} step="1" value={SPEEDS.initial} aria-label="Game speed, in steps per second" />
     <span>🐇</span>
-    <span class="semif-muted" data-speed-label>{SPEEDS.initial} steps/s</span>
+    <span class="muted" data-speed-label>{SPEEDS.initial} steps/s</span>
   </label>
   <div class="semif-pad" data-pad>
-    <button type="button" class="semif-btn semif-ghost" data-dir="up" aria-label="Up">⬆️</button>
-    <button type="button" class="semif-btn semif-ghost" data-dir="left" aria-label="Left">⬅️</button>
-    <button type="button" class="semif-btn semif-ghost" data-dir="down" aria-label="Down">⬇️</button>
-    <button type="button" class="semif-btn semif-ghost" data-dir="right" aria-label="Right">➡️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="up" aria-label="Up">⬆️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="left" aria-label="Left">⬅️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="down" aria-label="Down">⬇️</button>
+    <button type="button" class="btn" data-variant="ghost" data-dir="right" aria-label="Right">➡️</button>
   </div>
-  <dl class="semif-stats">
+  <dl class="grid semif-stats">
     <div><dt>🧠 Brain</dt><dd data-brain>🎲 none</dd></div>
     <div><dt>🎯 Decisions</dt><dd data-decisions>0</dd></div>
     <div><dt>⏱️ Avg. think</dt><dd data-think>—</dd></div>
     <div><dt>⏰ Late · 🫨 reflex</dt><dd data-lag>0 · 0</dd></div>
   </dl>
-  <p class="semif-muted" data-robot>🤖 The model is asked about a turn a few tiles ahead. If the answer is late, the snake keeps going straight, and only dodges by reflex when the next tile would kill it.</p>
+  <p class="muted" data-robot>🤖 The model is asked about a turn a few tiles ahead. If the answer is late, the snake keeps going straight, and only dodges by reflex when the next tile would kill it.</p>
 </div>
 
 <style is:global>

@@ -1,0 +1,11 @@
+/* Entrada única do CSS. A ordem das camadas é a cascata inteira
+   (docs/convencoes.md); nada fica fora de camada.
+   O Tailwind ainda entra, nas camadas `base`, `components` e `utilities`, até
+   a migração acabar; o que já é nativo vem depois e vence dentro da camada. */
+@layer reset, tokens, base, layouts, components, utilities;
+
+@import '../tailwind.css';
+@import './tokens.css' layer(tokens);
+@import './base.css' layer(base);
+@import './layouts.css' layer(layouts);
+@import './components.css' layer(components);

@@ -66,4 +66,4 @@ Medido com `npm run measure`, sem compressão, que é como o [512KB Club](https:
 
 ## Arquitetura
 
-As decisões por trás da estrutura estão em [`docs/arquitetura.md`](docs/arquitetura.md).
+As decisões por trás da estrutura estão em [`docs/arquitetura.md`](docs/arquitetura.md). As regras do código (reaproveitamento, CSS, Atomic Design) estão em [`docs/convencoes.md`](docs/convencoes.md).

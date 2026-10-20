@@ -30,7 +30,7 @@ const version = (item) => item.version ?? lockfile.packages?.[`node_modules/${it
                   {item.name[locale]}
                 </a>
                 {version(item) && (
-                  <span class="rounded-sm bg-neutral-200 px-1.5 text-sm text-neutral-500 dark:bg-neutral-700 dark:text-neutral-300">
+                  <span class="chip text-sm" data-tone="muted">
                     {version(item)}
                   </span>
                 )}

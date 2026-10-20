@@ -1,0 +1,39 @@
+/* Elementos sem classe. O tema: escolha salva > preferência do sistema
+   (Layout.astro põe `dark` no <html> antes da pintura). */
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+p {
+  font-weight: 300;
+  line-height: 1.625;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+  text-underline-offset: 4px;
+  &:hover {
+    text-decoration-color: var(--color-accent);
+  }
+}
+
+:is(h1, h2, h3) {
+  letter-spacing: 0.025em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}

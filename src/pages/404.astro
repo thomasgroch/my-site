@@ -15,7 +15,7 @@ import { LOCALES, LOCALE_TAGS, createTranslator, localePath } from '@/i18n'
       return (
         <div data-locale={locale} lang={LOCALE_TAGS[locale]} class:list={[{ hidden: locale !== 'pt' }]}>
           <p class="mt-4 text-2xl">{t('general.nothing_here')}</p>
-          <p class="mt-10"><a class="btn" href={localePath(locale, '/')}>{t('general.goto_site')}</a></p>
+          <p class="mt-10"><a class="btn text-base" href={localePath(locale, '/')}>{t('general.goto_site')}</a></p>
         </div>
       )
     })}

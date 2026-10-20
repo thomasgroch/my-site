@@ -31,14 +31,14 @@ const toc = tableOfContents(headings)
       {draft && (
         <>
           <span aria-hidden="true">·</span>
-          <span class="rounded-sm bg-yellow-100 px-1.5 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">Draft</span>
+          <span class="chip" data-tone="warning">Draft</span>
         </>
       )}
     </p>
     {tags.length > 0 && (
       <ul class="mt-3 flex flex-wrap gap-2">
         {tags.map((tag) => (
-          <li class="rounded-sm bg-green-100 px-2 py-0.5 text-sm text-green-600 dark:bg-neutral-700 dark:text-green-400">{tag}</li>
+          <li class="chip text-sm">{tag}</li>
         ))}
       </ul>
     )}

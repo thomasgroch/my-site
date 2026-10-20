@@ -4,6 +4,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Espelha --text-* de src/styles/tokens.css: o @theme é o que gera as
+   utilidades text-*. Some com elas. */
 @theme {
   --text-*: initial;
   --text-xs: 0.875rem;
@@ -32,46 +34,6 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
-  }
-}
-
-@utility btn {
-  @apply inline-flex items-center gap-2 rounded-sm border-2 border-green-300 px-6 py-2 text-base font-medium text-neutral-600 no-underline transition
-      hover:border-green-100 hover:bg-green-100 hover:text-green-500
-      dark:border-neutral-400 dark:text-neutral-200 dark:hover:border-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-green-400;
-}
-
-@utility field {
-  @apply block w-full rounded-sm border-transparent bg-neutral-200 px-4 py-3 text-base text-neutral-800 caret-green-400
-      focus:border-green-300 focus:bg-white focus:ring-0
-      dark:bg-neutral-700 dark:text-neutral-100 dark:focus:border-neutral-500 dark:focus:bg-neutral-600;
-}
-
-@utility label {
-  @apply mb-2 block text-lg tracking-wide text-green-400;
-}
-
-@layer base {
-  html {
-    color-scheme: light;
-  }
-  html.dark {
-    color-scheme: dark;
-  }
-  body {
-    @apply bg-gray-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 font-sans antialiased;
-  }
-  p {
-    @apply font-light leading-relaxed;
-  }
-  a {
-    @apply underline decoration-green-400/60 underline-offset-4 hover:decoration-green-400;
-  }
-  h1, h2, h3 {
-    @apply tracking-wide;
-  }
-  :focus-visible {
-    @apply outline-hidden ring-2 ring-green-400 ring-offset-2 ring-offset-gray-100 dark:ring-offset-neutral-800 rounded-sm;
   }
 }
 

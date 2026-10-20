@@ -24,7 +24,7 @@ const action = '/.netlify/functions/contact'
       hx-swap="innerHTML"
       hx-disable="find button"
       hx-indicator="#contact-form"
-      class="space-y-5"
+      class="stack"
     >
       <input type="hidden" name="locale" value={locale} />
       <div class="hidden" aria-hidden="true">
@@ -33,19 +33,19 @@ const action = '/.netlify/functions/contact'
 
       <div>
         <label class="label" for="nome">{t('contact.name')}</label>
-        <input class="field" id="nome" name="nome" type="text" required autocomplete="name" />
+        <input class="field text-base" id="nome" name="nome" type="text" required autocomplete="name" />
       </div>
 
       <div class="grid gap-5 sm:grid-cols-2">
         <div>
           <label class="label" for="email">{t('contact.email')}</label>
-          <input class="field" id="email" name="email" type="email" required autocomplete="email" />
+          <input class="field text-base" id="email" name="email" type="email" required autocomplete="email" />
         </div>
         <div>
           <label class="label" for="telefone">
             {t('contact.telephone')} <span class="text-sm text-neutral-400">({t('contact.optional')})</span>
           </label>
-          <input class="field" id="telefone" name="telefone" type="tel" autocomplete="tel" />
+          <input class="field text-base" id="telefone" name="telefone" type="tel" autocomplete="tel" />
         </div>
       </div>
 
@@ -53,19 +53,19 @@ const action = '/.netlify/functions/contact'
         <label class="label" for="cidade">
           {t('contact.city')} <span class="text-sm text-neutral-400">({t('contact.optional')})</span>
         </label>
-        <input class="field" id="cidade" name="cidade" type="text" autocomplete="address-level2" />
+        <input class="field text-base" id="cidade" name="cidade" type="text" autocomplete="address-level2" />
       </div>
 
       <div>
         <label class="label" for="mensagem">{t('contact.help')}</label>
-        <textarea class="field" id="mensagem" name="mensagem" rows="5" required></textarea>
+        <textarea class="field text-base" id="mensagem" name="mensagem" rows="5" required></textarea>
         <p class="mt-2 text-xs italic text-neutral-400">{t('contact.span_message')}</p>
       </div>
 
       <div id="form-status" aria-live="polite"></div>
 
       <div class="flex items-center justify-center gap-4">
-        <button type="submit" class="btn">{t('contact.submit')}</button>
+        <button type="submit" class="btn text-base">{t('contact.submit')}</button>
         <span class="htmx-indicator text-sm text-neutral-500" aria-hidden="true">{t('contact.sending')}</span>
       </div>
     </form>

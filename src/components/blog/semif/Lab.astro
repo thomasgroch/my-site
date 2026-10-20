@@ -5,48 +5,48 @@
 import Styles from './Styles.astro'
 ---
 <Styles />
-<div class="semif-card" data-semif-lab>
-  <div class="semif-row">
-    <p class="semif-kicker">Decision</p>
-    <span class="semif-muted">Presets:</span>
-    <button type="button" class="semif-btn semif-ghost" data-preset="email">📨 Email triage</button>
-    <button type="button" class="semif-btn semif-ghost" data-preset="account">🔐 Account support</button>
+<div class="card stack semif" data-semif-lab>
+  <div class="cluster">
+    <p class="kicker">Decision</p>
+    <span class="muted">Presets:</span>
+    <button type="button" class="btn" data-variant="ghost" data-preset="email">📨 Email triage</button>
+    <button type="button" class="btn" data-variant="ghost" data-preset="account">🔐 Account support</button>
   </div>
   <label class="block">
-    <span class="semif-muted">State</span>
-    <textarea data-state rows="3" class="semif-input"></textarea>
+    <span class="muted">State</span>
+    <textarea data-state rows="3" class="field"></textarea>
   </label>
   <label class="block">
-    <span class="semif-muted">Question</span>
-    <input data-question class="semif-input" />
+    <span class="muted">Question</span>
+    <input data-question class="field" />
   </label>
   <div>
-    <div class="semif-row">
-      <span class="semif-muted">Options</span>
-      <span class="semif-muted" data-count></span>
-      <button type="button" class="semif-btn semif-ghost" data-add aria-label="Add option">➕</button>
-      <button type="button" class="semif-btn semif-ghost" data-remove aria-label="Remove option">➖</button>
+    <div class="cluster">
+      <span class="muted">Options</span>
+      <span class="muted" data-count></span>
+      <button type="button" class="btn" data-variant="ghost" data-add aria-label="Add option">➕</button>
+      <button type="button" class="btn" data-variant="ghost" data-remove aria-label="Remove option">➖</button>
     </div>
     <ol class="semif-options" data-options></ol>
   </div>
-  <div class="semif-row">
-    <button type="button" class="semif-btn" data-run disabled>▶️ Run both</button>
-    <span class="semif-status" data-status>☝️ Load a model above first.</span>
+  <div class="cluster">
+    <button type="button" class="btn" data-run disabled>▶️ Run both</button>
+    <span class="status" data-status>☝️ Load a model above first.</span>
   </div>
 
-  <div class="semif-lab-grid">
+  <div class="grid semif-lab-grid">
     <section class="semif-panel">
-      <p class="semif-kicker">🎯 Direct readout</p>
-      <div class="semif-bars" data-direct><span class="semif-muted">One forward pass, no text generated.</span></div>
-      <dl class="semif-stats">
+      <p class="kicker">🎯 Direct readout</p>
+      <div class="semif-bars" data-direct><span class="muted">One forward pass, no text generated.</span></div>
+      <dl class="grid semif-stats">
         <div><dt>Total</dt><dd data-direct-total>—</dd></div>
         <div><dt>Input</dt><dd data-direct-input>—</dd></div>
       </dl>
     </section>
     <section class="semif-panel">
-      <p class="semif-kicker">✍️ Generation</p>
+      <p class="kicker">✍️ Generation</p>
       <pre class="semif-stream" data-generated>The model writes a JSON answer, token by token.</pre>
-      <dl class="semif-stats">
+      <dl class="grid semif-stats">
         <div><dt>First token</dt><dd data-ttft>—</dd></div>
         <div><dt>Total</dt><dd data-gen-total>—</dd></div>
         <div><dt>Output</dt><dd data-gen-tokens>—</dd></div>
@@ -57,18 +57,14 @@ import Styles from './Styles.astro'
 </div>
 
 <style is:global>
-  .semif-input { display: block; margin-top: 0.25em; width: 100%; border-radius: 0.5rem; border-color: var(--color-neutral-300); background: transparent; font-size: 0.95em; }
+  label > .field { margin-top: 0.25em; }
   .semif-options { display: grid; gap: 0.4em; margin-top: 0.5em; list-style: none !important; padding-left: 0 !important; counter-reset: option; }
   .semif-options li { display: flex; align-items: center; gap: 0.6em; margin: 0 !important; counter-increment: option; }
-  .semif-options li::before { content: counter(option, upper-alpha); width: 1.2em; font-weight: 600; color: var(--color-green-600); }
-  .semif-options .semif-input { margin-top: 0; }
-  .semif-lab-grid { display: grid; gap: 0.75em; grid-template-columns: repeat(auto-fit, minmax(17em, 1fr)); }
-  .semif-panel { display: grid; align-content: start; gap: 0.75em; border-radius: 0.6rem; background: rgb(0 0 0 / 0.025); padding: 0.85em 1em; }
+  .semif-options li::before { content: counter(option, upper-alpha); width: 1.2em; font-weight: 600; color: var(--color-ok); }
+  .semif-lab-grid { --min: 17em; }
+  .semif-panel { display: grid; align-content: start; gap: 0.75em; border-radius: 0.6rem; background: color-mix(in srgb, var(--color-text) 3%, transparent); padding: 0.85em 1em; }
   .semif-stream { min-height: 5.5em; margin: 0; white-space: pre-wrap; word-break: break-word; font-size: 0.85em; }
   .semif-verdict { font-weight: 600; }
-  html.dark .semif-input { border-color: var(--color-neutral-600); }
-  html.dark .semif-panel { background: rgb(255 255 255 / 0.04); }
-  html.dark .semif-options li::before { color: var(--color-green-400); }
 </style>
 
 <script>
@@ -111,7 +107,7 @@ import Styles from './Styles.astro'
     const addOption = (value = '') => {
       const item = document.createElement('li')
       const input = document.createElement('input')
-      input.className = 'semif-input'
+      input.className = 'field'
       input.placeholder = 'Describe this option'
       input.value = value
       item.append(input)
@@ -153,7 +149,7 @@ import Styles from './Styles.astro'
           label.innerHTML = `<b>${String.fromCharCode(65 + index)}</b> <small></small>`
           label.querySelector('small').textContent = option
           const bar = document.createElement('div')
-          bar.className = 'semif-meter'
+          bar.className = 'meter'
           bar.innerHTML = `<i style="width:${Math.max(1, probabilities[index] * 100)}%"></i>`
           const score = document.createElement('em')
           score.textContent = probabilities[index].toFixed(3)

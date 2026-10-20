@@ -35,7 +35,7 @@ const { posts, drafts = false } = Astro.props
               {post.data.draft && (
                 <>
                   <span aria-hidden="true">·</span>
-                  <span class="rounded-sm bg-yellow-100 px-1.5 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">Draft</span>
+                  <span class="chip" data-tone="warning">Draft</span>
                 </>
               )}
             </p>
