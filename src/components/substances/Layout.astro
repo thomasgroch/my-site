@@ -87,10 +87,8 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
     <script defer src="https://cloud.umami.is/script.js" data-website-id="bbe5b2be-4c67-40af-830d-61783fd70cd3"></script>
   </head>
   <body>
-    <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-green-100 focus:px-4 focus:py-2 focus:text-green-600">
-      {t('general.skip_to_content')}
-    </a>
-    <div class="mx-auto w-full max-w-4xl px-4">
+    <a href="#conteudo" class="skip">{t('general.skip_to_content')}</a>
+    <div class="shell center">
       <TopMenu locale={locale} path={path} />
       <main id="conteudo">
         <slot />
@@ -103,12 +101,12 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
       data-theme-toggle
       aria-label={t('general.theme_toggle')}
       title={t('general.theme_toggle')}
-      class="fixed bottom-5 left-5 rounded-full bg-blue-200 p-2 text-blue-900 shadow shadow-blue-300 dark:bg-yellow-100 dark:text-yellow-500 dark:shadow-yellow-300"
+      class="theme-toggle"
     >
-      <svg class="hidden h-6 w-6 dark:block" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <svg class="sun" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
         <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
       </svg>
-      <svg class="h-6 w-6 dark:hidden" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <svg class="moon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
       </svg>
     </button>
@@ -123,11 +121,61 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
         }
         var menu = event.target.closest('[data-menu-toggle]')
         if (menu) {
-          var nav = document.getElementById('main-nav')
-          var hidden = nav.classList.toggle('hidden')
-          menu.setAttribute('aria-expanded', String(!hidden))
+          var open = document.getElementById('main-nav').toggleAttribute('data-open')
+          menu.setAttribute('aria-expanded', String(open))
         }
       })
     </script>
   </body>
 </html>
+
+<style>
+  .shell {
+    --measure: 56rem;
+    padding-inline: var(--space-4);
+  }
+
+  /* Só aparece ao receber foco pelo teclado. */
+  .skip {
+    position: absolute;
+    inset-block-start: var(--space-4);
+    inset-inline-start: var(--space-4);
+    z-index: 50;
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-strong);
+    &:not(:focus) {
+      clip-path: inset(50%);
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  /* Os dois ícones ocupam o mesmo lugar; o tema escolhe qual se vê. */
+  .theme-toggle {
+    position: fixed;
+    inset-block-end: 1.25rem;
+    inset-inline-start: 1.25rem;
+    display: grid;
+    border-radius: 50%;
+    padding: var(--space-2);
+    background: var(--color-toggle-bg);
+    color: var(--color-toggle);
+    box-shadow: 0 1px 3px var(--color-toggle-shadow);
+    cursor: pointer;
+    > svg {
+      grid-area: 1 / 1;
+      inline-size: 1.5rem;
+      block-size: 1.5rem;
+    }
+    .sun {
+      fill: light-dark(transparent, currentcolor);
+    }
+    .moon {
+      fill: light-dark(currentcolor, transparent);
+    }
+  }
+</style>

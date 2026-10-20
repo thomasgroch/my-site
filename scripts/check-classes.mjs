@@ -5,8 +5,6 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { walk } from './lib/fs.mjs'
 
-// Classes que existem só como gancho de JS/teste e nunca são estilizadas.
-const HOOKS = new Set(['locale-link'])
 // Um nome de classe começa com letra/dígito; descarta caminhos e operadores
 // que aparecem dentro de expressões em `class:list`.
 const CLASS_NAME = /^[a-zA-Z0-9][\w:./[\]#()%,!-]*$/
@@ -27,7 +25,7 @@ const tokens = new Set()
 const add = (value) =>
   String(value)
     .split(/\s+/)
-    .forEach((t) => t && !HOOKS.has(t) && CLASS_NAME.test(t) && tokens.add(t))
+    .forEach((t) => t && CLASS_NAME.test(t) && tokens.add(t))
 
 for (const file of files) {
   const src = readFileSync(file, 'utf8')

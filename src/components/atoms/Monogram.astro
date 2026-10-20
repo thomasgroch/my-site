@@ -1,10 +1,11 @@
 ---
-// Marca visual do site: monograma "TD" em SVG inline (450 bytes), mesma arte do favicon.
-const { class: className = 'h-40 w-40', decorative = false } = Astro.props
+// Marca visual do site: monograma "TD" em SVG inline (450 bytes), mesma arte do
+// favicon. O tamanho vem de quem usa, por --monogram-size.
+const { decorative = false } = Astro.props
 ---
 <svg
   viewBox="0 0 100 100"
-  class={className}
+  class="monogram"
   role={decorative ? undefined : 'img'}
   aria-label={decorative ? undefined : 'TD'}
   aria-hidden={decorative ? 'true' : undefined}
@@ -22,3 +23,10 @@ const { class: className = 'h-40 w-40', decorative = false } = Astro.props
     fill="currentColor"
   >TD</text>
 </svg>
+
+<style>
+  .monogram {
+    inline-size: var(--monogram-size, 10rem);
+    block-size: var(--monogram-size, 10rem);
+  }
+</style>

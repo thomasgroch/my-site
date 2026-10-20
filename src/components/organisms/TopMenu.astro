@@ -14,44 +14,102 @@ const items = [
   { to: '/blog', label: t('general.nav_blog'), href: '/blog' },
 ]
 ---
-<header class="flex flex-wrap items-center justify-between py-5 sm:justify-center">
-  <a
-    href={localePath(locale, '/')}
-    class:list={['flex items-center gap-2 text-lg font-semibold text-green-400 no-underline sm:hidden', { invisible: path === '/' }]}
-  >
-    <Monogram class="h-8 w-8" decorative />
+<header class="cluster top">
+  <a href={localePath(locale, '/')} class="brand" data-home={path === '/' ? '' : undefined}>
+    <Monogram decorative />
     Thomas Dev
   </a>
 
-  <button
-    type="button"
-    data-menu-toggle
-    aria-controls="main-nav"
-    aria-expanded="false"
-    class="rounded-sm p-2 text-green-400 sm:hidden"
-  >
-    <span class="sr-only">{t('general.nav_open_menu')}</span>
-    <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+  <button type="button" data-menu-toggle aria-controls="main-nav" aria-expanded="false" class="burger">
+    <span class="visually-hidden">{t('general.nav_open_menu')}</span>
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
       <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"></path>
     </svg>
   </button>
 
-  <!-- `hidden` vence `flex` no CSS do Tailwind; o botão só remove `hidden`. -->
-  <nav id="main-nav" class="flex hidden w-full flex-col text-center text-lg sm:flex sm:w-auto sm:flex-row sm:gap-2">
+  <nav id="main-nav" class="menu">
     {items.map((item) => {
       const active = path === item.to || path.startsWith(`${item.to}/`)
       return (
-        <a
-          href={item.href ?? localePath(locale, item.to)}
-          aria-current={active ? 'page' : undefined}
-          class:list={[
-            'rounded-md border-2 border-transparent px-5 py-4 text-neutral-500 no-underline hover:border-green-200 hover:text-green-400 dark:text-neutral-200 dark:hover:border-neutral-200 sm:py-2',
-            { 'border-[#DEF7DC] bg-[#DEF7DC] text-green-500 dark:border-transparent dark:bg-neutral-700 dark:text-green-400': active },
-          ]}
-        >
+        <a href={item.href ?? localePath(locale, item.to)} aria-current={active ? 'page' : undefined}>
           {item.label}
         </a>
       )
     })}
   </nav>
 </header>
+
+<style>
+  .top {
+    justify-content: space-between;
+    padding-block: var(--space-5);
+    font-size: var(--text-lg);
+  }
+  .brand {
+    --monogram-size: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    /* Na home a marca já está no centro da página; só reserva o lugar. */
+    &[data-home] {
+      visibility: hidden;
+    }
+  }
+  .burger {
+    border-radius: var(--radius-sm);
+    padding: var(--space-2);
+    color: var(--color-accent);
+    background: none;
+    cursor: pointer;
+    > svg {
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+    }
+  }
+  /* Fechado até o botão abrir; em telas largas é uma linha, sem botão. */
+  .menu {
+    display: none;
+    inline-size: 100%;
+    flex-direction: column;
+    text-align: center;
+    &[data-open] {
+      display: flex;
+    }
+    a {
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: var(--space-4) 1.25rem;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      &:hover {
+        border-color: var(--color-accent-soft);
+        color: var(--color-accent);
+      }
+      &[aria-current] {
+        background: var(--color-accent-soft);
+        color: var(--color-accent-strong);
+      }
+    }
+  }
+  @media (min-width: 40em) {
+    .top {
+      justify-content: center;
+    }
+    .brand,
+    .burger {
+      display: none;
+    }
+    .menu {
+      display: flex;
+      inline-size: auto;
+      flex-direction: row;
+      gap: var(--space-2);
+      a {
+        padding-block: var(--space-2);
+      }
+    }
+  }
+</style>

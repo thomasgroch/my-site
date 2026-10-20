@@ -63,7 +63,7 @@ describe('idiomas', () => {
   })
 
   it('o rodapé leva para a mesma página no outro idioma', () => {
-    const hrefs = (p) => [...page(p).querySelectorAll('.locale-link')].map((a) => a.getAttribute('href'))
+    const hrefs = (p) => [...page(p).querySelectorAll('nav a[hreflang]')].map((a) => a.getAttribute('href'))
     expect(hrefs('/stack/index.html')).toEqual(['/stack', '/en/stack'])
     expect(hrefs('/en/contato/index.html')).toEqual(['/contato', '/en/contato'])
   })
@@ -161,7 +161,7 @@ describe('blog', () => {
   it('é uma página só em inglês: sem hreflang, sem troca de idioma, canonical sem prefixo', () => {
     expect(doc().documentElement.getAttribute('lang')).toBe('en')
     expect(doc().querySelectorAll('link[hreflang]').length).toBe(0)
-    expect(doc().querySelectorAll('.locale-link').length).toBe(0)
+    expect(doc().querySelectorAll('nav a[hreflang]').length).toBe(0)
     expect(doc().querySelector('link[rel="canonical"]').getAttribute('href')).toBe('https://thomasdev.xyz/blog')
   })
 

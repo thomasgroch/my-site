@@ -4,12 +4,30 @@ import Icon, { BRANDS } from '@/components/atoms/Icon.astro'
 const { profiles = [] } = Astro.props
 const known = profiles.filter((profile) => BRANDS[profile.network])
 ---
-<ul class="cluster justify-center gap-6 py-5">
+<ul class="cluster social">
   {known.map((profile) => (
     <li>
-      <a href={profile.url} target="_blank" rel="noopener noreferrer" aria-label={BRANDS[profile.network].label} title={BRANDS[profile.network].label} class="block rounded-sm text-neutral-500 hover:text-green-400">
+      <a href={profile.url} target="_blank" rel="noopener noreferrer" aria-label={BRANDS[profile.network].label} title={BRANDS[profile.network].label}>
         <Icon name={profile.network} />
       </a>
     </li>
   ))}
 </ul>
+
+<style>
+  .social {
+    --gap: var(--space-5);
+    --icon-size: 2rem;
+    justify-content: center;
+    padding-block: 1.25rem;
+    list-style: none;
+    a {
+      display: block;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-muted);
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+  }
+</style>

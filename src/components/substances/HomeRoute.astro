@@ -11,22 +11,58 @@ const { data: basics } = await getEntry('resume', 'basics')
 const bio = t('general.profile_description').split('\n').map((s) => s.trim()).filter(Boolean)
 ---
 <Layout locale={locale} path="/" title={t('general.nav_about')} description={t('general.meta_description_home')}>
-  <section class="flex flex-col items-center py-10 text-center md:py-20">
-    <Monogram class="h-36 w-36 text-green-400" />
-    <h1 class="mt-6 text-3xl font-semibold text-green-400">{basics.name}</h1>
-    <p class="mt-2 text-neutral-500 dark:text-neutral-400">
+  <section class="hero">
+    <Monogram />
+    <h1>{basics.name}</h1>
+    <p class="muted">
       {t('general.role_profile')}, <span class="chip">{basics.label}</span>
     </p>
 
     <SocialLinks profiles={basics.profiles} />
 
-    <div class="stack max-w-2xl text-neutral-600 dark:text-neutral-300">
+    <div class="bio stack center">
       {bio.map((paragraph) => <p>{paragraph}</p>)}
     </div>
 
-    <div class="mt-10 flex flex-wrap justify-center gap-4">
-      <a class="btn text-base" href={localePath(locale, '/projetos')}>{t('general.nav_projects')}</a>
-      <a class="btn text-base" href={localePath(locale, '/contato')}>{t('general.nav_contact')}</a>
-    </div>
+    <nav class="cluster actions">
+      <a class="btn" href={localePath(locale, '/projetos')}>{t('general.nav_projects')}</a>
+      <a class="btn" href={localePath(locale, '/contato')}>{t('general.nav_contact')}</a>
+    </nav>
   </section>
 </Layout>
+
+<style>
+  .hero {
+    --monogram-size: 9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: 2.5rem;
+    text-align: center;
+    color: var(--color-accent);
+    h1 {
+      margin-block-start: var(--space-5);
+      font-size: var(--text-3xl);
+      font-weight: 600;
+    }
+    > .muted {
+      margin-block-start: var(--space-2);
+      font-size: inherit;
+    }
+  }
+  .bio {
+    --measure: 42rem;
+    color: var(--color-text);
+  }
+  .actions {
+    --gap: var(--space-4);
+    margin-block-start: 2.5rem;
+    justify-content: center;
+    font-size: var(--text-base);
+  }
+  @media (min-width: 48em) {
+    .hero {
+      padding-block: 5rem;
+    }
+  }
+</style>

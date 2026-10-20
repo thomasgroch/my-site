@@ -1,7 +1,8 @@
 ---
 // Ícone de marca em SVG inline, sem biblioteca. `name` é a rede do JSON
 // Resume (basics.profiles[].network); rede sem ícone não renderiza nada.
-const { name, class: className = 'h-8 w-8' } = Astro.props
+// O tamanho vem de quem usa, por --icon-size.
+const { name } = Astro.props
 
 export const BRANDS = {
   github: {
@@ -19,4 +20,11 @@ export const BRANDS = {
 }
 const brand = BRANDS[name]
 ---
-{brand && <svg viewBox="0 0 24 24" class={className} fill="currentColor" aria-hidden="true"><path d={brand.path}></path></svg>}
+{brand && <svg viewBox="0 0 24 24" class="icon" fill="currentColor" aria-hidden="true"><path d={brand.path}></path></svg>}
+
+<style>
+  .icon {
+    inline-size: var(--icon-size, 1.5rem);
+    block-size: var(--icon-size, 1.5rem);
+  }
+</style>
