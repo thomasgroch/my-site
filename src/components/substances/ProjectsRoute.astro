@@ -12,8 +12,16 @@ const projects = (await getCollection('projects')).sort(
 )
 ---
 <Layout locale={locale} path="/projetos" title={t('general.nav_projects')} description={t('general.meta_description_projects')}>
-  <h1 class="sr-only">{t('general.nav_projects')}</h1>
-  <div class="grid gap-8 py-8 sm:grid-cols-2">
+  <h1 class="visually-hidden">{t('general.nav_projects')}</h1>
+  <div class="grid projects">
     {projects.map((project, index) => <ProjectCard item={project.data} locale={locale} eager={index < 2} />)}
   </div>
 </Layout>
+
+<style>
+  .projects {
+    --min: 18rem;
+    gap: var(--space-6);
+    padding-block: var(--space-6);
+  }
+</style>

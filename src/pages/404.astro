@@ -8,14 +8,14 @@ import { LOCALES, LOCALE_TAGS, createTranslator, localePath } from '@/i18n'
 // título único da página.
 ---
 <Layout locale="pt" path="/404" title="404" noindex>
-  <section class="py-16 text-center">
-    <h1 class="text-[8rem] font-semibold leading-none text-green-400">404</h1>
+  <section class="lost">
+    <h1>404</h1>
     {LOCALES.map((locale) => {
       const t = createTranslator(locale)
       return (
-        <div data-locale={locale} lang={LOCALE_TAGS[locale]} class:list={[{ hidden: locale !== 'pt' }]}>
-          <p class="mt-4 text-2xl">{t('general.nothing_here')}</p>
-          <p class="mt-10"><a class="btn text-base" href={localePath(locale, '/')}>{t('general.goto_site')}</a></p>
+        <div data-locale={locale} lang={LOCALE_TAGS[locale]} hidden={locale !== 'pt'}>
+          <p class="message">{t('general.nothing_here')}</p>
+          <p class="action"><a class="btn" href={localePath(locale, '/')}>{t('general.goto_site')}</a></p>
         </div>
       )
     })}
@@ -25,8 +25,29 @@ import { LOCALES, LOCALE_TAGS, createTranslator, localePath } from '@/i18n'
       var match = location.pathname.match(/^\/(en)(\/|$)/)
       if (!match) return
       document.querySelectorAll('[data-locale]').forEach(function (el) {
-        el.classList.toggle('hidden', el.dataset.locale !== match[1])
+        el.hidden = el.dataset.locale !== match[1]
       })
     })()
   </script>
 </Layout>
+
+<style>
+  .lost {
+    padding-block: var(--space-6);
+    text-align: center;
+    h1 {
+      font-size: 8rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--color-accent);
+    }
+  }
+  .message {
+    margin-block-start: var(--space-4);
+    font-size: var(--text-2xl);
+  }
+  .action {
+    margin-block-start: 2.5rem;
+    font-size: var(--text-base);
+  }
+</style>

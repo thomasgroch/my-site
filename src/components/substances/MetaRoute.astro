@@ -14,28 +14,28 @@ const { data: groups } = await getEntry('meta', 'groups')
 const version = (item) => item.version ?? lockfile.packages?.[`node_modules/${item.pkg}`]?.version ?? null
 ---
 <Layout locale={locale} path="/meta" title={t('general.meta_title')} description={t('general.meta_description_meta')}>
-  <section class="py-8">
-    <h1 class="text-2xl font-semibold text-green-400">{t('general.meta_title')}</h1>
-    <p class="mt-4 max-w-2xl text-neutral-600 dark:text-neutral-300">{t('general.meta_intro')}</p>
+  <section class="colophon">
+    <h1>{t('general.meta_title')}</h1>
+    <p class="intro">{t('general.meta_intro')}</p>
 
     {groups.map((group) => (
-      <section class="mt-12">
+      <section class="group">
         <SectionHeading title={group.title[locale]} description={group.intro[locale]} />
 
-        <ul class="space-y-4">
+        <ul class="stack items">
           {group.items.map((item) => (
-            <li class="border-l-2 border-green-300 pl-4 dark:border-neutral-600">
-              <p class="flex flex-wrap items-baseline gap-2">
-                <a href={item.url} target="_blank" rel="noopener noreferrer" class="font-medium text-green-500 dark:text-green-400">
+            <li>
+              <p class="cluster">
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
                   {item.name[locale]}
                 </a>
                 {version(item) && (
-                  <span class="chip text-sm" data-tone="muted">
+                  <span class="chip version" data-tone="muted">
                     {version(item)}
                   </span>
                 )}
               </p>
-              <p class="mt-1 text-neutral-600 dark:text-neutral-300">{item.note[locale]}</p>
+              <p class="note">{item.note[locale]}</p>
             </li>
           ))}
         </ul>
@@ -43,3 +43,43 @@ const version = (item) => item.version ?? lockfile.packages?.[`node_modules/${it
     ))}
   </section>
 </Layout>
+
+<style>
+  .colophon {
+    padding-block: var(--space-6);
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+  }
+  .intro {
+    margin-block-start: var(--space-4);
+    max-inline-size: 42rem;
+  }
+  .group {
+    margin-block-start: 3rem;
+  }
+  .items {
+    list-style: none;
+    padding: 0;
+    li {
+      border-inline-start: 2px solid var(--color-accent-soft);
+      padding-inline-start: var(--space-4);
+    }
+    .cluster {
+      --gap: var(--space-2);
+      align-items: baseline;
+    }
+    .cluster a {
+      font-weight: 500;
+      color: var(--color-accent-strong);
+    }
+  }
+  .version {
+    font-size: var(--text-sm);
+  }
+  .note {
+    margin-block-start: var(--space-1);
+  }
+</style>

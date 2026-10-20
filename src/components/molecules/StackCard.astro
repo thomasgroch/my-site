@@ -2,20 +2,65 @@
 import { Image } from 'astro:assets'
 
 // `item` é uma entrada validada da coleção `stack`. O logo passa pelo
-// otimizador do Astro: sai em 64px, e 128px para telas 2x.
+// otimizador do Astro: sai em 64px, e 128px para telas 2x. `muted` deixa o
+// logo em cinza até o hover (o histórico).
 const { item, muted = false } = Astro.props
 ---
-<li class="w-28 p-3 text-center sm:w-32">
-  <a href={item.href} target="_blank" rel="noopener noreferrer" class="group flex flex-col items-center gap-2 no-underline">
-    <span class="flex h-20 w-20 items-center justify-center rounded-full bg-neutral-100 p-3 dark:bg-neutral-700">
-      <Image
-        src={item.logo}
-        alt=""
-        width={64}
-        densities={[1, 2]}
-        class:list={['h-full w-full object-contain', { 'grayscale transition group-hover:grayscale-0': muted }]}
-      />
+<li class="tool" data-muted={muted ? '' : undefined}>
+  <a href={item.href} target="_blank" rel="noopener noreferrer">
+    <span class="logo">
+      <Image src={item.logo} alt="" width={64} densities={[1, 2]} />
     </span>
-    <span class="text-sm tracking-wide text-neutral-500 group-hover:text-green-400 dark:text-neutral-200">{item.name}</span>
+    <span class="name">{item.name}</span>
   </a>
 </li>
+
+<style>
+  .tool {
+    inline-size: 7rem;
+    padding: var(--space-3);
+    text-align: center;
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      text-decoration: none;
+      &:hover .name {
+        color: var(--color-accent);
+      }
+      &:hover img {
+        filter: none;
+      }
+    }
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 5rem;
+    block-size: 5rem;
+    border-radius: 50%;
+    padding: var(--space-3);
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    img {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: contain;
+      transition: filter 150ms;
+    }
+  }
+  [data-muted] img {
+    filter: grayscale(1);
+  }
+  .name {
+    font-size: var(--text-sm);
+    letter-spacing: 0.025em;
+    color: var(--color-text-muted);
+  }
+  @media (min-width: 40em) {
+    .tool {
+      inline-size: 8rem;
+    }
+  }
+</style>

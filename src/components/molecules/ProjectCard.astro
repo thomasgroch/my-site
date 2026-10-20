@@ -8,28 +8,60 @@ const t = createTranslator(locale)
 const site = item.website ?? null
 const type = t(`general.project.type_${item.type}`)
 ---
-<article class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900">
+<article class="project">
   {item.image && (
-    <a href={site} target={site ? '_blank' : undefined} rel={site ? 'noopener noreferrer' : undefined} class="block bg-neutral-100 dark:bg-neutral-800">
-      <Image
-        src={item.image}
-        alt=""
-        width={384}
-        densities={[1, 2]}
-        loading={eager ? 'eager' : 'lazy'}
-        class="aspect-video w-full object-cover object-top"
-      />
+    <a href={site} target={site ? '_blank' : undefined} rel={site ? 'noopener noreferrer' : undefined} class="cover">
+      <Image src={item.image} alt="" width={384} densities={[1, 2]} loading={eager ? 'eager' : 'lazy'} />
     </a>
   )}
-  <div class="flex flex-1 flex-col gap-2 p-5">
-    <h2 class="text-lg font-bold tracking-tight text-neutral-900 dark:text-white">
-      {site ? <a href={site} target="_blank" rel="noopener noreferrer">{item.company}</a> : item.company}
-    </h2>
-    <p class="text-sm text-neutral-500 dark:text-neutral-400">{item.position[locale]}</p>
-    <p class="text-neutral-700 dark:text-neutral-300">{item.summary[locale]}</p>
-    <div class="mt-auto flex items-center justify-between pt-3 text-sm text-neutral-500">
+  <div class="body">
+    <h2>{site ? <a href={site} target="_blank" rel="noopener noreferrer">{item.company}</a> : item.company}</h2>
+    <p class="muted">{item.position[locale]}</p>
+    <p>{item.summary[locale]}</p>
+    <p class="cluster foot">
       <span class="chip">{type}</span>
       <time datetime={item.startDate}>{item.startDate}</time>
-    </div>
+    </p>
   </div>
 </article>
+
+<style>
+  .project {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+  .cover {
+    display: block;
+    background: color-mix(in srgb, var(--color-text) 6%, transparent);
+    img {
+      inline-size: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+  .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 1.25rem;
+    h2 {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+  }
+  .foot {
+    margin-block-start: auto;
+    justify-content: space-between;
+    padding-block-start: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

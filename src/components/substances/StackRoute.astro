@@ -26,19 +26,36 @@ const intro = t('general.stack_intro')
 const note = t('general.stack_note')
 ---
 <Layout locale={locale} path="/stack" title={t('general.nav_stack')} description={t('general.meta_description_stack')}>
-  <h1 class="sr-only">{t('general.nav_stack')}</h1>
-  {intro && <p class="mx-auto max-w-2xl py-4 text-center text-neutral-500 dark:text-neutral-300">{intro}</p>}
+  <h1 class="visually-hidden">{t('general.nav_stack')}</h1>
+  {intro && <p class="intro center muted">{intro}</p>}
 
   {sections.map((section) => (
-    <section class="py-6">
+    <section class="group">
       <SectionHeading title={section.title} description={section.description} />
       <StackList stack={group(section.key)} />
     </section>
   ))}
-  {note && <p class="text-sm text-neutral-500 dark:text-neutral-400">{note}</p>}
+  {note && <p class="muted">{note}</p>}
 
-  <section class="mt-8 border-t border-dashed border-neutral-300 py-8 dark:border-neutral-600">
+  <section class="group history">
     <SectionHeading title={t('general.stack_history')} description={t('general.stack_history_description')} />
     <StackList stack={group('history')} muted />
   </section>
 </Layout>
+
+<style>
+  .intro {
+    --measure: 42rem;
+    padding-block: var(--space-4);
+    text-align: center;
+    font-size: inherit;
+  }
+  .group {
+    padding-block: var(--space-5);
+  }
+  .history {
+    margin-block-start: var(--space-6);
+    border-block-start: 1px dashed var(--color-line);
+    padding-block: var(--space-6);
+  }
+</style>
