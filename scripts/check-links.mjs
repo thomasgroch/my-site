@@ -2,13 +2,11 @@
 // Confere se todo link e recurso interno do build aponta para um arquivo que
 // existe. Substitui o plugin netlify-plugin-checklinks: mesmo resultado, sem
 // dependência e rodando igual no Mac, no Linux e no build do Netlify.
-import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs'
+import { readFileSync, existsSync, statSync } from 'node:fs'
 import { join, relative, resolve, dirname } from 'node:path'
+import { walk } from './lib/fs.mjs'
 
 const DIST = 'dist'
-
-const walk = (dir) =>
-  readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]))
 
 // Um link interno resolve para o arquivo em si ou para o index.html da pasta.
 const resolves = (url) => {

@@ -2,8 +2,9 @@
 // Peso sem compressão de cada página do build: HTML + CSS + JS + imagens locais
 // referenciadas. É a métrica do 512KB Club (verde < 100KB, laranja < 250KB,
 // azul < 512KB). Sai com código 1 se alguma página passar de 512KB.
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
+import { walk } from './lib/fs.mjs'
 
 const DIST = 'dist'
 const LIMIT = 512 * 1024
@@ -13,10 +14,6 @@ const TIERS = [
   [512, 'azul'],
 ]
 
-const walk = (dir) =>
-  readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
-    entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)]
-  )
 const size = (file) => {
   try {
     return statSync(file).size

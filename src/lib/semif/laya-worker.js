@@ -6,6 +6,8 @@
 // open-jev (MIT):
 //   [CLS] "choice question: {pergunta}" [SEP] [MASK] opção … [SEP] estado [SEP]
 import { MODELS } from './models.js'
+import { softmax } from './math.js'
+import { serve } from './worker-protocol.js'
 
 const TRANSFORMERS = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1'
 const MAX_OPTION_TOKENS = 48
@@ -64,13 +66,6 @@ function sequence({ state, question, options }) {
   const room = Math.max(0, settings.maxLength - ids.length - 1)
   ids = [...ids, ...encode(state).slice(0, room), special.sep].slice(0, settings.maxLength)
   return { ids, markers }
-}
-
-function softmax(values) {
-  const maximum = Math.max(...values)
-  const exponents = values.map((value) => Math.exp(value - maximum))
-  const total = exponents.reduce((sum, value) => sum + value, 0)
-  return exponents.map((value) => value / total)
 }
 
 async function direct(data) {
@@ -143,12 +138,4 @@ const handlers = {
   generate: () => Promise.reject(new Error(`${MODELS[modelId]?.name ?? 'This model'} only decides: it cannot write text, so there is nothing to generate.`)),
 }
 
-self.addEventListener('message', async ({ data: { id, type, payload } }) => {
-  const notify = (data) => self.postMessage({ id, type: 'update', data })
-  try {
-    self.postMessage({ id, type: 'done', data: await handlers[type](payload, notify) })
-  } catch (error) {
-    console.error(error)
-    self.postMessage({ id, type: 'error', message: error?.message ?? String(error) })
-  }
-})
+serve(handlers)

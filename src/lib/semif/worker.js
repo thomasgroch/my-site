@@ -2,6 +2,8 @@
 // (MIT): o wllama vem do jsDelivr em vez de vendorizado, e cada mensagem
 // carrega um `id` para a resposta voltar a quem pediu (engine.js).
 import { MODELS } from './models.js'
+import { argmax, softmax } from './math.js'
+import { serve } from './worker-protocol.js'
 
 const WLLAMA = 'https://cdn.jsdelivr.net/npm/@wllama/wllama@3.6.1/esm'
 
@@ -34,13 +36,6 @@ For the actual decision, include every supplied option exactly once and in order
   ]
 }
 
-function softmax(values) {
-  const maximum = Math.max(...values)
-  const exponents = values.map((value) => Math.exp(value - maximum))
-  const total = exponents.reduce((sum, value) => sum + value, 0)
-  return exponents.map((value) => value / total)
-}
-
 function optionLogprobs(response, labels) {
   const entries = response.choices?.[0]?.logprobs?.content?.[0]?.top_logprobs ?? []
   const logits = labels.map((label) => {
@@ -68,7 +63,7 @@ function validateGeneration(text, options) {
     const probabilities = keys.map((key) => parsed[key])
     if (probabilities.some((p) => typeof p !== 'number' || p < 0 || p > 1)) throw new Error('probabilities must be numbers from 0 to 1')
     if (Math.abs(probabilities.reduce((a, b) => a + b, 0) - 1) > 0.02) throw new Error('probabilities must sum to 1')
-    return { valid: true, choice: probabilities.indexOf(Math.max(...probabilities)) }
+    return { valid: true, choice: argmax(probabilities) }
   } catch (error) {
     return { valid: false, validationError: error?.message ?? 'invalid JSON' }
   }
@@ -178,12 +173,4 @@ async function generate(data, update) {
 
 const handlers = { load: (payload, notify) => load(payload.modelId, notify), direct: (payload) => direct(payload), generate }
 
-self.addEventListener('message', async ({ data: { id, type, payload } }) => {
-  const notify = (data) => self.postMessage({ id, type: 'update', data })
-  try {
-    self.postMessage({ id, type: 'done', data: await handlers[type](payload, notify) })
-  } catch (error) {
-    console.error(error)
-    self.postMessage({ id, type: 'error', message: error?.message ?? String(error) })
-  }
-})
+serve(handlers)

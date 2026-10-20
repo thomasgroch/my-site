@@ -4,6 +4,7 @@
 // o Laya). Os pedidos entram numa fila: duas passadas ao mesmo tempo disputariam a GPU
 // e bagunçariam as medições.
 import { MODELS } from './models.js'
+import { softmax } from './math.js'
 
 const listeners = new Set()
 const pending = new Map()
@@ -112,10 +113,7 @@ export async function calibrated(data) {
   const prior = await priorFor(data)
   const result = await direct(data)
   const logits = result.probabilities.map((p, i) => Math.log(p + 1e-9) - prior[i])
-  const top = Math.max(...logits)
-  const exps = logits.map((value) => Math.exp(value - top))
-  const total = exps.reduce((sum, value) => sum + value, 0)
-  return { ...result, raw: result.probabilities, probabilities: exps.map((value) => value / total) }
+  return { ...result, raw: result.probabilities, probabilities: softmax(logits) }
 }
 
 // Mede o viés antes da primeira pergunta de verdade, para ela não esperar.

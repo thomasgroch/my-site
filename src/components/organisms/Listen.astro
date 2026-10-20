@@ -58,6 +58,8 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
 </style>
 
 <script>
+  import { recall, remember } from '@/lib/storage.js'
+
   const box = document.querySelector('[data-listen]')
   if (box) {
     const labels = JSON.parse(box.dataset.labels)
@@ -75,12 +77,7 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
     box.querySelector('[data-listen-hint]').hidden = false
 
     let started = false
-    let follow = true
-    try {
-      follow = localStorage.getItem(FOLLOW_KEY) !== 'off'
-    } catch {
-      /* sem localStorage: fica ligado */
-    }
+    let follow = recall(FOLLOW_KEY) !== 'off'
 
     const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
     const render = () => {
@@ -108,11 +105,7 @@ const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
     }
     const setFollow = (value) => {
       follow = value
-      try {
-        localStorage.setItem(FOLLOW_KEY, follow ? 'on' : 'off')
-      } catch {
-        /* sem localStorage */
-      }
+      remember(FOLLOW_KEY, follow ? 'on' : 'off')
       render()
       keepInView()
     }

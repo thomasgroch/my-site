@@ -1,7 +1,8 @@
 // Função Netlify (API v2: recebe Request, devolve Response) do formulário de
 // contato. Responde HTML: um fragmento para o htmx, ou um redirect com âncora
 // para quem está sem JavaScript. Envia os e-mails direto na API do Mailgun.
-import { contactMessages, CONTACT_LOCALES, fill, escapeHtml, successBox, errorBox } from '../src/lib/contact-messages.mjs'
+import { contactMessages, CONTACT_LOCALES, escapeHtml, successBox, errorBox } from '../src/lib/contact-messages.mjs'
+import { fill } from '../src/lib/text.js'
 
 const SITE = 'https://thomasdev.xyz'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

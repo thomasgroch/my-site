@@ -29,13 +29,13 @@ import Stats from '@/components/molecules/Stats.astro'
 </div>
 
 <script>
-  import { createGame, DIRECTIONS } from '@/lib/semif/pacman.js'
+  import { createGame } from '@/lib/semif/pacman.js'
   import { subscribe } from '@/lib/semif/engine.js'
-
-  const KEYS = { ArrowUp: 'up', KeyW: 'up', ArrowLeft: 'left', KeyA: 'left', ArrowDown: 'down', KeyS: 'down', ArrowRight: 'right', KeyD: 'right' }
+  import { bindControls } from '@/lib/semif/arcade.js'
+  import { odds, within } from '@/lib/semif/dom.js'
 
   for (const card of document.querySelectorAll('[data-semif-pacman]')) {
-    const $ = (selector) => card.querySelector(selector)
+    const $ = within(card)
     const canvas = $('[data-canvas]')
     const wrap = $('[data-wrap]')
     const startButton = $('[data-start]')
@@ -57,57 +57,16 @@ import Stats from '@/components/molecules/Stats.astro'
         if (!brain) {
           $('[data-robot]').textContent = '🎲 No model loaded, so the 🤖 ghost turns at random. Load one above to give it a brain.'
         } else if (last?.probs) {
-          const odds = last.options
-            .map((d, i) => [d, last.probs[i]])
-            .sort((a, b) => b[1] - a[1])
-            .map(([d, p]) => `${d.arrow} ${Math.round(p * 100)}%`)
-            .join(' · ')
-          $('[data-robot]').textContent = `${pending ? '🤔 Thinking about the next crossroads… ' : ''}Last call: ${odds}${last.frightened ? ' (running away)' : ''} in ${(last.ms / 1000).toFixed(2)} s.`
+          $('[data-robot]').textContent = `${pending ? '🤔 Thinking about the next crossroads… ' : ''}Last call: ${odds(last.options, last.probs)}${last.frightened ? ' (running away)' : ''} in ${(last.ms / 1000).toFixed(2)} s.`
         } else if (pending) {
           $('[data-robot]').textContent = '🤔 Thinking about the next crossroads…'
         }
       },
     })
 
-    new ResizeObserver(([entry]) => game.resize(entry.contentRect.width)).observe(wrap)
+    bindControls(card, game, { canvas, wrap })
     subscribe(() => game.refresh())
-
     startButton.addEventListener('click', () => game.start())
     pauseButton.addEventListener('click', () => game.setPaused(!game.paused))
-    card.querySelectorAll('[data-dir]').forEach((button) =>
-      button.addEventListener('pointerdown', (event) => {
-        event.preventDefault()
-        game.steer(DIRECTIONS[button.dataset.dir])
-      })
-    )
-
-    // As setas só são do jogo enquanto ele roda e ninguém está digitando.
-    window.addEventListener('keydown', (event) => {
-      if (!game.active && !game.paused) return
-      if (event.target.closest?.('input, textarea, select, [contenteditable]')) return
-      if (event.code === 'KeyP' || event.code === 'Escape') {
-        game.setPaused(!game.paused)
-        return event.preventDefault()
-      }
-      const dir = KEYS[event.code]
-      if (!dir || game.paused) return
-      event.preventDefault()
-      game.steer(DIRECTIONS[dir])
-    })
-
-    let touch = null
-    canvas.addEventListener('pointerdown', (event) => (touch = { x: event.clientX, y: event.clientY }))
-    canvas.addEventListener('pointerup', (event) => {
-      if (!touch) return
-      const dx = event.clientX - touch.x
-      const dy = event.clientY - touch.y
-      touch = null
-      if (Math.max(Math.abs(dx), Math.abs(dy)) < 16) return
-      game.steer(DIRECTIONS[Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'down' : 'up'])
-    })
-
-    // Pausa sozinho quando sai da tela ou a aba fica em segundo plano.
-    new IntersectionObserver(([entry]) => entry.intersectionRatio < 0.3 && game.setPaused(true), { threshold: [0, 0.3] }).observe(canvas)
-    document.addEventListener('visibilitychange', () => document.hidden && game.setPaused(true))
   }
 </script>

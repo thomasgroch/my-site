@@ -3,6 +3,7 @@
 // Pega erros de renomeação de utilitários (ex.: Tailwind v3 -> v4).
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
+import { walk } from './lib/fs.mjs'
 
 // Classes que existem só como gancho de JS/teste e nunca são estilizadas.
 const HOOKS = new Set(['locale-link'])
@@ -10,8 +11,6 @@ const HOOKS = new Set(['locale-link'])
 // que aparecem dentro de expressões em `class:list`.
 const CLASS_NAME = /^[a-zA-Z0-9][\w:./[\]#()%,!-]*$/
 
-const walk = (dir) =>
-  readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]))
 const files = walk('src').filter((f) => /\.(astro|mjs)$/.test(f))
 const css = readdirSync('dist/_astro')
   .filter((f) => f.endsWith('.css'))

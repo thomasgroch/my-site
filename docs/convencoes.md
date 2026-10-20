@@ -23,12 +23,12 @@ Extrações decididas:
 | Função | Substitui |
 |---|---|
 | `src/lib/text.js`: `fill`, `plural` | A interpolação `{nome}` do `i18n` e do `contact-messages`; o `plural` dos dois jogos. |
-| `src/lib/storage.js`: `recall(key)`, `remember(key, value)` | Os 12 `try { localStorage } catch` de `Layout`, `Listen` e `learner`. |
+| `src/lib/storage.js`: `recall(key)`, `remember(key, value)` | Os `try { localStorage } catch` de `Listen` e `learner`. Os do `Layout` ficam: são `is:inline`, rodam antes da pintura e não importam módulo. |
 | `src/lib/semif/math.js`: `softmax`, `argmax` | As 3 cópias de `softmax` e os `indexOf(Math.max(...))`. |
 | `src/lib/semif/worker-protocol.js`: `serve(handlers)` | O listener de `message` idêntico nos dois workers. |
 | `src/lib/semif/grid.js`: `DIRS`, `same`, `add`, `opposite`, `randomOf`, `whereIs(dx, dy)` | As direções, helpers e a frase "N tiles up and M to the left" de `snake.js` e `pacman.js`. |
-| `src/lib/semif/arcade.js`: `bindControls(card, game)`, `canvasLoop` | Teclas, swipe, direcional, pausa fora da tela, `ResizeObserver`, `frame/loop` e banner, hoje duplicados em Snake e PacMan. |
-| `src/lib/semif/dom.js`: `$`, `say`, `bars`, `odds` | O `$` (5×), o `say` (4×), as barras de probabilidade (Lab, Millionaire, Snake) e o texto "↑ 60% · ← 40%". |
+| `src/lib/semif/arcade.js`: `createLoop`, `bindControls` | Teclas, swipe, direcional, pausa fora da tela, `ResizeObserver` e `frame/loop`, hoje duplicados em Snake e PacMan. |
+| `src/lib/semif/dom.js`: `within`, `announcer`, `reset`, `bars`, `odds` | O `$` (5×), o `say` (4×), as barras de probabilidade (Lab, Millionaire, Snake) e o texto "↑ 60% · ← 40%". |
 | `scripts/lib/fs.mjs`: `walk` | O `walk` dos 3 scripts. |
 | `src/pages/[...route].astro` | Os 10 wrappers de página: um `getStaticPaths` gera cada rota nos dois idiomas. |
 

@@ -4,6 +4,9 @@
 // resposta ainda não chegou, ele para ali, pensando. Essa espera é a latência
 // do modelo, visível no labirinto.
 import { calibrated, status as brain } from './engine.js'
+import { DIRS, DOWN, LEFT, RIGHT, opposite as back, randomOf, same, whereIs } from './grid.js'
+import { createLoop } from './arcade.js'
+import { argmax } from './math.js'
 
 // # parede, _ vazio fora do labirinto, - porta da casa dos fantasmas,
 // . pastilha, o energizador. A linha 9 é o túnel: as bordas se ligam.
@@ -33,14 +36,7 @@ const MAP = [
 const W = MAP[0].length
 const H = MAP.length
 
-const UP = { x: 0, y: -1, name: 'Up', arrow: '↑' }
-const LEFT = { x: -1, y: 0, name: 'Left', arrow: '←' }
-const DOWN = { x: 0, y: 1, name: 'Down', arrow: '↓' }
-const RIGHT = { x: 1, y: 0, name: 'Right', arrow: '→' }
 const STOP = { x: 0, y: 0, name: 'Stop', arrow: '·' }
-// A ordem desempata como no arcade: cima, esquerda, baixo, direita.
-const DIRS = [UP, LEFT, DOWN, RIGHT]
-export const DIRECTIONS = { up: UP, left: LEFT, down: DOWN, right: RIGHT }
 
 const PAC_START = { x: 9, y: 15 }
 const DOOR_OUT = { x: 9, y: 7 }
@@ -58,11 +54,9 @@ const open = (x, y, door = false) => {
   return !isWall(c) && (c !== '-' || door)
 }
 const keyOf = ({ x, y }) => `${x},${y}`
-const same = (a, b) => a.x === b.x && a.y === b.y
-const opposite = (d) => DIRS.find((o) => o.x === -d.x && o.y === -d.y) ?? STOP
+const opposite = (d) => back(d) ?? STOP
 const exits = (tile, from, door = false) =>
   DIRS.filter((d) => d !== opposite(from) && open(tile.x + d.x, tile.y + d.y, door))
-const randomOf = (items) => items[Math.floor(Math.random() * items.length)]
 const tileOf = (e) => ({ x: e.tx, y: e.ty })
 
 // Primeiro passo do caminho mais curto até `target` (volta da casa e saída).
@@ -107,16 +101,10 @@ const closest = (options, from, target) =>
     return score < best.score ? { d, score } : best
   }, { d: options[0], score: Infinity }).d
 
-function plural(n, word) {
-  return `${n} ${word}${n === 1 ? '' : 's'}`
-}
-
 export function createGame(canvas, { onHud, onRobot }) {
   const ctx = canvas.getContext('2d')
   let T = 20
   let dpr = 1
-  let raf = 0
-  let last = 0
   let time = 0
   let phase = 'idle'
   let paused = false
@@ -255,13 +243,8 @@ export function createGame(canvas, { onHud, onRobot }) {
   }
 
   function promptFor(plan) {
-    const dx = pac.tx - plan.tile.x
-    const dy = pac.ty - plan.tile.y
-    const parts = [
-      dy && `${plural(Math.abs(dy), 'tile')} ${dy < 0 ? 'up' : 'down'}`,
-      dx && `${plural(Math.abs(dx), 'tile')} to the ${dx < 0 ? 'left' : 'right'}`,
-    ].filter(Boolean)
-    const where = parts.length ? `${parts.join(' and ')} from you` : 'right here'
+    const away = whereIs(pac.tx - plan.tile.x, pac.ty - plan.tile.y)
+    const where = away ? `${away} from you` : 'right here'
     const goal = plan.frightened ? 'Pac-Man just ate a power pellet, so you are scared and must get away from him.' : 'You want to catch him.'
     const intro = 'You are a ghost in a Pac-Man maze, standing at a crossroads.'
     return {
@@ -284,13 +267,12 @@ export function createGame(canvas, { onHud, onRobot }) {
     }
     calibrated(promptFor(plan)).then(
       ({ probabilities, totalMs }) => {
-        const best = probabilities.indexOf(Math.max(...probabilities))
-        Object.assign(plan, { status: 'ready', choice: hit.options[best], probs: probabilities, ms: totalMs })
+        Object.assign(plan, { status: 'ready', choice: hit.options[argmax(probabilities)], probs: probabilities, ms: totalMs })
         stats.decisions += 1
         stats.totalMs += totalMs
         stats.last = plan
         report()
-        if (!raf) draw()
+        if (loop.idle) draw()
       },
       (error) => {
         Object.assign(plan, { status: 'ready', choice: null, error: error.message })
@@ -613,25 +595,7 @@ export function createGame(canvas, { onHud, onRobot }) {
   // --- laço e controles ----------------------------------------------------
 
   const running = () => !paused && ['ready', 'playing', 'dying', 'cleared'].includes(phase)
-
-  function frame(now) {
-    raf = 0
-    let dt = Math.min(0.05, (now - last) / 1000)
-    last = now
-    while (dt > 0) {
-      const s = Math.min(dt, 1 / 120)
-      step(s)
-      dt -= s
-    }
-    draw()
-    if (running()) raf = requestAnimationFrame(frame)
-  }
-
-  function loop() {
-    if (raf || !running()) return
-    last = performance.now()
-    raf = requestAnimationFrame(frame)
-  }
+  const loop = createLoop({ running, step, draw, maxDt: 0.05, substep: 1 / 120 })
 
   return {
     get active() {
@@ -642,14 +606,14 @@ export function createGame(canvas, { onHud, onRobot }) {
     },
     start() {
       newGame()
-      loop()
+      loop.start()
     },
     setPaused(value) {
       if (!['ready', 'playing', 'dying', 'cleared'].includes(phase) || paused === value) return
       paused = value
       hud()
       draw()
-      loop()
+      loop.start()
     },
     get paused() {
       return paused

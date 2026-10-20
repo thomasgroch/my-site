@@ -63,6 +63,8 @@ import Stats from '@/components/molecules/Stats.astro'
 
 <script>
   import { direct, generate, seconds, subscribe } from '@/lib/semif/engine.js'
+  import { announcer, bars, reset, within } from '@/lib/semif/dom.js'
+  import { argmax } from '@/lib/semif/math.js'
 
   const PRESETS = {
     email: {
@@ -80,15 +82,12 @@ import Stats from '@/components/molecules/Stats.astro'
   const MAX_OPTIONS = 20
 
   for (const lab of document.querySelectorAll('[data-semif-lab]')) {
-    const $ = (selector) => lab.querySelector(selector)
+    const $ = within(lab)
     const list = $('[data-options]')
     const run = $('[data-run]')
     let ready = false
     let busy = false
-    const say = (text, kind = '') => {
-      $('[data-status]').textContent = text
-      $('[data-status]').dataset.kind = kind
-    }
+    const say = announcer($('[data-status]'))
     const inputs = () => [...list.querySelectorAll('input')]
 
     const sync = () => {
@@ -135,24 +134,6 @@ import Stats from '@/components/molecules/Stats.astro'
       sync()
     })
 
-    const renderBars = (options, probabilities) => {
-      const best = probabilities.indexOf(Math.max(...probabilities))
-      $('[data-direct]').replaceChildren(
-        ...options.flatMap((option, index) => {
-          const label = document.createElement('span')
-          label.innerHTML = `<b>${String.fromCharCode(65 + index)}</b> <small></small>`
-          label.querySelector('small').textContent = option
-          const bar = document.createElement('div')
-          bar.className = 'meter'
-          bar.innerHTML = `<i style="width:${Math.max(1, probabilities[index] * 100)}%"></i>`
-          const score = document.createElement('em')
-          score.textContent = probabilities[index].toFixed(3)
-          if (index === best) score.className = 'semif-top'
-          return [label, bar, score]
-        })
-      )
-    }
-
     run.addEventListener('click', async () => {
       const data = {
         state: $('[data-state]').value.trim(),
@@ -164,13 +145,13 @@ import Stats from '@/components/molecules/Stats.astro'
       }
       busy = true
       sync()
-      for (const key of ['direct-total', 'direct-input', 'ttft', 'gen-total', 'gen-tokens']) $(`[data-${key}]`).textContent = '—'
+      reset($, ['direct-total', 'direct-input', 'ttft', 'gen-total', 'gen-tokens'])
       $('[data-ratio]').textContent = ''
       $('[data-generated]').textContent = '⏳ Waiting for the direct readout…'
       say('🎯 Reading the option logits…')
       try {
         const readout = await direct(data)
-        renderBars(data.options, readout.probabilities)
+        bars($('[data-direct]'), data.options, readout.probabilities)
         $('[data-direct-total]').textContent = seconds(readout.totalMs)
         $('[data-direct-input]').textContent = `${readout.inputTokens} tok`
 
@@ -185,9 +166,8 @@ import Stats from '@/components/molecules/Stats.astro'
         $('[data-gen-tokens]').textContent = `${written.tokens} tok`
 
         const ratio = written.totalMs / readout.totalMs
-        const bestDirect = readout.probabilities.indexOf(Math.max(...readout.probabilities))
         const agree = written.valid
-          ? written.choice === bestDirect
+          ? written.choice === argmax(readout.probabilities)
             ? '🤝 Both picked the same option.'
             : '🤔 They disagree.'
           : `⚠️ The JSON didn't validate (${written.validationError}).`

@@ -29,15 +29,13 @@ const { prefer } = Astro.props
 <script>
   import { MODELS, recommendedModel } from '@/lib/semif/models.js'
   import { load, seconds, status, subscribe } from '@/lib/semif/engine.js'
+  import { announcer, reset, within } from '@/lib/semif/dom.js'
 
   for (const card of document.querySelectorAll('[data-semif-loader]')) {
-    const $ = (selector) => card.querySelector(selector)
+    const $ = within(card)
     const select = $('[data-model]')
     const button = $('[data-load]')
-    const say = (text, kind = '') => {
-      $('[data-status]').textContent = text
-      $('[data-status]').dataset.kind = kind
-    }
+    const say = announcer($('[data-status]'))
     // Dá para trocar de modelo sem recarregar a página: o botão só trava
     // durante a carga e enquanto o modelo escolhido já é o que está carregado.
     const render = () => {
@@ -64,7 +62,7 @@ const { prefer } = Astro.props
     button.addEventListener('click', async () => {
       say('📡 Fetching the model, or reading it from the browser cache…')
       $('[data-meter]').style.width = '0%'
-      for (const key of ['percent', 'load-time', 'warmup']) $(`[data-${key}]`).textContent = '—'
+      reset($, ['percent', 'load-time', 'warmup'])
       try {
         const result = await load(select.value, (event) => {
           if (event.phase === 'download' && event.total) {

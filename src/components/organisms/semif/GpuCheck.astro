@@ -14,14 +14,11 @@ import Stats from '@/components/molecules/Stats.astro'
 
 <script>
   import { MODELS, isMobileDevice, recommendedModel } from '@/lib/semif/models.js'
+  import { announcer } from '@/lib/semif/dom.js'
 
   for (const card of document.querySelectorAll('[data-semif-gpu]')) {
-    const status = card.querySelector('[data-status]')
     const details = card.querySelector('[data-details]')
-    const say = (text, kind = '') => {
-      status.textContent = text
-      status.dataset.kind = kind
-    }
+    const say = announcer(card.querySelector('[data-status]'))
     const stat = (key, value) => (details.querySelector(`[data-${key}]`).textContent = value)
 
     ;(async () => {

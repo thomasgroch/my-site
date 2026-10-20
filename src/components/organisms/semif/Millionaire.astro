@@ -56,6 +56,8 @@ import { LADDER, money } from '@/lib/semif/quiz.js'
 
 <script>
   import { calibrated, subscribe } from '@/lib/semif/engine.js'
+  import { announcer, bars, within } from '@/lib/semif/dom.js'
+  import { argmax } from '@/lib/semif/math.js'
   import { LADDER, QUESTIONS, money, tierFor } from '@/lib/semif/quiz.js'
 
   const LIFELINES = { fifty: 1, ask: 2, skip: 3 }
@@ -64,15 +66,12 @@ import { LADDER, money } from '@/lib/semif/quiz.js'
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
   for (const show of document.querySelectorAll('[data-semif-show]')) {
-    const $ = (selector) => show.querySelector(selector)
+    const $ = within(show)
     const answers = $('[data-answers]')
     const audience = $('[data-audience]')
     let game
     let modelReady = false
-    const say = (text, kind = '') => {
-      $('[data-status]').textContent = text
-      $('[data-status]').dataset.kind = kind
-    }
+    const say = announcer($('[data-status]'))
 
     const won = () => (game.level === 0 ? 0 : LADDER[game.level - 1])
     const ifWrong = () => (game.level === LADDER.length - 1 ? 0 : Math.floor(won() / 2))
@@ -233,22 +232,11 @@ import { LADDER, money } from '@/lib/semif/quiz.js'
           neutral: { question: 'N/A' },
         })
         if (game.question !== asked) return
-        const best = probabilities.indexOf(Math.max(...probabilities))
-        game.audienceChoice = options[best]
-        audience.replaceChildren(
-          ...options.flatMap((option, index) => {
-            const label = document.createElement('span')
-            label.innerHTML = `<b>${visible[index].querySelector('b').textContent}</b> <small></small>`
-            label.querySelector('small').textContent = option
-            const bar = document.createElement('div')
-            bar.className = 'meter'
-            bar.innerHTML = `<i style="width:${Math.max(1, probabilities[index] * 100)}%"></i>`
-            const score = document.createElement('em')
-            score.textContent = `${Math.round(probabilities[index] * 100)}%`
-            if (index === best) score.className = 'semif-top'
-            return [label, bar, score]
-          })
-        )
+        game.audienceChoice = options[argmax(probabilities)]
+        bars(audience, options, probabilities, {
+          name: (_, index) => visible[index].querySelector('b').textContent,
+          score: (p) => `${Math.round(p * 100)}%`,
+        })
         audience.hidden = false
         say(`📊 The audience voted in ${(totalMs / 1000).toFixed(2)} s. Trust it?`)
       } catch (error) {

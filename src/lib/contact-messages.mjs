@@ -37,10 +37,6 @@ export const contactMessages = {
 
 export const CONTACT_LOCALES = Object.keys(contactMessages)
 
-export function fill(text, params = {}) {
-  return String(text).replace(/\{(\w+)\}/g, (_, k) => (k in params ? params[k] : `{${k}}`))
-}
-
 export function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 }

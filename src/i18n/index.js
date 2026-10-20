@@ -2,6 +2,7 @@ import general_pt from '../locales/general.pt.json'
 import general_en from '../locales/general.en.json'
 import contact_pt from '../locales/contact.pt.json'
 import contact_en from '../locales/contact.en.json'
+import { fill } from '../lib/text.js'
 
 // Código curto usado nas URLs (/en/...). A tag BCP 47 fica em LOCALE_TAGS e é
 // o que vai para <html lang>, hreflang e og:locale.
@@ -27,8 +28,7 @@ export function createTranslator(locale) {
   return function t(key, params) {
     const value = key.split('.').reduce((acc, part) => acc?.[part], dict)
     if (value === undefined || value === null) return key
-    if (!params) return value
-    return String(value).replace(/\{(\w+)\}/g, (_, name) => (name in params ? params[name] : `{${name}}`))
+    return params ? fill(value, params) : value
   }
 }
 
