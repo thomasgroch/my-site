@@ -49,10 +49,14 @@ Semânticos, poucos, em `:root`. Tema com `light-dark()`; o `html.dark` só muda
 --color-bg, --color-surface, --color-text, --color-text-muted,
 --color-accent, --color-accent-strong, --color-accent-soft, --color-line,
 --color-ok, --color-error, --color-warning, --color-warning-soft
---space-1…6   --radius-sm/md/lg   --text-sm…3xl   --measure (34em)
+--space-1…6   --radius-sm/md/lg   --text-sm…3xl   --measure (70ch)
 ```
 
 Open Props: não adotar. Copiar o valor, não a dependência.
+
+### Larguras
+
+Página: `min(100% - 3rem, 76rem)` (Layout). Leitura: `70ch`, 18→20px, entrelinha 1,75. O post é uma grade de três faixas (`[full-start] 1fr [content-start] 70ch [content-end] 1fr [full-end]`) com `subgrid` no corpo: texto na do meio; código, tabelas, diagramas, embeds e `<Wide>` ocupam as três, centrados, com `fit-content` entre a coluna e a página.
 
 ### Primitivas de layout (`layouts.css`)
 

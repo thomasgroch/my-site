@@ -13,7 +13,7 @@ const part = series.findIndex((entry) => entry.id === post.id)
 const next = series[part + 1]
 const toc = tableOfContents(headings)
 ---
-<article class="post center">
+<article class="post">
   <header class="stack">
     <p class="back"><a href="/blog">All posts</a></p>
     <h1>{title}</h1>
@@ -67,11 +67,21 @@ const toc = tableOfContents(headings)
 </article>
 
 <style>
-  /* Leitura: 17→20px conforme a tela, ~68 caracteres por linha. A largura em
-     em acompanha o tamanho da fonte do próprio artigo. */
+  /* Leitura: 18→20px conforme a tela, numa coluna de 70ch. A página é mais
+     larga que a coluna (Layout: 76rem): o post é uma grade de três faixas, e
+     cada filho fica na do meio; o que precisa de espaço (código, tabelas,
+     diagramas, <Wide>) ocupa as três e cresce só até onde precisa. As demos
+     SemIf ficam na coluna: o canvas mede a largura da caixa, e uma caixa que
+     mede o conteúdo entraria em círculo. */
   .post {
-    padding-block: var(--space-6);
-    font-size: clamp(1.0625rem, 0.9rem + 0.6vw, 1.25rem);
+    --measure: 70ch;
+    display: grid;
+    grid-template-columns: [full-start] minmax(0, 1fr) [content-start] min(100%, var(--measure)) [content-end] minmax(0, 1fr) [full-end];
+    padding-block: clamp(2rem, 5vw, 5rem);
+    font-size: clamp(1.125rem, 1rem + 0.2vw, 1.25rem);
+    > * {
+      grid-column: content;
+    }
     header {
       --gap: var(--space-3);
       h1 {
@@ -128,6 +138,9 @@ const toc = tableOfContents(headings)
     }
   }
   .post-content {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: full;
     margin-block-start: var(--space-6);
   }
   .next {
@@ -140,9 +153,19 @@ const toc = tableOfContents(headings)
 <style is:global>
   /* O corpo do post vem do MDX, sem escopo: tudo aqui é por elemento. */
   @scope (.post-content) {
-    :scope { line-height: 1.65; }
+    :scope { line-height: 1.75; }
     p { font-weight: 400; line-height: inherit; }
+    :scope > * { grid-column: content; }
     :scope > * + * { margin-top: 1.25em; }
+    /* Largos: as três faixas, centrados, nunca mais estreitos que a coluna. */
+    :scope > :is(.wide, .code-block, table, pre.mermaid, .embed) {
+      grid-column: full;
+      justify-self: center;
+      inline-size: fit-content;
+      /* O ch acompanha a fonte: quem é menor que o texto compensa com --shrink. */
+      min-inline-size: min(100%, calc(var(--measure) / var(--shrink, 1)));
+      max-inline-size: 100%;
+    }
     :is(h2, h3, h4) { line-height: 1.25; font-weight: 600; text-wrap: balance; scroll-margin-top: 1.5rem; }
     h2 { margin-top: 2.25em; font-size: 1.5em; }
     h3 { margin-top: 1.75em; font-size: 1.25em; }
@@ -164,13 +187,13 @@ const toc = tableOfContents(headings)
     hr { margin-block: 2.5em; border-color: var(--color-line); }
     img, iframe { border-radius: 0.5rem; }
     figcaption { margin-top: 0.6em; text-align: center; font-size: 0.85em; color: var(--color-text-muted); }
+    .embed { inline-size: 100%; }
     .embed iframe { display: block; width: 100%; border: 1px solid var(--color-line); background: white; }
 
-    /* Sai da coluna quando há espaço; em telas estreitas ocupa a largura toda. */
-    .wide { --w: min(calc(100vw - 2rem), 60rem); width: var(--w); max-width: none; margin-inline: calc((100% - var(--w)) / 2); }
+    .wide { inline-size: 100%; }
     .wide img { width: 100%; }
 
-    table { width: 100%; border-collapse: collapse; font-size: 0.9em; font-variant-numeric: tabular-nums; }
+    table { --shrink: 0.9; border-collapse: collapse; font-size: 0.9em; font-variant-numeric: tabular-nums; }
     th, td { border-bottom: 1px solid var(--color-line); padding: 0.5em 0.75em; }
     th { font-weight: 600; border-bottom-width: 2px; }
 
@@ -190,7 +213,7 @@ const toc = tableOfContents(headings)
     [data-footnote-ref] { text-decoration: none; font-weight: 600; }
 
     /* Diagramas mermaid: sem moldura de código; o fonte só aparece sem JS. */
-    pre.mermaid { overflow-x: auto; padding: 0; background: none; font-size: 0.8em; line-height: 1.5; white-space: pre-wrap; }
+    pre.mermaid { --shrink: 0.8; overflow-x: auto; padding: 0; background: none; font-size: 0.8em; line-height: 1.5; white-space: pre-wrap; }
     /* Mesma fonte e tamanho com que o mermaid mediu os rótulos. */
     pre.mermaid[data-rendered] { text-align: center; font-family: var(--font-sans); font-size: 16px; white-space: normal; }
     /* O mermaid mede os rótulos fora do post, onde <p> tem peso 300. */

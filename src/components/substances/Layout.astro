@@ -130,9 +130,10 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
 </html>
 
 <style>
+  /* A página inteira: 76rem com 1,5rem de respiro de cada lado. */
   .shell {
-    --measure: 56rem;
-    padding-inline: var(--space-4);
+    --measure: 76rem;
+    inline-size: min(100% - 3rem, var(--measure));
   }
 
   /* Só aparece ao receber foco pelo teclado. */
