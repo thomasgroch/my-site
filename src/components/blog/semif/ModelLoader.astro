@@ -3,6 +3,7 @@
 // mesmo (engine.js). Com prefer="fast", começa no menor modelo em qualquer
 // aparelho: no Pac-Man, latência importa mais que acerto.
 import Styles from './Styles.astro'
+import Stats from '@/components/molecules/Stats.astro'
 import { MODELS } from './models.js'
 
 const { prefer } = Astro.props
@@ -21,10 +22,7 @@ const { prefer } = Astro.props
     <div class="cluster muted"><span>📦 Download</span><span data-percent>—</span></div>
     <div class="meter"><i data-meter></i></div>
   </div>
-  <dl class="grid semif-stats">
-    <div><dt>⏱️ Model load</dt><dd data-load-time>—</dd></div>
-    <div><dt>🔥 Warmup</dt><dd data-warmup>—</dd></div>
-  </dl>
+  <Stats items={[{ label: '⏱️ Model load', key: 'load-time' }, { label: '🔥 Warmup', key: 'warmup' }]} />
   <p class="status" data-status>💤 No model loaded. Everything runs on your GPU; nothing is sent anywhere.</p>
 </div>
 

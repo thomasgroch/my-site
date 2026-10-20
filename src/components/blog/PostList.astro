@@ -1,5 +1,5 @@
 ---
-import { formatDate, readingTime } from '@/lib/blog.js'
+import PostMeta from '@/components/molecules/PostMeta.astro'
 
 // Lista de posts do /blog e do /blog/drafts (este inclui os rascunhos e só
 // aparece com o cookie `draft`, ver netlify/edge-functions/drafts.js).
@@ -22,23 +22,7 @@ const { posts, drafts = false } = Astro.props
             <h2 class="text-xl font-semibold text-neutral-900 dark:text-white">
               <a href={`/blog/${post.id}`}>{post.data.title}</a>
             </h2>
-            <p class="mt-1 flex flex-wrap gap-x-3 text-sm text-neutral-500 dark:text-neutral-400">
-              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-              <span aria-hidden="true">·</span>
-              <span>{readingTime(post.body).minutes} min read</span>
-              {post.data.series && (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <span>{post.data.series}{post.data.seriesPart && `, part ${post.data.seriesPart}`}</span>
-                </>
-              )}
-              {post.data.draft && (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <span class="chip" data-tone="warning">Draft</span>
-                </>
-              )}
-            </p>
+            <div class="mt-1"><PostMeta post={post} /></div>
             <p class="mt-2 text-neutral-600 dark:text-neutral-300">{post.data.description}</p>
           </article>
         </li>

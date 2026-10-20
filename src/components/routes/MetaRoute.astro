@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro'
 import { getEntry } from 'astro:content'
 import { createTranslator } from '@/i18n'
+import SectionHeading from '@/components/molecules/SectionHeading.astro'
 import lockfile from '../../../package-lock.json'
 
 const { locale } = Astro.props
@@ -19,8 +20,7 @@ const version = (item) => item.version ?? lockfile.packages?.[`node_modules/${it
 
     {groups.map((group) => (
       <section class="mt-12">
-        <h2 class="text-lg font-semibold text-neutral-500 dark:text-neutral-200">{group.title[locale]}</h2>
-        <p class="mt-1 mb-5 text-sm text-neutral-500 dark:text-neutral-400">{group.intro[locale]}</p>
+        <SectionHeading title={group.title[locale]} description={group.intro[locale]} />
 
         <ul class="space-y-4">
           {group.items.map((item) => (

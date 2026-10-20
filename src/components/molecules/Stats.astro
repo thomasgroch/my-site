@@ -1,0 +1,31 @@
+---
+// Painel de números da demo SemIf: um <dl> em grade, com o valor inicial
+// e o atributo `data-<key>` para o JS atualizar.
+// <Stats items={[{ label: '⏱️ Model load', key: 'load-time' }]} />
+const { items } = Astro.props
+---
+<dl class="stats grid">
+  {items.map(({ label, key, value = '—' }) => (
+    <div><dt>{label}</dt><dd {...{ [`data-${key}`]: '' }}>{value}</dd></div>
+  ))}
+</dl>
+
+<style>
+  .stats {
+    --min: 7.5em;
+    gap: 0.5em;
+    div {
+      border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--color-text) 5%, transparent);
+      padding: 0.4em 0.65em;
+    }
+    dt {
+      font-size: 0.75em;
+      color: var(--color-text-muted);
+    }
+    dd {
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+  }
+</style>

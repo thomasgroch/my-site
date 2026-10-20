@@ -2,6 +2,7 @@
 // Pac-Man contra um fantasma com cérebro de modelo (pacman.js). Funciona sem
 // modelo: o 🤖 só escolhe ao acaso até um ser carregado.
 import Styles from './Styles.astro'
+import Stats from '@/components/molecules/Stats.astro'
 ---
 <Styles />
 <div class="card stack semif" data-semif-pacman>
@@ -23,12 +24,7 @@ import Styles from './Styles.astro'
     <button type="button" class="btn" data-variant="ghost" data-dir="down" aria-label="Down">⬇️</button>
     <button type="button" class="btn" data-variant="ghost" data-dir="right" aria-label="Right">➡️</button>
   </div>
-  <dl class="grid semif-stats">
-    <div><dt>🧠 Brain</dt><dd data-brain>🎲 none</dd></div>
-    <div><dt>🎯 Decisions</dt><dd data-decisions>0</dd></div>
-    <div><dt>⏱️ Avg. think</dt><dd data-think>—</dd></div>
-    <div><dt>💭 Waited · gave up</dt><dd data-waits>0 · 0</dd></div>
-  </dl>
+  <Stats items={[{ label: '🧠 Brain', key: 'brain', value: '🎲 none' }, { label: '🎯 Decisions', key: 'decisions', value: '0' }, { label: '⏱️ Avg. think', key: 'think' }, { label: '💭 Waited · gave up', key: 'waits', value: '0 · 0' }]} />
   <p class="muted" data-robot>🤖 The green ghost with the antenna asks the model which way to turn at every crossroads.</p>
 </div>
 

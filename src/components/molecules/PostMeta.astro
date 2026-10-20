@@ -1,0 +1,26 @@
+---
+import { formatDate, readingTime } from '@/lib/blog.js'
+
+// Linha de metadados de um post, na lista e no cabeçalho: data, tempo de
+// leitura, série, atualização e a marca de rascunho. O separador vem do CSS.
+const { post } = Astro.props
+const { pubDate, updatedDate, series, seriesPart, draft } = post.data
+---
+<p class="meta cluster muted">
+  <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+  <span>{readingTime(post.body).minutes} min read</span>
+  {series && <span>{series}{seriesPart && `, part ${seriesPart}`}</span>}
+  {updatedDate && <span>Updated <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time></span>}
+  {draft && <span class="chip" data-tone="warning">Draft</span>}
+</p>
+
+<style>
+  .meta {
+    --gap: 0 var(--space-3);
+    font-size: var(--text-sm);
+    > * + *::before {
+      content: '·';
+      margin-inline-end: var(--space-3);
+    }
+  }
+</style>

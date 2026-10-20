@@ -4,6 +4,7 @@
 // parar leva o acumulado, errar leva a metade, e errar a pergunta do milhão
 // leva nada. O jogo funciona sem modelo; só a plateia depende dele.
 import Styles from './Styles.astro'
+import Stats from '@/components/molecules/Stats.astro'
 import { LADDER, money } from './quiz.js'
 ---
 <Styles />
@@ -15,11 +16,7 @@ import { LADDER, money } from './quiz.js'
   <ol class="semif-ladder" data-ladder>
     {LADDER.map((value) => <li>{money(value)}</li>)}
   </ol>
-  <dl class="grid semif-stats">
-    <div><dt>🛑 Stop</dt><dd data-if-stop>—</dd></div>
-    <div><dt>❌ Wrong</dt><dd data-if-wrong>—</dd></div>
-    <div><dt>✅ Right</dt><dd data-if-right>—</dd></div>
-  </dl>
+  <Stats items={[{ label: '🛑 Stop', key: 'if-stop' }, { label: '❌ Wrong', key: 'if-wrong' }, { label: '✅ Right', key: 'if-right' }]} />
   <p class="semif-question" data-question></p>
   <div class="grid semif-answers" data-answers></div>
   <div class="cluster" data-confirm hidden>

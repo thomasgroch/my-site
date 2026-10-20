@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import StackList from '@/components/StackList.astro'
+import SectionHeading from '@/components/molecules/SectionHeading.astro'
 import { getCollection } from 'astro:content'
 import { createTranslator } from '@/i18n'
 
@@ -30,16 +31,14 @@ const note = t('general.stack_note')
 
   {sections.map((section) => (
     <section class="py-6">
-      <h2 class="mb-2 text-lg font-semibold text-neutral-500 dark:text-neutral-200">{section.title}</h2>
-      {section.description && <p class="mb-4 text-neutral-500 dark:text-neutral-300">{section.description}</p>}
+      <SectionHeading title={section.title} description={section.description} />
       <StackList stack={group(section.key)} />
     </section>
   ))}
   {note && <p class="text-sm text-neutral-500 dark:text-neutral-400">{note}</p>}
 
   <section class="mt-8 border-t border-dashed border-neutral-300 py-8 dark:border-neutral-600">
-    <h2 class="mb-2 text-lg font-semibold text-neutral-400 dark:text-neutral-400">{t('general.stack_history')}</h2>
-    <p class="mb-4 text-sm text-neutral-500 dark:text-neutral-400">{t('general.stack_history_description')}</p>
+    <SectionHeading title={t('general.stack_history')} description={t('general.stack_history_description')} />
     <StackList stack={group('history')} muted />
   </section>
 </Layout>

@@ -77,7 +77,7 @@ Pastas por nível em `src/components/`, não por feature.
 | `organisms/` | Seção autônoma, com estado ou dados | TopMenu, Footer, StackList, PostList, BlogPost, Listen, `semif/*` |
 | `substances/` | Template e página: Layout e as rotas | Layout, HomeRoute, StackRoute, ProjectsRoute, ContactRoute, MetaRoute |
 
-Um componente só sobe de nível quando ganha filhos ou estado; só existe quando há segunda ocorrência ou comportamento.
+Um componente só sobe de nível quando ganha filhos ou estado; só existe quando há segunda ocorrência ou comportamento. Átomo sem marcação própria (Chip, Button, Field, Meter, Kicker) é só a classe em `components.css`, não um arquivo.
 
 ## Migração
 

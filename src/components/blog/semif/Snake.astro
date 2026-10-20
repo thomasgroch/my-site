@@ -2,6 +2,7 @@
 // Cobrinha jogada pelo modelo (snake.js): você assiste e pode assumir o
 // controle. Funciona sem modelo: a cobra só vira ao acaso até um ser carregado.
 import Styles from './Styles.astro'
+import Stats from '@/components/molecules/Stats.astro'
 import { SPEEDS } from './snake.js'
 ---
 <Styles />
@@ -31,12 +32,7 @@ import { SPEEDS } from './snake.js'
     <button type="button" class="btn" data-variant="ghost" data-dir="down" aria-label="Down">⬇️</button>
     <button type="button" class="btn" data-variant="ghost" data-dir="right" aria-label="Right">➡️</button>
   </div>
-  <dl class="grid semif-stats">
-    <div><dt>🧠 Brain</dt><dd data-brain>🎲 none</dd></div>
-    <div><dt>🎯 Decisions</dt><dd data-decisions>0</dd></div>
-    <div><dt>⏱️ Avg. think</dt><dd data-think>—</dd></div>
-    <div><dt>⏰ Late · 🫨 reflex</dt><dd data-lag>0 · 0</dd></div>
-  </dl>
+  <Stats items={[{ label: '🧠 Brain', key: 'brain', value: '🎲 none' }, { label: '🎯 Decisions', key: 'decisions', value: '0' }, { label: '⏱️ Avg. think', key: 'think' }, { label: '⏰ Late · 🫨 reflex', key: 'lag', value: '0 · 0' }]} />
   <p class="muted" data-robot>🤖 The model is asked about a turn a few tiles ahead. If the answer is late, the snake keeps going straight, and only dodges by reflex when the next tile would kill it.</p>
 </div>
 

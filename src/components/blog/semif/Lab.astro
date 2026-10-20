@@ -3,6 +3,7 @@
 // 🎯 leitura direta (uma passada, logprobs das letras) e
 // ✍️ geração (o modelo escreve um JSON com as probabilidades).
 import Styles from './Styles.astro'
+import Stats from '@/components/molecules/Stats.astro'
 ---
 <Styles />
 <div class="card stack semif" data-semif-lab>
@@ -38,19 +39,12 @@ import Styles from './Styles.astro'
     <section class="semif-panel">
       <p class="kicker">🎯 Direct readout</p>
       <div class="semif-bars" data-direct><span class="muted">One forward pass, no text generated.</span></div>
-      <dl class="grid semif-stats">
-        <div><dt>Total</dt><dd data-direct-total>—</dd></div>
-        <div><dt>Input</dt><dd data-direct-input>—</dd></div>
-      </dl>
+      <Stats items={[{ label: 'Total', key: 'direct-total' }, { label: 'Input', key: 'direct-input' }]} />
     </section>
     <section class="semif-panel">
       <p class="kicker">✍️ Generation</p>
       <pre class="semif-stream" data-generated>The model writes a JSON answer, token by token.</pre>
-      <dl class="grid semif-stats">
-        <div><dt>First token</dt><dd data-ttft>—</dd></div>
-        <div><dt>Total</dt><dd data-gen-total>—</dd></div>
-        <div><dt>Output</dt><dd data-gen-tokens>—</dd></div>
-      </dl>
+      <Stats items={[{ label: 'First token', key: 'ttft' }, { label: 'Total', key: 'gen-total' }, { label: 'Output', key: 'gen-tokens' }]} />
     </section>
   </div>
   <p class="semif-verdict" data-ratio></p>
