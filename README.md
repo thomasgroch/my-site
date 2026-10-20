@@ -21,13 +21,13 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 | Projetos e stack | um YAML por entrada em `src/content/projects/` e `src/content/stack/` |
 | Bio e textos da interface | `src/locales/*.json` |
 | Textos do formulário e dos e-mails | `src/lib/contact-messages.mjs` (compartilhado com a função) |
-| Páginas | `src/pages/` (wrappers por idioma) e `src/components/routes/` (conteúdo) |
+| Páginas | `src/pages/[...route].astro` gera cada rota nos dois idiomas; o conteúdo está em `src/components/substances/` |
 | Blog (só em inglês) | posts MDX em `src/content/blog/`, páginas em `src/pages/blog/`, feed em `/rss.xml`. `draft: true` publica sem listar: a URL responde com `noindex`, fora da lista, do feed e do sitemap, e só abre com o cookie de `?key=` (`netlify/edge-functions/drafts.js`) |
 | Esquemas do conteúdo | `src/content.config.js`: texto sempre em `{ pt, en }`; conteúdo inválido quebra o build |
 | Painel de conteúdo | Sveltia CMS em `/admin/` (`public/admin/config.yml`). No site, login com GitHub: posts viram PR com deploy preview dos rascunhos, o resto é commit direto; no `npm run dev`, grava nos arquivos. Configuração em `docs/arquitetura.md` |
 | Imagens | `src/assets/<coleção>/<entrada>/`, otimizadas pelo Astro no build |
 | Colofão em `/meta` | `src/content/meta.yaml`, com as versões lidas do `package-lock.json` no build |
-| Marca | monograma "TD" em `src/components/Monogram.astro`, `public/favicon.svg`, `public/og.png` |
+| Marca | monograma "TD" em `src/components/atoms/Monogram.astro`, `public/favicon.svg`, `public/og.png` |
 | Redirects, headers, plugins | `netlify.toml` |
 
 ## Scripts

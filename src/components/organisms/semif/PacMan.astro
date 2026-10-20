@@ -29,8 +29,8 @@ import Stats from '@/components/molecules/Stats.astro'
 </div>
 
 <script>
-  import { createGame, DIRECTIONS } from './pacman.js'
-  import { subscribe } from './engine.js'
+  import { createGame, DIRECTIONS } from '@/lib/semif/pacman.js'
+  import { subscribe } from '@/lib/semif/engine.js'
 
   const KEYS = { ArrowUp: 'up', KeyW: 'up', ArrowLeft: 'left', KeyA: 'left', ArrowDown: 'down', KeyS: 'down', ArrowRight: 'right', KeyD: 'right' }
 

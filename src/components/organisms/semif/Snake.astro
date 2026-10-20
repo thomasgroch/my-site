@@ -3,7 +3,7 @@
 // controle. Funciona sem modelo: a cobra só vira ao acaso até um ser carregado.
 import Styles from './Styles.astro'
 import Stats from '@/components/molecules/Stats.astro'
-import { SPEEDS } from './snake.js'
+import { SPEEDS } from '@/lib/semif/snake.js'
 ---
 <Styles />
 <div class="card stack semif" data-semif-snake>
@@ -42,7 +42,7 @@ import { SPEEDS } from './snake.js'
 </style>
 
 <script>
-  import { createGame, DIRECTIONS } from './snake.js'
+  import { createGame, DIRECTIONS } from '@/lib/semif/snake.js'
   import { subscribe } from './engine.js'
 
   const KEYS = { ArrowUp: 'up', KeyW: 'up', ArrowLeft: 'left', KeyA: 'left', ArrowDown: 'down', KeyS: 'down', ArrowRight: 'right', KeyD: 'right' }

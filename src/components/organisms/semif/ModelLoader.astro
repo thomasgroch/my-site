@@ -4,7 +4,7 @@
 // aparelho: no Pac-Man, latência importa mais que acerto.
 import Styles from './Styles.astro'
 import Stats from '@/components/molecules/Stats.astro'
-import { MODELS } from './models.js'
+import { MODELS } from '@/lib/semif/models.js'
 
 const { prefer } = Astro.props
 ---
@@ -27,8 +27,8 @@ const { prefer } = Astro.props
 </div>
 
 <script>
-  import { MODELS, recommendedModel } from './models.js'
-  import { load, seconds, status, subscribe } from './engine.js'
+  import { MODELS, recommendedModel } from '@/lib/semif/models.js'
+  import { load, seconds, status, subscribe } from '@/lib/semif/engine.js'
 
   for (const card of document.querySelectorAll('[data-semif-loader]')) {
     const $ = (selector) => card.querySelector(selector)

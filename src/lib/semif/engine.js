@@ -32,8 +32,8 @@ function startWorker(modelId) {
   // Um `new Worker(new URL(...))` literal por arquivo, para o Vite empacotar.
   worker =
     MODELS[modelId]?.runtime === 'laya'
-      ? new Worker(new URL('./laya-worker.js', import.meta.url), { type: 'module' })
-      : new Worker(new URL('./worker.js', import.meta.url), { type: 'module' })
+      ? new Worker(new URL('@/lib/semif/laya-worker.js', import.meta.url), { type: 'module' })
+      : new Worker(new URL('@/lib/semif/worker.js', import.meta.url), { type: 'module' })
   worker.addEventListener('message', ({ data: { id, type, data, message } }) => {
     const request = pending.get(id)
     if (!request) return

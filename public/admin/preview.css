@@ -1,5 +1,5 @@
 /* Preview do painel (Sveltia CMS) com a tipografia dos posts
-   (src/components/blog/BlogPost.astro): mesma fonte, coluna e cores. Os
+   (src/components/organisms/BlogPost.astro): mesma fonte, coluna e cores. Os
    componentes MDX aparecem como texto; o post de verdade está no deploy
    preview. */
 :root { color-scheme: light; }

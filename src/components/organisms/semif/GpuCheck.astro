@@ -13,7 +13,7 @@ import Stats from '@/components/molecules/Stats.astro'
 </div>
 
 <script>
-  import { MODELS, isMobileDevice, recommendedModel } from './models.js'
+  import { MODELS, isMobileDevice, recommendedModel } from '@/lib/semif/models.js'
 
   for (const card of document.querySelectorAll('[data-semif-gpu]')) {
     const status = card.querySelector('[data-status]')

@@ -5,7 +5,7 @@
 // leva nada. O jogo funciona sem modelo; só a plateia depende dele.
 import Styles from './Styles.astro'
 import Stats from '@/components/molecules/Stats.astro'
-import { LADDER, money } from './quiz.js'
+import { LADDER, money } from '@/lib/semif/quiz.js'
 ---
 <Styles />
 <div class="card stack semif" data-semif-show>
@@ -55,8 +55,8 @@ import { LADDER, money } from './quiz.js'
 </style>
 
 <script>
-  import { calibrated, subscribe } from './engine.js'
-  import { LADDER, QUESTIONS, money, tierFor } from './quiz.js'
+  import { calibrated, subscribe } from '@/lib/semif/engine.js'
+  import { LADDER, QUESTIONS, money, tierFor } from '@/lib/semif/quiz.js'
 
   const LIFELINES = { fifty: 1, ask: 2, skip: 3 }
   const LETTERS = ['A', 'B', 'C', 'D']

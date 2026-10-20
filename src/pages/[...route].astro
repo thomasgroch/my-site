@@ -1,0 +1,26 @@
+---
+// Toda rota do site nos dois idiomas: `/` e `/stack` em pt, `/en` e
+// `/en/stack` em inglês. O blog (src/pages/blog/) e o 404 têm as suas.
+import HomeRoute from '@/components/substances/HomeRoute.astro'
+import StackRoute from '@/components/substances/StackRoute.astro'
+import ProjectsRoute from '@/components/substances/ProjectsRoute.astro'
+import ContactRoute from '@/components/substances/ContactRoute.astro'
+import MetaRoute from '@/components/substances/MetaRoute.astro'
+import { LOCALES, DEFAULT_LOCALE } from '@/i18n'
+
+const ROUTES = { '': HomeRoute, stack: StackRoute, projetos: ProjectsRoute, contato: ContactRoute, meta: MetaRoute }
+
+export function getStaticPaths() {
+  const pages = ['', 'stack', 'projetos', 'contato', 'meta']
+  return LOCALES.flatMap((locale) =>
+    pages.map((page) => {
+      const route = [locale === DEFAULT_LOCALE ? '' : locale, page].filter(Boolean).join('/')
+      return { params: { route: route || undefined }, props: { locale, page } }
+    })
+  )
+}
+
+const { locale, page } = Astro.props
+const Route = ROUTES[page]
+---
+<Route locale={locale} />
