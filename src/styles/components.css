@@ -118,6 +118,31 @@
   }
 }
 
+/* Resposta do formulário de contato; vem como HTML da função Netlify. */
+.notice {
+  --gap: var(--space-2);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4) 1.25rem;
+  font-size: var(--text-sm);
+  text-align: start;
+  &[data-tone='ok'] {
+    border-block-start: 4px solid var(--color-accent);
+    background: var(--color-accent-soft);
+    strong {
+      font-size: var(--text-base);
+      color: var(--color-ok);
+    }
+  }
+  &[data-tone='error'] {
+    border: 1px solid var(--color-error);
+    background: color-mix(in srgb, var(--color-error) 12%, transparent);
+    color: var(--color-error);
+    span {
+      display: block;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn,
   .meter > i {

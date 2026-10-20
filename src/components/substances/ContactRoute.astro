@@ -6,14 +6,15 @@ import { successBox, errorBox } from '@/lib/contact-messages.mjs'
 const { locale } = Astro.props
 const t = createTranslator(locale)
 const action = '/.netlify/functions/contact'
+const optional = `(${t('contact.optional')})`
 ---
 <Layout locale={locale} path="/contato" title={t('general.nav_contact')} description={t('general.meta_description_contact')}>
-  <section class="mx-auto max-w-md py-8">
-    <h1 class="sr-only">{t('general.nav_contact')}</h1>
+  <section class="contact center stack">
+    <h1 class="visually-hidden">{t('general.nav_contact')}</h1>
 
     <!-- Sem JavaScript a função redireciona para #enviado ou #erro. -->
-    <div id="enviado" class="target-box mb-6" set:html={successBox(locale)}></div>
-    <div id="erro" class="target-box mb-6" set:html={errorBox(locale)}></div>
+    <div id="enviado" class="target" set:html={successBox(locale)}></div>
+    <div id="erro" class="target" set:html={errorBox(locale)}></div>
 
     <form
       id="contact-form"
@@ -24,49 +25,45 @@ const action = '/.netlify/functions/contact'
       hx-swap="innerHTML"
       hx-disable="find button"
       hx-indicator="#contact-form"
-      class="stack"
+      class="form stack"
     >
       <input type="hidden" name="locale" value={locale} />
-      <div class="hidden" aria-hidden="true">
+      <div hidden aria-hidden="true">
         <label>Deixe em branco <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
       </div>
 
       <div>
         <label class="label" for="nome">{t('contact.name')}</label>
-        <input class="field text-base" id="nome" name="nome" type="text" required autocomplete="name" />
+        <input class="field" id="nome" name="nome" type="text" required autocomplete="name" />
       </div>
 
-      <div class="grid gap-5 sm:grid-cols-2">
+      <div class="grid pair">
         <div>
           <label class="label" for="email">{t('contact.email')}</label>
-          <input class="field text-base" id="email" name="email" type="email" required autocomplete="email" />
+          <input class="field" id="email" name="email" type="email" required autocomplete="email" />
         </div>
         <div>
-          <label class="label" for="telefone">
-            {t('contact.telephone')} <span class="text-sm text-neutral-400">({t('contact.optional')})</span>
-          </label>
-          <input class="field text-base" id="telefone" name="telefone" type="tel" autocomplete="tel" />
+          <label class="label" for="telefone">{t('contact.telephone')} <small>{optional}</small></label>
+          <input class="field" id="telefone" name="telefone" type="tel" autocomplete="tel" />
         </div>
       </div>
 
       <div>
-        <label class="label" for="cidade">
-          {t('contact.city')} <span class="text-sm text-neutral-400">({t('contact.optional')})</span>
-        </label>
-        <input class="field text-base" id="cidade" name="cidade" type="text" autocomplete="address-level2" />
+        <label class="label" for="cidade">{t('contact.city')} <small>{optional}</small></label>
+        <input class="field" id="cidade" name="cidade" type="text" autocomplete="address-level2" />
       </div>
 
       <div>
         <label class="label" for="mensagem">{t('contact.help')}</label>
-        <textarea class="field text-base" id="mensagem" name="mensagem" rows="5" required></textarea>
-        <p class="mt-2 text-xs italic text-neutral-400">{t('contact.span_message')}</p>
+        <textarea class="field" id="mensagem" name="mensagem" rows="5" required></textarea>
+        <p class="hint">{t('contact.span_message')}</p>
       </div>
 
       <div id="form-status" aria-live="polite"></div>
 
-      <div class="flex items-center justify-center gap-4">
-        <button type="submit" class="btn text-base">{t('contact.submit')}</button>
-        <span class="htmx-indicator text-sm text-neutral-500" aria-hidden="true">{t('contact.sending')}</span>
+      <div class="cluster actions">
+        <button type="submit" class="btn">{t('contact.submit')}</button>
+        <span class="sending muted" aria-hidden="true">{t('contact.sending')}</span>
       </div>
     </form>
   </section>
@@ -77,3 +74,48 @@ const action = '/.netlify/functions/contact'
     import 'htmx.org'
   </script>
 </Layout>
+
+<style>
+  .contact {
+    --measure: 28rem;
+    --gap: var(--space-5);
+    padding-block: var(--space-6);
+    font-size: var(--text-base);
+  }
+  /* Fallback sem JavaScript: a caixa da âncora da URL aparece via :target. */
+  .target {
+    display: none;
+    &:target {
+      display: block;
+    }
+  }
+  .form {
+    --gap: 1.25rem;
+  }
+  .pair {
+    --min: 12rem;
+    gap: 1.25rem;
+  }
+  .label small {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .hint {
+    margin-block-start: var(--space-2);
+    font-size: var(--text-xs);
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+  .actions {
+    --gap: var(--space-4);
+    justify-content: center;
+  }
+  /* Estado de envio do htmx: o aviso só aparece enquanto a requisição roda. */
+  .sending {
+    opacity: 0;
+    transition: opacity 150ms;
+  }
+  .form.htmx-request .sending {
+    opacity: 1;
+  }
+</style>

@@ -30,31 +30,100 @@ const labels = LABELS[lang] ?? LABELS.pt
 const minutes = entry ? Math.max(1, Math.round(entry.seconds / 60)) : 0
 ---
 {entry && (
-  <div data-listen data-tt-ignore data-labels={JSON.stringify(labels)} data-seconds={entry.seconds} class="mt-4 text-sm">
-    <audio controls preload="none" src={`/audio/${slug}.mp3`} class="w-full" aria-label={`${labels.player} ${title}`}>
+  <div data-listen data-tt-ignore data-labels={JSON.stringify(labels)} data-seconds={entry.seconds} class="listen">
+    <audio controls preload="none" src={`/audio/${slug}.mp3`} aria-label={`${labels.player} ${title}`}>
       <track kind="metadata" src={`/audio/${slug}.vtt`} />
     </audio>
-    <button type="button" hidden data-listen-toggle title={labels.hint} class="rounded-full border border-neutral-300 px-3 py-1 font-semibold hover:border-green-400 dark:border-neutral-600 dark:hover:border-green-400">
-      🎧 {labels.listen} <span class="font-normal text-neutral-500 dark:text-neutral-400">· {minutes} min</span>
+    <button type="button" hidden data-listen-toggle title={labels.hint} class="toggle">
+      🎧 {labels.listen} <span class="muted">· {minutes} min</span>
     </button>
-    <span hidden data-listen-hint class="ml-2 text-xs text-neutral-500 dark:text-neutral-400">{labels.hint}</span>
+    <span hidden data-listen-hint class="hint muted">{labels.hint}</span>
 
-    <div hidden data-listen-panel role="group" aria-label={labels.panel} class="fixed right-4 bottom-4 z-40 flex items-center gap-1 overflow-hidden rounded-full border border-neutral-300 bg-white/95 p-1 shadow-lg backdrop-blur dark:border-neutral-600 dark:bg-neutral-900/95">
-      <button type="button" data-play title="Espaço / K" class="rounded-full px-3 py-1 font-semibold hover:bg-green-100 dark:hover:bg-neutral-700">
+    <div hidden data-listen-panel role="group" aria-label={labels.panel} class="panel">
+      <button type="button" data-play title="Espaço / K" class="play">
         <span data-icon>⏸</span> <span data-label>{labels.pause}</span>
       </button>
-      <span data-time class="px-1 text-neutral-500 tabular-nums dark:text-neutral-400"></span>
-      <button type="button" data-follow aria-pressed="true" title="S" class="rounded-full px-3 py-1 hover:bg-green-100 aria-pressed:bg-green-100 aria-pressed:text-green-700 dark:hover:bg-neutral-700 dark:aria-pressed:bg-green-900 dark:aria-pressed:text-green-200">
+      <span data-time class="time muted"></span>
+      <button type="button" data-follow aria-pressed="true" title="S" class="follow">
         📜 {labels.follow}
       </button>
-      <span data-progress class="absolute inset-x-3 bottom-0 h-0.5 rounded bg-green-400" style="width: 0"></span>
+      <span data-progress class="progress" style="width: 0"></span>
     </div>
   </div>
 )}
 
+<style>
+  .listen {
+    margin-block-start: var(--space-4);
+    font-size: var(--text-sm);
+    audio {
+      inline-size: 100%;
+    }
+  }
+  .toggle,
+  .play,
+  .follow {
+    border-radius: 99px;
+    padding: var(--space-1) var(--space-3);
+    background: none;
+    cursor: pointer;
+  }
+  .toggle {
+    border: 1px solid var(--color-line);
+    font-weight: 600;
+    &:hover {
+      border-color: var(--color-accent);
+    }
+  }
+  .hint {
+    margin-inline-start: var(--space-2);
+    font-size: var(--text-xs);
+  }
+  .panel {
+    position: fixed;
+    inset-inline-end: var(--space-4);
+    inset-block-end: var(--space-4);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 99px;
+    padding: var(--space-1);
+    background: color-mix(in srgb, var(--color-surface) 95%, transparent);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    backdrop-filter: blur(8px);
+  }
+  .play {
+    font-weight: 600;
+  }
+  .play:hover,
+  .follow:hover {
+    background: var(--color-accent-soft);
+  }
+  .follow[aria-pressed='true'] {
+    background: var(--color-accent-soft);
+    color: var(--color-ok);
+  }
+  .time {
+    padding-inline: var(--space-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .progress {
+    position: absolute;
+    inset-inline: var(--space-3);
+    inset-block-end: 0;
+    block-size: 2px;
+    border-radius: 1px;
+    background: var(--color-accent);
+  }
+</style>
+
 <style is:global>
+  /* Karaokê (public/vendor/transcript-tracer.js): marca a palavra lida. */
   .tt-transcript { touch-action: manipulation; }
-  .tt-current-word { border-radius: 0.2em; background: rgb(74 222 128 / 0.35); box-shadow: 0 0 0 0.15em rgb(74 222 128 / 0.35); }
+  .tt-current-word { border-radius: 0.2em; background: color-mix(in srgb, var(--color-accent) 35%, transparent); box-shadow: 0 0 0 0.15em color-mix(in srgb, var(--color-accent) 35%, transparent); }
 </style>
 
 <script>

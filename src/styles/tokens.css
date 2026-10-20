@@ -12,6 +12,7 @@
   --color-line: light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.15));
   --color-ok: light-dark(#15803d, #4ade80);
   --color-error: light-dark(#dc2626, #f87171);
+  --color-info: light-dark(#0284c7, #38bdf8);
   --color-warning: light-dark(#854d0e, #fef9c3);
   --color-warning-soft: light-dark(#fef9c3, #713f12);
   /* O botão de tema mostra o tema para onde vai: lua azul no claro, sol amarelo no escuro. */

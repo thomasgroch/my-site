@@ -5,28 +5,58 @@ import PostMeta from '@/components/molecules/PostMeta.astro'
 // aparece com o cookie `draft`, ver netlify/edge-functions/drafts.js).
 const { posts, drafts = false } = Astro.props
 ---
-<section class="mx-auto max-w-2xl py-8">
-  <h1 class="text-3xl font-semibold text-green-400">Blog</h1>
-  <p class="mt-2 flex flex-wrap gap-x-3 text-sm">
+<section class="posts center">
+  <h1>Blog</h1>
+  <p class="cluster feed">
     <a href="/rss.xml">RSS feed</a>
-    {drafts && <span class="text-neutral-500 dark:text-neutral-400">· drafts included, because you have the draft cookie</span>}
+    {drafts && <span class="muted">· drafts included, because you have the draft cookie</span>}
   </p>
 
   {posts.length === 0 ? (
-    <p class="mt-10 text-neutral-500 dark:text-neutral-400">No posts yet.</p>
+    <p class="muted empty">No posts yet.</p>
   ) : (
-    <ol class="mt-10 space-y-10">
+    <ol class="stack list">
       {posts.map((post) => (
         <li>
-          <article>
-            <h2 class="text-xl font-semibold text-neutral-900 dark:text-white">
-              <a href={`/blog/${post.id}`}>{post.data.title}</a>
-            </h2>
-            <div class="mt-1"><PostMeta post={post} /></div>
-            <p class="mt-2 text-neutral-600 dark:text-neutral-300">{post.data.description}</p>
+          <article class="stack">
+            <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
+            <PostMeta post={post} />
+            <p>{post.data.description}</p>
           </article>
         </li>
       ))}
     </ol>
   )}
 </section>
+
+<style>
+  .posts {
+    --measure: 42rem;
+    padding-block: var(--space-6);
+    h1 {
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: 600;
+    }
+  }
+  .feed {
+    margin-block-start: var(--space-2);
+    font-size: var(--text-sm);
+  }
+  .empty,
+  .list {
+    margin-block-start: 2.5rem;
+  }
+  .list {
+    --gap: 2.5rem;
+    list-style: none;
+    padding: 0;
+    article {
+      --gap: var(--space-2);
+    }
+  }
+</style>

@@ -36,21 +36,3 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 }
-
-/* Estado de envio do htmx: o indicador só aparece enquanto a requisição roda. */
-.htmx-indicator {
-  @apply opacity-0 transition-opacity;
-}
-.htmx-request .htmx-indicator,
-.htmx-request.htmx-indicator {
-  @apply opacity-100;
-}
-
-/* Fallback sem JavaScript: a função redireciona para #enviado ou #erro e a
-   caixa correspondente aparece via :target. */
-.target-box {
-  display: none;
-}
-.target-box:target {
-  display: block;
-}

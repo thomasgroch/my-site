@@ -41,21 +41,22 @@ export function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 }
 
-// Caixa de sucesso: substitui o formulário inteiro (htmx) ou aparece via
-// :target em #enviado (sem JavaScript).
-export function successBox(locale, { id = '', extraClass = '' } = {}) {
+// Caixas de resposta (.notice em src/styles/components.css): a de sucesso
+// substitui o formulário inteiro (htmx) ou aparece via :target em #enviado
+// (sem JavaScript).
+export function successBox(locale) {
   const m = contactMessages[locale] || contactMessages.pt
-  return `<div${id ? ` id="${id}"` : ''} class="${extraClass} rounded-sm border-t-4 border-green-400 bg-green-100 px-5 py-4 text-left dark:bg-neutral-700" role="status">
-  <p class="font-semibold text-green-600 dark:text-green-400">${escapeHtml(m.success)}</p>
-  <p class="text-sm text-neutral-600 dark:text-neutral-300">${escapeHtml(m.success_detail)}</p>
-  <p class="mt-3 text-sm"><a href="">${escapeHtml(m.send_another)}</a></p>
+  return `<div class="notice stack" data-tone="ok" role="status">
+  <p><strong>${escapeHtml(m.success)}</strong></p>
+  <p>${escapeHtml(m.success_detail)}</p>
+  <p><a href="">${escapeHtml(m.send_another)}</a></p>
 </div>`
 }
 
-export function errorBox(locale, text, { id = '', extraClass = '' } = {}) {
+export function errorBox(locale, text) {
   const m = contactMessages[locale] || contactMessages.pt
-  return `<div${id ? ` id="${id}"` : ''} class="${extraClass} rounded-sm border border-red-400 bg-red-100 px-4 py-3 text-left text-red-700 dark:bg-red-950 dark:text-red-200" role="alert">
-  <strong class="font-bold">☹️ ${escapeHtml(m.error_title)}</strong>
-  <span class="block">${escapeHtml(text || m.error_generic)}</span>
+  return `<div class="notice" data-tone="error" role="alert">
+  <strong>☹️ ${escapeHtml(m.error_title)}</strong>
+  <span>${escapeHtml(text || m.error_generic)}</span>
 </div>`
 }
