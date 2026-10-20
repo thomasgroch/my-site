@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config'
 import { fileURLToPath } from 'node:url'
-import tailwindcss from '@tailwindcss/vite'
 import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import { shikiTransformers } from './src/lib/shiki.js'
@@ -32,8 +31,6 @@ export default defineConfig({
     },
   },
   vite: {
-    // Tailwind 4: configuração fica no próprio CSS (src/tailwind.css).
-    plugins: [tailwindcss()],
     resolve: {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
     },

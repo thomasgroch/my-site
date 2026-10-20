@@ -12,7 +12,7 @@ const { prefer } = Astro.props
 <div class="card stack semif" data-semif-loader data-prefer={prefer}>
   <p class="kicker">Model</p>
   <div class="cluster">
-    <select data-model class="rounded-lg border-neutral-300 bg-transparent py-1.5 text-[0.95em] dark:border-neutral-600">
+    <select data-model class="field model">
       {Object.entries(MODELS).map(([id, model]) => <option value={id}>{model.name} · {model.size}</option>)}
     </select>
     <button type="button" class="btn" data-load>⬇️ Load</button>
@@ -25,6 +25,13 @@ const { prefer } = Astro.props
   <Stats items={[{ label: '⏱️ Model load', key: 'load-time' }, { label: '🔥 Warmup', key: 'warmup' }]} />
   <p class="status" data-status>💤 No model loaded. Everything runs on your GPU; nothing is sent anywhere.</p>
 </div>
+
+<style>
+  .model {
+    flex: 1 1 12em;
+    inline-size: auto;
+  }
+</style>
 
 <script>
   import { MODELS, recommendedModel } from '@/lib/semif/models.js'

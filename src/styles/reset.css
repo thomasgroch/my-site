@@ -1,0 +1,60 @@
+/* O que o navegador faz por padrão e o site não quer. Só o essencial. */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+:is(ul, ol) {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+:is(img, svg, video, canvas, audio, iframe) {
+  display: block;
+  max-inline-size: 100%;
+}
+
+img {
+  block-size: auto;
+}
+
+:is(button, input, textarea, select) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+:is(button, select) {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+:is(code, kbd, pre, samp) {
+  font-family: var(--font-mono);
+}
+
+[hidden] {
+  display: none;
+}

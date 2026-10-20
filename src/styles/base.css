@@ -1,11 +1,5 @@
 /* Elementos sem classe. O tema: escolha salva > preferência do sistema
    (Layout.astro põe `dark` no <html> antes da pintura). */
-*,
-::before,
-::after {
-  box-sizing: border-box;
-}
-
 html {
   color-scheme: light;
 }

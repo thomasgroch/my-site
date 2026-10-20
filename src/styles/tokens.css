@@ -31,7 +31,6 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
 
-  /* Mesma escala do @theme em src/tailwind.css, até as utilidades saírem. */
   --text-xs: 0.875rem;
   --text-sm: 1rem;
   --text-base: 1.25rem;

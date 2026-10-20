@@ -15,14 +15,6 @@ groups:
           pt: "Carregado só na página de contato. Envia o formulário e troca a resposta HTML da função no lugar, sem recarregar."
           en: "Loaded only on the contact page. It submits the form and swaps the function’s HTML response in place, without a reload."
       - name:
-          pt: "Tailwind CSS"
-          en: "Tailwind CSS"
-        pkg: "tailwindcss"
-        url: "https://tailwindcss.com/"
-        note:
-          pt: "Uma folha de estilo única para o site inteiro, configurada no próprio CSS. Tema claro e escuro por classe."
-          en: "A single stylesheet for the whole site, configured in the CSS itself. Light and dark themes by class."
-      - name:
           pt: "SVG embutido"
           en: "Inline SVG"
         url: "https://developer.mozilla.org/docs/Web/SVG"
@@ -44,14 +36,6 @@ groups:
         note:
           pt: "Gera as páginas nos dois idiomas, otimiza as imagens e não envia JavaScript por padrão."
           en: "Generates the pages in both languages, optimizes images and ships no JavaScript by default."
-      - name:
-          pt: "@tailwindcss/vite"
-          en: "@tailwindcss/vite"
-        pkg: "@tailwindcss/vite"
-        url: "https://tailwindcss.com/docs/installation/using-vite"
-        note:
-          pt: "Integração do Tailwind 4 com o Vite, que o Astro usa por baixo. Dispensa PostCSS e autoprefixer."
-          en: "Tailwind 4 integration with Vite, which Astro uses underneath. No PostCSS or autoprefixer needed."
       - name:
           pt: "@astrojs/sitemap"
           en: "@astrojs/sitemap"

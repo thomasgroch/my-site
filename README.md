@@ -7,7 +7,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 ## Stack
 
 - **[Astro 7](https://astro.build/)** gera o HTML. Nenhuma página carrega framework JavaScript; o único JS de terceiros é o htmx, e só na página de contato.
-- **[Tailwind CSS 4](https://tailwindcss.com/)** pelo plugin do Vite, configurado em `src/tailwind.css`. Tema claro/escuro por classe, com a preferência do sistema como padrão.
+- **CSS nativo**, sem framework: `src/styles/` com `@layer`, tokens semânticos e `light-dark()`. Tema claro/escuro por `color-scheme`, com a preferência do sistema como padrão (regras em [`docs/convencoes.md`](docs/convencoes.md)).
 - **[htmx 4](https://htmx.org/)** envia o formulário de contato e troca a resposta HTML da função no lugar. Sem JavaScript o formulário continua funcionando por redirect.
 - **Netlify Functions** (`functions/contact.mjs`, API v2, zero dependências) valida, aplica honeypot e envia os e-mails pela API REST do Mailgun.
 - **Rotas**: `/`, `/stack`, `/projetos` e `/contato` no menu, mais `/meta`, que documenta o que constrói o site e fica fora da navegação.

@@ -81,4 +81,4 @@ Um componente só sobe de nível quando ganha filhos ou estado; só existe quand
 
 ## Migração
 
-Em ordem, cada passo publicável: tokens e base → primitivas e componentes → átomos e moléculas → uma rota por vez → demo SemIf → remover `tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/forms`. Orçamento de 512KB e `npm run verify` valem em todos os passos.
+Feita em outubro de 2026, nesta ordem, cada passo num commit que passou no `verify`: tokens e base → primitivas e componentes → átomos e moléculas → organismos, substâncias e rota única → extrações de lógica → uma rota por vez → remoção do Tailwind. O CSS do site foi de 37 para 13 KB.

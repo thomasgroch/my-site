@@ -13,11 +13,11 @@ import Stats from '@/components/molecules/Stats.astro'
     <button type="button" class="btn" data-variant="ghost" data-preset="email">📨 Email triage</button>
     <button type="button" class="btn" data-variant="ghost" data-preset="account">🔐 Account support</button>
   </div>
-  <label class="block">
+  <label class="group">
     <span class="muted">State</span>
     <textarea data-state rows="3" class="field"></textarea>
   </label>
-  <label class="block">
+  <label class="group">
     <span class="muted">Question</span>
     <input data-question class="field" />
   </label>
@@ -51,7 +51,8 @@ import Stats from '@/components/molecules/Stats.astro'
 </div>
 
 <style is:global>
-  label > .field { margin-top: 0.25em; }
+  .group { display: block; }
+  .group > .field { margin-top: 0.25em; }
   .semif-options { display: grid; gap: 0.4em; margin-top: 0.5em; list-style: none !important; padding-left: 0 !important; counter-reset: option; }
   .semif-options li { display: flex; align-items: center; gap: 0.6em; margin: 0 !important; counter-increment: option; }
   .semif-options li::before { content: counter(option, upper-alpha); width: 1.2em; font-weight: 600; color: var(--color-ok); }

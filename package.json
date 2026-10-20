@@ -23,12 +23,9 @@
     "@astrojs/mdx": "^8.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
-    "@tailwindcss/forms": "^0.5.11",
-    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.2",
     "htmx.org": "^4.0.0",
-    "mermaid": "^12.1.0",
-    "tailwindcss": "^4.3.3"
+    "mermaid": "^12.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
