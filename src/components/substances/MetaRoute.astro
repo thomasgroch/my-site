@@ -48,8 +48,6 @@ const version = (item) => item.version ?? lockfile.packages?.[`node_modules/${it
   .colophon {
     padding-block: var(--space-6);
     h1 {
-      font-size: var(--text-2xl);
-      font-weight: 600;
       color: var(--color-accent);
     }
   }
@@ -77,7 +75,7 @@ const version = (item) => item.version ?? lockfile.packages?.[`node_modules/${it
     }
   }
   .version {
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
   }
   .note {
     margin-block-start: var(--space-1);

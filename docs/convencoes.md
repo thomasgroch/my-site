@@ -49,7 +49,7 @@ Semânticos, poucos, em `:root`. Tema com `light-dark()`; o `html.dark` só muda
 --color-bg, --color-surface, --color-text, --color-text-muted,
 --color-accent, --color-accent-strong, --color-accent-soft, --color-line,
 --color-ok, --color-error, --color-warning, --color-warning-soft
---space-1…6   --radius-sm/md/lg   --text-sm…3xl   --measure (70ch)
+--space-1…6   --radius-sm/md/lg   --text-xs…3xl   --measure (70ch)
 ```
 
 Open Props: não adotar. Copiar o valor, não a dependência.

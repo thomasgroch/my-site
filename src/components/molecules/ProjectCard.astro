@@ -16,7 +16,7 @@ const type = t(`general.project.type_${item.type}`)
   )}
   <div class="body">
     <h2>{site ? <a href={site} target="_blank" rel="noopener noreferrer">{item.company}</a> : item.company}</h2>
-    <p class="muted">{item.position[locale]}</p>
+    <p class="muted position">{item.position[locale]}</p>
     <p>{item.summary[locale]}</p>
     <p class="cluster foot">
       <span class="chip">{type}</span>
@@ -51,17 +51,15 @@ const type = t(`general.project.type_${item.type}`)
     flex-direction: column;
     gap: var(--space-2);
     padding: 1.25rem;
-    h2 {
-      font-size: var(--text-lg);
-      font-weight: 700;
-      letter-spacing: -0.025em;
-    }
+  }
+  .position {
+    font-size: var(--text-base);
   }
   .foot {
     margin-block-start: auto;
     justify-content: space-between;
     padding-block-start: var(--space-3);
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     color: var(--color-text-muted);
   }
 </style>

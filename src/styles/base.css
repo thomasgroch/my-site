@@ -11,6 +11,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+  font-size: var(--text-base);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -28,8 +29,18 @@ a {
   }
 }
 
+/* Uma escala de títulos para o site inteiro; a página só muda a cor. */
 :is(h1, h2, h3) {
+  font-weight: 600;
+  line-height: 1.2;
   letter-spacing: 0.025em;
+  text-wrap: balance;
+}
+h1 {
+  font-size: var(--text-3xl);
+}
+h2 {
+  font-size: var(--text-lg);
 }
 
 :focus-visible {

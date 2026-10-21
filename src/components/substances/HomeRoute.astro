@@ -42,12 +42,9 @@ const bio = t('general.profile_description').split('\n').map((s) => s.trim()).fi
     color: var(--color-accent);
     h1 {
       margin-block-start: var(--space-5);
-      font-size: var(--text-3xl);
-      font-weight: 600;
     }
     > .muted {
       margin-block-start: var(--space-2);
-      font-size: inherit;
     }
   }
   .bio {
@@ -58,7 +55,7 @@ const bio = t('general.profile_description').split('\n').map((s) => s.trim()).fi
     --gap: var(--space-4);
     margin-block-start: 2.5rem;
     justify-content: center;
-    font-size: var(--text-base);
+    font-size: var(--text-md);
   }
   @media (min-width: 48em) {
     .hero {
