@@ -1,0 +1,4 @@
+Anallise e atualização da documentação #1
+faça uma analise corporativa do meu site (problema/solução). Quero entender como tudo funciona hoje e se a documentação está atualizada.
+https://entire.com/gh/thomasgroch/-/trails/1
+Crie  uma PR
