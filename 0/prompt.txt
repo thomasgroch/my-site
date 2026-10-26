@@ -1,0 +1,14 @@
+quero que voce leia a documentação dessa ferramenta entire.com e me diga com poucas palavras como começo a usar no meu projeto my-site?
+Ela é capaz de trabalhar proativamente?
+
+---
+
+Bom, eu fiz uma pull request para tentar começar a usar esse software. Então, pode aceitar a PR para mim e vamos testa-lo?
+
+---
+
+só criei esse tail #1 manualmente para testar, acho que eu não deveria criar manualmente, pode deletar.
+
+---
+
+Reexecute o CI da PR 241 e, se o gate passar, mescle.
