@@ -29,6 +29,8 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 | Colofão em `/meta` | `src/content/meta.yaml`, com as versões lidas do `package-lock.json` no build |
 | Marca | monograma "TD" em `src/components/atoms/Monogram.astro`, `public/favicon.svg`, `public/og.png` |
 | Redirects, headers, plugins | `netlify.toml` |
+| Textos soltos | `public/humans.txt`, `public/privacy` e `public/random` são servidos como estão |
+| Entire (sessões de IA nos commits) | `.entire/` |
 
 ## Scripts
 
@@ -51,6 +53,12 @@ Quase tudo roda sem navegador, em Node puro, então o resultado é o mesmo no Ma
 |---|---|---|
 | `test/i18n.test.js` | tradutor, prefixos de URL, paridade entre idiomas | nada |
 | `test/contact.test.js` | função de contato: validação, honeypot, escape, chamadas ao Mailgun | nada |
+| `test/blog.test.js` | ordem, datas, tempo de leitura, séries, sumário e rascunhos (`src/lib/blog.js`) | nada |
+| `test/drafts.test.js` | a decisão da Edge Function de rascunhos (`gate`) | nada |
+| `test/narration.test.js` | texto narrado e WebVTT (`src/lib/narration.js`) | nada |
+| `test/admin.test.js` | o painel (`public/admin/config.yml`) conhece todas as chaves de `src/locales/` | nada |
+| `test/lib.test.js` | `fill` e `plural` (`src/lib/text.js`) | nada |
+| `test/learner.test.js` | aprendizado da cobrinha (`src/lib/semif/learner.js`) | nada |
 | `test/dist.test.js` | o HTML publicado: formulário, idiomas, SEO, imagens, script de redirecionamento | `dist/`, gerado pelo `verify` |
 | `cypress/e2e/contact-form.cy.js` | o único caso de navegador de verdade: o htmx trocando a resposta no lugar | servidor de dev no ar |
 
@@ -66,4 +74,4 @@ Medido com `npm run measure`, sem compressão, que é como o [512KB Club](https:
 
 ## Arquitetura
 
-As decisões por trás da estrutura estão em [`docs/arquitetura.md`](docs/arquitetura.md). As regras do código (reaproveitamento, CSS, Atomic Design) estão em [`docs/convencoes.md`](docs/convencoes.md).
+As decisões por trás da estrutura estão em [`docs/arquitetura.md`](docs/arquitetura.md). As regras do código (reaproveitamento, CSS, Atomic Design) estão em [`docs/convencoes.md`](docs/convencoes.md). A visão de negócio (problema, solução, riscos) está em [`docs/analise.md`](docs/analise.md).

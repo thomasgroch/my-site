@@ -27,7 +27,7 @@ Extrações decididas:
 | `src/lib/semif/math.js`: `softmax`, `argmax` | As 3 cópias de `softmax` e os `indexOf(Math.max(...))`. |
 | `src/lib/semif/worker-protocol.js`: `serve(handlers)` | O listener de `message` idêntico nos dois workers. |
 | `src/lib/semif/grid.js`: `DIRS`, `same`, `add`, `opposite`, `randomOf`, `whereIs(dx, dy)` | As direções, helpers e a frase "N tiles up and M to the left" de `snake.js` e `pacman.js`. |
-| `src/lib/semif/arcade.js`: `createLoop`, `bindControls` | Teclas, swipe, direcional, pausa fora da tela, `ResizeObserver` e `frame/loop`, hoje duplicados em Snake e PacMan. |
+| `src/lib/semif/arcade.js`: `createLoop`, `bindControls` | Teclas, swipe, direcional, pausa fora da tela, `ResizeObserver` e `frame/loop`, antes duplicados em Snake e PacMan. |
 | `src/lib/semif/dom.js`: `within`, `announcer`, `reset`, `bars`, `odds` | O `$` (5×), o `say` (4×), as barras de probabilidade (Lab, Millionaire, Snake) e o texto "↑ 60% · ← 40%". |
 | `scripts/lib/fs.mjs`: `walk` | O `walk` dos 3 scripts. |
 | `src/pages/[...route].astro` | Os 10 wrappers de página: um `getStaticPaths` gera cada rota nos dois idiomas. |
@@ -76,8 +76,8 @@ Pastas por nível em `src/components/`, não por feature.
 
 | Nível | Critério | Hoje |
 |---|---|---|
-| `atoms/` | Um elemento, sem filhos próprios | Monogram, Icon, Chip, Button, Field, Meter, Kicker |
-| `molecules/` | Átomos com um propósito | StackCard, ProjectCard, PostMeta, SectionHeading, SocialLinks, Callout, Embed, Wide, Stats, Bars |
+| `atoms/` | Um elemento, sem filhos próprios | Monogram, Icon (arquivos); Chip, Button, Field, Meter, Kicker (só classe) |
+| `molecules/` | Átomos com um propósito | StackCard, ProjectCard, PostMeta, SectionHeading, SocialLinks, Callout, Embed, Wide, Stats (barras: `bars` em `src/lib/semif/dom.js`) |
 | `organisms/` | Seção autônoma, com estado ou dados | TopMenu, Footer, StackList, PostList, BlogPost, Listen, `semif/*` |
 | `substances/` | Template e página: Layout e as rotas | Layout, HomeRoute, StackRoute, ProjectsRoute, ContactRoute, MetaRoute |
 
