@@ -1,0 +1,10 @@
+analise o mailgun, acho que meu formulario de contato foi hackeado de alguma forma.
+provavelmente vou resolver criando uma nova conta do mailgun mas gostaria de garantir que isso não ocorra novamente. analise e me retorne um resumo com emojis
+
+---
+
+Sim, aplicar correções
+
+---
+
+Sim, commitar
