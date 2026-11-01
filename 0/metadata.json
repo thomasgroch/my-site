@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.12.2",
+  "checkpoint_id": "01M6C84AJ0VAZ304W5R9W03Q4P",
+  "session_id": "01c95e68-750f-4a16-8c45-978273127ea9",
+  "strategy": "manual-commit",
+  "created_at": "2026-11-01T19:07:10.125285Z",
+  "branch": "docs/analise-e-atualizacao",
+  "checkpoints_count": 5,
+  "save_step_count": 1,
+  "files_touched": [
+    "radar-moddimation-kinokodecomp-s-2026-10-26.html",
+    "radar-moddimation-kinokodecomp-s-2026-10-26.json"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "c533bf9944e1",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 54,
+    "cache_creation_tokens": 87737,
+    "cache_read_tokens": 1755249,
+    "output_tokens": 22025,
+    "api_call_count": 23
+  },
+  "redaction": {
+    "replacements": 3,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 3,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01SMzTYAxmVJYN6jGvgwEeW8",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "radar"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "c533bf9944e1",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 141,
+        "end": 142,
+        "entry_ids": [
+          "10e5a7ea-ee13-4b10-8157-1d2258284122"
+        ],
+        "tool_use_id": "toolu_01SMzTYAxmVJYN6jGvgwEeW8"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01SMzTYAxmVJYN6jGvgwEeW8"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: radar",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 5
+  }
+}

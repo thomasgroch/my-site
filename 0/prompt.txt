@@ -1,0 +1,37 @@
+Eu quero registrar uma memória durável com você nesse contexto todo.
+Objetivo: Qualquer dúvida de entendimento, me pergunte, mas tente consolidar o que a gente vai conversar no menor número de palavras possível em formato de SKILL.md.
+
+Eu não sou muito bom de dar nomes, então se você achar que tem nomes melhores, mais simples, você pode me perguntar. E algumas coisas acho que estão faltando o nome mesmo. acho q o nome da skill é de busca
+
+A ideia é fazer uma forma de buscar por qualquer coisa em vários canais com facilidade e manutenibilidade do markdown.
+SKILL.md global de todos projetos/diretórios da maquina a nivel de usuario.
+
+1. extrair informação e formular uma lista de links de todas páginas evitando/filtrando duplicatas. https://huggingface.co/search/full-text?q=QUERY&type=model e https://github.com/topics/QUERY (substitua QUERY pela busca da tecnologia fornecida para skill)
+2. contextualmente expandir o entendimento das informações acessando os links da lista conforme necessario, tente amostras por dominio para ter diversidade.
+3. analisar e exportar arquivo html estilo weekly news. pode usar htmlx e afins. (quero poder interagir com output final da skill)
+
+---
+
+Manter radar
+
+---
+
+Gostaria que sempre respondesse com emojis.
+Como você melhoraria?
+
+---
+
+pode por no ~/.claude/CLAUDE.md
+
+1. sim. todos.
+2. não. e a comparação é entre os resultados/ferramentas da semana, não da semana passada. radar/monitor até certo ponto realmente, ta mais para um buscador recorrente.
+3. Acho interessante ter um formato JSON de cada tipo de ferramenta e seus atributos que esperamos encontrar, como quem tenta preencher um formulário de entendimento dos resultados da busca.
+4. Você não precisa se preocupar com isso agora, é só para saber o contexto que isso vai ser executado.
+5. sugira.
+6. pelo menos 7 paginas de resultados precisa navegar. (tem muita duplicidade)
+
+faça tudo e me retorne, quaquer duvida me pergunte
+
+---
+
+teste com o termo "Moddimation/KinokoDecomp-S". Me diga no final como rodo manualmente da proxima vez
