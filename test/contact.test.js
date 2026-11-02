@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import handler from '../functions/contact.mjs'
+import handler, { config } from '../functions/contact.mjs'
 
 const valid = { locale: 'pt', nome: 'Maria', email: 'maria@example.com', mensagem: 'Olá, tudo bem?' }
 
@@ -7,7 +7,7 @@ function post(fields, { htmx = true } = {}) {
   const body = new FormData()
   for (const [key, value] of Object.entries(fields)) body.append(key, value)
   const headers = htmx ? { 'HX-Request': 'true' } : {}
-  return handler(new Request('http://localhost/.netlify/functions/contact', { method: 'POST', body, headers }))
+  return handler(new Request('http://localhost/api/contact', { method: 'POST', body, headers }))
 }
 
 beforeEach(() => {
@@ -42,14 +42,14 @@ describe('função de contato', () => {
     expect(fetch).not.toHaveBeenCalled()
   })
 
-  it('envia notificação e agradecimento pelo Mailgun e devolve a caixa de sucesso', async () => {
+  it('envia só a notificação pelo Mailgun e devolve a caixa de sucesso', async () => {
     const res = await post(valid)
     expect(res.status).toBe(200)
     expect(res.headers.get('HX-Retarget')).toBe('#contact-form')
     expect(res.headers.get('HX-Reswap')).toBe('outerHTML')
     expect(await res.text()).toContain('Sua mensagem foi enviada com sucesso!')
 
-    expect(fetch).toHaveBeenCalledTimes(2)
+    expect(fetch).toHaveBeenCalledTimes(1)
     const [url, init] = fetch.mock.calls[0]
     expect(url).toBe('https://api.mailgun.net/v3/example.test/messages')
     expect(init.headers.Authorization).toBe(`Basic ${Buffer.from('api:test-key').toString('base64')}`)
@@ -57,9 +57,23 @@ describe('função de contato', () => {
     expect(notify.get('to')).toBe('contato@thomasdev.xyz')
     expect(notify.get('h:Reply-To')).toBe('maria@example.com')
     expect(notify.get('html')).toContain('Olá, tudo bem?')
-    const thanks = fetch.mock.calls[1][1].body
-    expect(thanks.get('to')).toBe('maria@example.com')
-    expect(thanks.get('subject')).toContain('Maria')
+  })
+
+  it('nunca envia e-mail ao endereço digitado', async () => {
+    await post({ ...valid, nome: 'Compre em http://spam.example' })
+    const recipients = fetch.mock.calls.map(([, init]) => init.body.get('to'))
+    expect(recipients).not.toContain(valid.email)
+  })
+
+  it('recusa campo acima do tamanho máximo', async () => {
+    const res = await post({ ...valid, nome: 'x'.repeat(101) })
+    expect(res.status).toBe(422)
+    expect(fetch).not.toHaveBeenCalled()
+  })
+
+  it('declara rota própria com limite por IP', () => {
+    expect(config.path).toBe('/api/contact')
+    expect(config.rateLimit).toEqual({ windowLimit: 5, windowSize: 60, aggregateBy: ['ip', 'domain'] })
   })
 
   it('escapa HTML vindo do formulário', async () => {

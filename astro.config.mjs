@@ -37,7 +37,8 @@ export default defineConfig({
     server: {
       // Em dev o formulário fala com `netlify functions:serve` (porta 8888)
       // pela mesma origem, igual à produção. Sem CORS.
-      proxy: { '/.netlify/functions': 'http://localhost:8888' },
+      // `functions:serve` só atende a rota padrão, então a de produção é reescrita.
+      proxy: { '/api/contact': { target: 'http://localhost:8888', rewrite: () => '/.netlify/functions/contact' } },
     },
   },
 })

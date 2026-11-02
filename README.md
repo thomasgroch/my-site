@@ -9,7 +9,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 - **[Astro 7](https://astro.build/)** gera o HTML. Nenhuma página carrega framework JavaScript; o único JS de terceiros é o htmx, e só na página de contato.
 - **CSS nativo**, sem framework: `src/styles/` com `@layer`, tokens semânticos e `light-dark()`. Tema claro/escuro por `color-scheme`, com a preferência do sistema como padrão (regras em [`docs/convencoes.md`](docs/convencoes.md)).
 - **[htmx 4](https://htmx.org/)** envia o formulário de contato e troca a resposta HTML da função no lugar. Sem JavaScript o formulário continua funcionando por redirect.
-- **Netlify Functions** (`functions/contact.mjs`, API v2, zero dependências) valida, aplica honeypot e envia os e-mails pela API REST do Mailgun.
+- **Netlify Functions** (`functions/contact.mjs`, API v2, zero dependências) valida, aplica honeypot e limite por IP e envia a notificação pela API REST do Mailgun.
 - **Rotas**: `/`, `/stack`, `/projetos` e `/contato` no menu, mais `/meta`, que documenta o que constrói o site e fica fora da navegação.
 - **i18n por prefixo de URL**: `/` é pt-BR e `/en/` inglês. Textos em `src/locales/`, tradutor em `src/i18n/`. A primeira visita segue o idioma do navegador. `/jp/*` redireciona para `/en/*`.
 
@@ -20,7 +20,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 | Nome, cargo e redes | `src/data/resume.json` (JSON Resume), lido pela coleção `resume` |
 | Projetos e stack | um YAML por entrada em `src/content/projects/` e `src/content/stack/` |
 | Bio e textos da interface | `src/locales/*.json` |
-| Textos do formulário e dos e-mails | `src/lib/contact-messages.mjs` (compartilhado com a função) |
+| Textos do formulário e do e-mail | `src/lib/contact-messages.mjs` (compartilhado com a função) |
 | Páginas | `src/pages/[...route].astro` gera cada rota nos dois idiomas; o conteúdo está em `src/components/substances/` |
 | Blog (só em inglês) | posts MDX em `src/content/blog/`, páginas em `src/pages/blog/`, feed em `/rss.xml`. `draft: true` publica sem listar: a URL responde com `noindex`, fora da lista, do feed e do sitemap, e só abre com o cookie de `?key=` (`netlify/edge-functions/drafts.js`) |
 | Esquemas do conteúdo | `src/content.config.js`: texto sempre em `{ pt, en }`; conteúdo inválido quebra o build |

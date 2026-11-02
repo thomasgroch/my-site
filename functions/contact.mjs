@@ -1,11 +1,19 @@
 // Função Netlify (API v2: recebe Request, devolve Response) do formulário de
 // contato. Responde HTML: um fragmento para o htmx, ou um redirect com âncora
-// para quem está sem JavaScript. Envia os e-mails direto na API do Mailgun.
+// para quem está sem JavaScript. Envia a notificação direto na API do Mailgun.
+// Nunca envie e-mail ao endereço digitado no formulário: qualquer um poderia
+// usar o site para mandar spam a terceiros pelo domínio.
 import { contactMessages, CONTACT_LOCALES, escapeHtml, successBox, errorBox } from '../src/lib/contact-messages.mjs'
 import { fill } from '../src/lib/text.js'
 
-const SITE = 'https://thomasdev.xyz'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MAX_LENGTH = { nome: 100, email: 254, telefone: 30, cidade: 100, mensagem: 5000 }
+
+// O limite do Netlify exige `path`, que substitui a rota /.netlify/functions/contact.
+export const config = {
+  path: '/api/contact',
+  rateLimit: { windowLimit: 5, windowSize: 60, aggregateBy: ['ip', 'domain'] },
+}
 
 export default async function handler(request) {
   if (request.method !== 'POST') {
@@ -38,21 +46,15 @@ export default async function handler(request) {
   }
   if (!data.nome || !data.email || !data.mensagem) return failure(messages.error_required, 422)
   if (!EMAIL_RE.test(data.email)) return failure(messages.error_email, 422)
+  if (Object.entries(MAX_LENGTH).some(([name, max]) => data[name].length > max)) return failure(messages.error_length, 422)
 
   try {
-    await Promise.all([
-      sendMail({
-        to: process.env.MAILGUN_SENDER || 'contato@thomasdev.xyz',
-        'h:Reply-To': data.email,
-        subject: fill(messages.notify_subject, data),
-        html: notifyHtml(data),
-      }),
-      sendMail({
-        to: data.email,
-        subject: fill(messages.thanks_subject, data),
-        html: thanksHtml(messages, data),
-      }),
-    ])
+    await sendMail({
+      to: process.env.MAILGUN_SENDER || 'contato@thomasdev.xyz',
+      'h:Reply-To': data.email,
+      subject: fill(messages.notify_subject, data),
+      html: notifyHtml(data),
+    })
   } catch (error) {
     console.error('[contact] envio falhou:', error)
     return failure(messages.error_server, 502)
@@ -93,13 +95,4 @@ function notifyHtml(data) {
     .map(([label, value]) => `<tr><th align="left" style="padding:4px 16px 4px 0">${label}</th><td>${escapeHtml(value)}</td></tr>`)
     .join('')
   return `<table>${rows}</table><p style="white-space:pre-wrap">${escapeHtml(data.mensagem)}</p>`
-}
-
-function thanksHtml(messages, data) {
-  return `<div style="font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#333;line-height:1.5">
-  <h2 style="margin:0 0 16px;color:#22c55e">${escapeHtml(fill(messages.thanks_greeting, data))}</h2>
-  <p>${escapeHtml(messages.thanks_body)}</p>
-  <p>${escapeHtml(messages.thanks_sign)}</p>
-  <p style="font-size:13px;color:#999"><a href="${SITE}" style="color:#22c55e">thomasdev.xyz</a></p>
-</div>`
 }

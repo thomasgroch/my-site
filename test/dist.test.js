@@ -26,8 +26,8 @@ describe('formulário de contato', () => {
 
   it('envia para a função do Netlify, por htmx e por POST normal', () => {
     const form = doc().querySelector('#contact-form')
-    expect(form.getAttribute('action')).toBe('/.netlify/functions/contact')
-    expect(form.getAttribute('hx-post')).toBe('/.netlify/functions/contact')
+    expect(form.getAttribute('action')).toBe('/api/contact')
+    expect(form.getAttribute('hx-post')).toBe('/api/contact')
     expect(form.getAttribute('method')).toBe('post')
   })
 
