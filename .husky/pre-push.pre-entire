@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# O Entire chama este nome ao encadear o hook; o husky procura o arquivo em .husky/.
+exec sh -e .husky/pre-push "$@"
