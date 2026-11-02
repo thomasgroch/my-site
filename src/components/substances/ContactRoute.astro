@@ -7,7 +7,7 @@ const { locale } = Astro.props
 const t = createTranslator(locale)
 const action = '/api/contact'
 // Chave pública do widget Turnstile; o segredo fica em TURNSTILE_SECRET_KEY.
-const turnstileSiteKey = '0x4AAAAAAFwo5bRDF638gzu4'
+const turnstileSiteKey = '0x4AAAAAAFwrxvs-Iq9BJkBW'
 const optional = `(${t('contact.optional')})`
 ---
 <Layout locale={locale} path="/contato" title={t('general.nav_contact')} description={t('general.meta_description_contact')}>
