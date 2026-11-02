@@ -9,7 +9,7 @@ Site pessoal de Thomas Dev. Estático, em português e inglês, sem framework no
 - **[Astro 7](https://astro.build/)** gera o HTML. Nenhuma página carrega framework JavaScript; o único JS de terceiros é o htmx, e só na página de contato.
 - **CSS nativo**, sem framework: `src/styles/` com `@layer`, tokens semânticos e `light-dark()`. Tema claro/escuro por `color-scheme`, com a preferência do sistema como padrão (regras em [`docs/convencoes.md`](docs/convencoes.md)).
 - **[htmx 4](https://htmx.org/)** envia o formulário de contato e troca a resposta HTML da função no lugar. Sem JavaScript o formulário continua funcionando por redirect.
-- **Netlify Functions** (`functions/contact.mjs`, API v2, zero dependências) valida, aplica honeypot e limite por IP e envia a notificação pela API REST do Mailgun.
+- **Netlify Functions** (`functions/contact.mjs`, API v2, zero dependências) valida, aplica honeypot e limite por IP e envia a notificação pela API REST do Resend.
 - **Rotas**: `/`, `/stack`, `/projetos` e `/contato` no menu, mais `/meta`, que documenta o que constrói o site e fica fora da navegação.
 - **i18n por prefixo de URL**: `/` é pt-BR e `/en/` inglês. Textos em `src/locales/`, tradutor em `src/i18n/`. A primeira visita segue o idioma do navegador. `/jp/*` redireciona para `/en/*`.
 
@@ -52,7 +52,7 @@ Quase tudo roda sem navegador, em Node puro, então o resultado é o mesmo no Ma
 | Arquivo | O que cobre | Precisa de quê |
 |---|---|---|
 | `test/i18n.test.js` | tradutor, prefixos de URL, paridade entre idiomas | nada |
-| `test/contact.test.js` | função de contato: validação, honeypot, escape, chamadas ao Mailgun | nada |
+| `test/contact.test.js` | função de contato: validação, honeypot, escape, chamadas ao Resend | nada |
 | `test/blog.test.js` | ordem, datas, tempo de leitura, séries, sumário e rascunhos (`src/lib/blog.js`) | nada |
 | `test/drafts.test.js` | a decisão da Edge Function de rascunhos (`gate`) | nada |
 | `test/narration.test.js` | texto narrado e WebVTT (`src/lib/narration.js`) | nada |
@@ -66,7 +66,7 @@ O Cypress fica fora do `verify` de propósito: ele precisa de um servidor e de u
 
 ## Variáveis de ambiente
 
-Veja `.env.example`. A função de contato usa `MAILGUN_API_KEY`, `MAILGUN_DOMAIN`, `MAILGUN_FROM` (remetente), `MAILGUN_SENDER` (destino da notificação) e, opcionalmente, `MAILGUN_HOST` para a região EU. Sem a chave, a função responde sucesso sem enviar nada, o que serve para desenvolvimento e testes.
+Veja `.env.example`. A função de contato usa `RESEND_API_KEY`, `RESEND_FROM` (remetente), `CONTACT_TO` (destino da notificação) e, opcionalmente, `MAILGUN_HOST` para a região EU. Sem a chave, a função responde sucesso sem enviar nada, o que serve para desenvolvimento e testes.
 
 ## Peso
 

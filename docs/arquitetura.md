@@ -50,9 +50,9 @@ As decisões que o código sozinho não explica. O que é e onde fica está no R
 
 ## Contato
 
-- O formulário faz POST para `functions/contact.mjs` (Netlify Functions v2, zero dependências, API REST do Mailgun). Os textos ficam em `src/lib/contact-messages.mjs` e são compartilhados entre a página e a função.
+- O formulário faz POST para `functions/contact.mjs` (Netlify Functions v2, zero dependências, API REST do Resend). Os textos ficam em `src/lib/contact-messages.mjs` e são compartilhados entre a página e a função.
 - Com JavaScript, o htmx troca a resposta HTML no lugar. Sem JavaScript, a função redireciona para `#enviado` ou `#erro`, e a caixa aparece via `:target`.
-- Sem `MAILGUN_API_KEY`, a função responde sucesso sem enviar nada. Isso vale para o desenvolvimento e para os testes.
+- Sem `RESEND_API_KEY`, a função responde sucesso sem enviar nada. Isso vale para o desenvolvimento e para os testes.
 
 ## Navegação
 
