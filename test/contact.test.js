@@ -53,7 +53,7 @@ describe('função de contato', () => {
     expect(url).toBe('https://api.resend.com/emails')
     expect(init.headers.Authorization).toBe('Bearer test-key')
     const notify = JSON.parse(init.body)
-    expect(notify.to).toBe('contato@thomasdev.xyz')
+    expect(notify.to).toBe('contact@thomasdev.xyz')
     expect(notify.reply_to).toBe('maria@example.com')
     expect(notify.html).toContain('Olá, tudo bem?')
   })

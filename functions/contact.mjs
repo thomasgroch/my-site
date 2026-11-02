@@ -50,7 +50,7 @@ export default async function handler(request) {
 
   try {
     await sendMail({
-      to: process.env.CONTACT_TO || 'contato@thomasdev.xyz',
+      to: process.env.CONTACT_TO || 'contact@thomasdev.xyz',
       reply_to: data.email,
       subject: fill(messages.notify_subject, data),
       html: notifyHtml(data),
@@ -63,7 +63,7 @@ export default async function handler(request) {
 }
 
 async function sendMail(fields) {
-  const { RESEND_API_KEY, RESEND_FROM = 'Thomas Dev <contato@mail.thomasdev.xyz>' } = process.env
+  const { RESEND_API_KEY, RESEND_FROM = 'Thomas Dev <contact@thomasdev.xyz>' } = process.env
 
   // Sem chave (dev, testes, preview sem env): registra e segue como sucesso.
   if (!RESEND_API_KEY) {
