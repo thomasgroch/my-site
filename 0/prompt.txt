@@ -1,0 +1,4 @@
+Não me importo com os outros dominios.
+quero só migrar integralmente para o serviço do resend. para enviar e receber emails com contact@thomasdev.xyz e deixar de usar mailgun.
+voce pode usar a cli do netlify para alterar o DNS do thomasdev.xyz
+Qualquer dúvida me pergunte, execute até o final.
