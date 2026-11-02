@@ -13,6 +13,7 @@ function post(fields, { htmx = true } = {}) {
 beforeEach(() => {
   vi.unstubAllEnvs()
   vi.stubEnv('RESEND_API_KEY', 'test-key')
+  vi.stubEnv('TURNSTILE_SECRET_KEY', '')
   globalThis.fetch = vi.fn(async () => new Response('{"id":"<x@example.test>"}', { status: 200 }))
 })
 
@@ -73,6 +74,29 @@ describe('função de contato', () => {
   it('declara rota própria com limite por IP', () => {
     expect(config.path).toBe('/api/contact')
     expect(config.rateLimit).toEqual({ windowLimit: 5, windowSize: 60, aggregateBy: ['ip', 'domain'] })
+  })
+
+  it('com Turnstile ativo, recusa envio sem token', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'segredo')
+    const res = await post(valid)
+    expect(res.status).toBe(403)
+    expect(fetch).not.toHaveBeenCalled()
+  })
+
+  it('com Turnstile ativo, recusa token inválido', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'segredo')
+    globalThis.fetch = vi.fn(async () => Response.json({ success: false }))
+    const res = await post({ ...valid, 'cf-turnstile-response': 'ruim' })
+    expect(res.status).toBe(403)
+    expect(fetch).toHaveBeenCalledTimes(1)
+  })
+
+  it('com Turnstile ativo, envia quando o token é válido', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'segredo')
+    globalThis.fetch = vi.fn(async () => Response.json({ success: true }))
+    const res = await post({ ...valid, 'cf-turnstile-response': 'bom' })
+    expect(res.status).toBe(200)
+    expect(fetch.mock.calls[1][0]).toBe('https://api.resend.com/emails')
   })
 
   it('escapa HTML vindo do formulário', async () => {

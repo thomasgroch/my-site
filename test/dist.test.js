@@ -129,7 +129,7 @@ describe('orçamento e higiene das páginas', () => {
     for (const rota of rotas) {
       const externos = [...page(rota).querySelectorAll('script[src]')]
         .map((s) => s.getAttribute('src'))
-        .filter((src) => !src.includes('umami'))
+        .filter((src) => !src.includes('umami') && !src.includes('challenges.cloudflare.com'))
       // Só a página de contato tem JavaScript próprio, o htmx.
       expect(externos.length, rota).toBe(rota.includes('contato') ? 1 : 0)
     }

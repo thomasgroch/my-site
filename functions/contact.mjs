@@ -47,6 +47,7 @@ export default async function handler(request) {
   if (!data.nome || !data.email || !data.mensagem) return failure(messages.error_required, 422)
   if (!EMAIL_RE.test(data.email)) return failure(messages.error_email, 422)
   if (Object.entries(MAX_LENGTH).some(([name, max]) => data[name].length > max)) return failure(messages.error_length, 422)
+  if (!(await humanVerified(form.get('cf-turnstile-response'), request))) return failure(messages.error_captcha, 403)
 
   try {
     await sendMail({
@@ -60,6 +61,23 @@ export default async function handler(request) {
     return failure(messages.error_server, 502)
   }
   return success()
+}
+
+// Sem segredo (dev, testes) não há verificação. Falha da Cloudflare recusa o envio.
+async function humanVerified(token, request) {
+  const secret = process.env.TURNSTILE_SECRET_KEY
+  if (!secret) return true
+  if (!token) return false
+  const body = new URLSearchParams({ secret, response: String(token) })
+  const ip = request.headers.get('x-nf-client-connection-ip')
+  if (ip) body.set('remoteip', ip)
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body })
+    return (await response.json()).success === true
+  } catch (error) {
+    console.error('[contact] Turnstile falhou:', error)
+    return false
+  }
 }
 
 async function sendMail(fields) {
