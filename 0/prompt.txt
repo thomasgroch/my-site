@@ -1,0 +1,7 @@
+use a cli do cloudflare que está logada na minha conta.
+Continue e retorne um resumo
+
+---
+
+consegue resolver as pendencias? Quero resolver tudo.
+testei o envio do e-mail externamente e chegou, mas foi marcado como spam.
