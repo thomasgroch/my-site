@@ -6,6 +6,8 @@ import { successBox, errorBox } from '@/lib/contact-messages.mjs'
 const { locale } = Astro.props
 const t = createTranslator(locale)
 const action = '/api/contact'
+// Chave pública do widget Turnstile; o segredo fica em TURNSTILE_SECRET_KEY.
+const turnstileSiteKey = '0x4AAAAAAFwo5bRDF638gzu4'
 const optional = `(${t('contact.optional')})`
 ---
 <Layout locale={locale} path="/contato" title={t('general.nav_contact')} description={t('general.meta_description_contact')}>
@@ -59,6 +61,8 @@ const optional = `(${t('contact.optional')})`
         <p class="hint">{t('contact.span_message')}</p>
       </div>
 
+      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-language={locale}></div>
+
       <div id="form-status" aria-live="polite"></div>
 
       <div class="cluster actions">
@@ -68,10 +72,14 @@ const optional = `(${t('contact.optional')})`
     </form>
   </section>
 
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script>
     // htmx só é carregado nesta página: envia o formulário sem recarregar e
     // troca a resposta HTML da função no lugar certo (ver functions/contact.mjs).
     import 'htmx.org'
+
+    // O token do Turnstile só vale uma vez: renova depois de cada tentativa.
+    document.addEventListener('htmx:afterRequest', () => window.turnstile?.reset())
   </script>
 </Layout>
 
