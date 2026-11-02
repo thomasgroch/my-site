@@ -59,7 +59,7 @@ describe('encaminhamento de e-mails recebidos', () => {
     const sent = JSON.parse(init.body)
     expect(sent.to).toBe('destino@example.com')
     expect(sent.reply_to).toBe('Maria <maria@example.com>')
-    expect(sent.from).toBe('Maria maria@example.com via thomasdev <contact@thomasdev.xyz>')
+    expect(sent.from).toBe('Maria via thomasdev <contact@thomasdev.xyz>')
     expect(sent.attachments[0].path).toBe('https://x/a.pdf')
   })
 

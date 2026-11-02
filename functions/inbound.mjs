@@ -62,7 +62,8 @@ async function forward(emailId) {
 
   const email = await api(`/emails/receiving/${emailId}`)
   const { data: attachments = [] } = await api(`/emails/receiving/${emailId}/attachments`)
-  const sender = String(email.from ?? '').replace(/[^\w@.+\- ]/g, ' ').replace(/\s+/g, ' ').trim()
+  // Endereço no nome de exibição parece falsificação para o Gmail: fica só o nome.
+  const sender = String(email.from ?? '').replace(/<.*>/, '').replace(/@.*/, '').replace(/[^\p{L}\p{N}.+\- ]/gu, ' ').replace(/\s+/g, ' ').trim() || 'Contato'
 
   await api('/emails', {
     method: 'POST',
