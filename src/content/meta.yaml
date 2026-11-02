@@ -91,9 +91,9 @@ groups:
           pt: "Uma função, sem dependência nenhuma: valida os campos, barra robôs com honeypot e limite por IP e responde em HTML."
           en: "One function, with zero dependencies: it validates the fields, blocks bots with a honeypot and a per-IP limit, and answers in HTML."
       - name:
-          pt: "Mailgun"
-          en: "Mailgun"
-        url: "https://www.mailgun.com/"
+          pt: "Resend"
+          en: "Resend"
+        url: "https://resend.com/"
         note:
           pt: "Envio da notificação pela API REST, chamada com fetch. Sem SDK."
           en: "The notification is sent through the REST API, called with fetch. No SDK."

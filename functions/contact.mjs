@@ -1,6 +1,6 @@
 // Função Netlify (API v2: recebe Request, devolve Response) do formulário de
 // contato. Responde HTML: um fragmento para o htmx, ou um redirect com âncora
-// para quem está sem JavaScript. Envia a notificação direto na API do Mailgun.
+// para quem está sem JavaScript. Envia a notificação direto na API do Resend.
 // Nunca envie e-mail ao endereço digitado no formulário: qualquer um poderia
 // usar o site para mandar spam a terceiros pelo domínio.
 import { contactMessages, CONTACT_LOCALES, escapeHtml, successBox, errorBox } from '../src/lib/contact-messages.mjs'
@@ -50,8 +50,8 @@ export default async function handler(request) {
 
   try {
     await sendMail({
-      to: process.env.MAILGUN_SENDER || 'contato@thomasdev.xyz',
-      'h:Reply-To': data.email,
+      to: process.env.CONTACT_TO || 'contato@thomasdev.xyz',
+      reply_to: data.email,
       subject: fill(messages.notify_subject, data),
       html: notifyHtml(data),
     })
@@ -63,25 +63,20 @@ export default async function handler(request) {
 }
 
 async function sendMail(fields) {
-  const {
-    MAILGUN_API_KEY,
-    MAILGUN_DOMAIN = 'thomasdev.xyz',
-    MAILGUN_HOST = 'api.mailgun.net',
-    MAILGUN_FROM = 'Thomas Dev <contato@thomasdev.xyz>',
-  } = process.env
+  const { RESEND_API_KEY, RESEND_FROM = 'Thomas Dev <contato@mail.thomasdev.xyz>' } = process.env
 
   // Sem chave (dev, testes, preview sem env): registra e segue como sucesso.
-  if (!MAILGUN_API_KEY) {
-    console.log('[contact] MAILGUN_API_KEY ausente; e-mail não enviado:', fields.subject)
+  if (!RESEND_API_KEY) {
+    console.log('[contact] RESEND_API_KEY ausente; e-mail não enviado:', fields.subject)
     return
   }
 
-  const response = await fetch(`https://${MAILGUN_HOST}/v3/${MAILGUN_DOMAIN}/messages`, {
+  const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { Authorization: `Basic ${Buffer.from(`api:${MAILGUN_API_KEY}`).toString('base64')}` },
-    body: new URLSearchParams({ from: MAILGUN_FROM, ...fields }),
+    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: RESEND_FROM, ...fields }),
   })
-  if (!response.ok) throw new Error(`Mailgun ${response.status}: ${await response.text()}`)
+  if (!response.ok) throw new Error(`Resend ${response.status}: ${await response.text()}`)
 }
 
 function notifyHtml(data) {

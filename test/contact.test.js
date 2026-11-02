@@ -12,8 +12,7 @@ function post(fields, { htmx = true } = {}) {
 
 beforeEach(() => {
   vi.unstubAllEnvs()
-  vi.stubEnv('MAILGUN_API_KEY', 'test-key')
-  vi.stubEnv('MAILGUN_DOMAIN', 'example.test')
+  vi.stubEnv('RESEND_API_KEY', 'test-key')
   globalThis.fetch = vi.fn(async () => new Response('{"id":"<x@example.test>"}', { status: 200 }))
 })
 
@@ -42,7 +41,7 @@ describe('função de contato', () => {
     expect(fetch).not.toHaveBeenCalled()
   })
 
-  it('envia só a notificação pelo Mailgun e devolve a caixa de sucesso', async () => {
+  it('envia só a notificação pelo Resend e devolve a caixa de sucesso', async () => {
     const res = await post(valid)
     expect(res.status).toBe(200)
     expect(res.headers.get('HX-Retarget')).toBe('#contact-form')
@@ -51,17 +50,17 @@ describe('função de contato', () => {
 
     expect(fetch).toHaveBeenCalledTimes(1)
     const [url, init] = fetch.mock.calls[0]
-    expect(url).toBe('https://api.mailgun.net/v3/example.test/messages')
-    expect(init.headers.Authorization).toBe(`Basic ${Buffer.from('api:test-key').toString('base64')}`)
-    const notify = init.body
-    expect(notify.get('to')).toBe('contato@thomasdev.xyz')
-    expect(notify.get('h:Reply-To')).toBe('maria@example.com')
-    expect(notify.get('html')).toContain('Olá, tudo bem?')
+    expect(url).toBe('https://api.resend.com/emails')
+    expect(init.headers.Authorization).toBe('Bearer test-key')
+    const notify = JSON.parse(init.body)
+    expect(notify.to).toBe('contato@thomasdev.xyz')
+    expect(notify.reply_to).toBe('maria@example.com')
+    expect(notify.html).toContain('Olá, tudo bem?')
   })
 
   it('nunca envia e-mail ao endereço digitado', async () => {
     await post({ ...valid, nome: 'Compre em http://spam.example' })
-    const recipients = fetch.mock.calls.map(([, init]) => init.body.get('to'))
+    const recipients = fetch.mock.calls.map(([, init]) => JSON.parse(init.body).to)
     expect(recipients).not.toContain(valid.email)
   })
 
@@ -78,7 +77,7 @@ describe('função de contato', () => {
 
   it('escapa HTML vindo do formulário', async () => {
     await post({ ...valid, nome: '<b>x</b>', mensagem: '<script>alert(1)</script>' })
-    const notify = fetch.mock.calls[0][1].body.get('html')
+    const notify = JSON.parse(fetch.mock.calls[0][1].body).html
     expect(notify).not.toContain('<script>')
     expect(notify).toContain('&lt;script&gt;')
   })
@@ -100,7 +99,7 @@ describe('função de contato', () => {
     expect(res.headers.get('Location')).toBe('/contato#erro')
   })
 
-  it('falha do Mailgun vira 502 com mensagem amigável', async () => {
+  it('falha do Resend vira 502 com mensagem amigável', async () => {
     globalThis.fetch = vi.fn(async () => new Response('Forbidden', { status: 401 }))
     vi.spyOn(console, 'error').mockImplementation(() => {})
     const res = await post(valid)
@@ -108,8 +107,8 @@ describe('função de contato', () => {
     expect(await res.text()).toContain('Não consegui enviar agora')
   })
 
-  it('sem chave do Mailgun responde sucesso sem chamar a API', async () => {
-    vi.stubEnv('MAILGUN_API_KEY', '')
+  it('sem chave do Resend responde sucesso sem chamar a API', async () => {
+    vi.stubEnv('RESEND_API_KEY', '')
     vi.spyOn(console, 'log').mockImplementation(() => {})
     const res = await post(valid)
     expect(res.status).toBe(200)
