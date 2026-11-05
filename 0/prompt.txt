@@ -1,0 +1,6 @@
+quero que revise o funcinamento do recebimento de emails e envio usando resend.
+todos emails *@thomadev.xyz devem ser encaminhados para thomas.groch@gmail.com
+
+---
+
+Sim, commitar
