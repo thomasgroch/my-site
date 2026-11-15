@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.12.2",
+  "checkpoint_id": "01M7EYHA9D7KC92TPJXMDA83SD",
+  "strategy": "manual-commit",
+  "branch": "feat/conteudo-projetos-sobre",
+  "checkpoints_count": 9,
+  "files_touched": [
+    "personalidade.md",
+    "public/admin/config.yml",
+    "src/components/molecules/ProjectCard.astro",
+    "src/components/organisms/TopMenu.astro",
+    "src/components/substances/AboutRoute.astro",
+    "src/components/substances/ProjectRoute.astro",
+    "src/components/substances/ProjectsRoute.astro",
+    "src/content.config.js",
+    "src/content/blog/como-eu-trabalho.mdx",
+    "src/content/projects/arquitetura-abstrata.mdx",
+    "src/content/projects/arquitetura-abstrata.yaml",
+    "src/content/projects/artexpressa.mdx",
+    "src/content/projects/artexpressa.yaml",
+    "src/content/projects/forpix.mdx",
+    "src/content/projects/forpix.yaml",
+    "src/content/projects/hero99.mdx",
+    "src/content/projects/hero99.yaml",
+    "src/content/projects/infrastructure-as-code.mdx",
+    "src/content/projects/langowski.mdx",
+    "src/content/projects/langowski.yaml",
+    "src/content/projects/omniroute-deploy.mdx",
+    "src/content/projects/reserva.mdx",
+    "src/content/projects/reserva.yaml",
+    "src/content/projects/resource-generator.mdx",
+    "src/content/projects/resource-generator.yaml",
+    "src/content/projects/rickandmortyapi-engaged.mdx",
+    "src/content/projects/sephora-brasil.mdx",
+    "src/content/projects/sephora-brasil.yaml",
+    "src/content/projects/sss.mdx",
+    "src/content/projects/tagbox.mdx",
+    "src/content/projects/tagbox.yaml",
+    "src/content/projects/workana-widget.mdx",
+    "src/content/projects/workana-widget.yaml",
+    "src/content/projects/yume-vale.mdx",
+    "src/locales/general.en.json",
+    "src/locales/general.pt.json",
+    "src/pages/[...route].astro"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 146,
+    "cache_creation_tokens": 296726,
+    "cache_read_tokens": 9282234,
+    "output_tokens": 53351,
+    "api_call_count": 67
+  },
+  "redaction": {
+    "replacements": 19,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 3,
+      "credentialed_uri": 0,
+      "entropy": 6,
+      "key_context": 10,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
