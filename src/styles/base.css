@@ -14,7 +14,6 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--text-base);
-  text-shadow: var(--text-glow);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -38,6 +37,8 @@ a {
   line-height: 1.2;
   letter-spacing: 0.025em;
   text-wrap: balance;
+  /* O brilho fica só nos títulos: no texto pequeno ele borra as letras. */
+  text-shadow: var(--text-glow);
 }
 
 /* Título da página como no terminal: "> título_", com o cursor piscando. */

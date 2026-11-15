@@ -228,7 +228,7 @@ html.dark body::after {
   0% { text-shadow: 2px 0 #ff2a2a, -2px 0 #00e5ff; transform: translate(0); }
   25% { text-shadow: -2px 0 #ff2a2a, 2px 0 #00e5ff; transform: translate(-1px, 1px); }
   50% { text-shadow: 2px 1px #ff2a2a, -2px -1px #00e5ff; transform: translate(1px, -1px); }
-  100% { text-shadow: var(--text-glow); transform: translate(0); }
+  100% { text-shadow: inherit; transform: translate(0); }
 }
 
 /* Chuva de código no fundo (Layout.astro): só nos temas escuros. */

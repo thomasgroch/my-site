@@ -19,8 +19,9 @@
   --color-info: light-dark(#0b5cad, #3fd0ff);
   --color-warning: light-dark(#9a6700, #ffaa00);
   --color-warning-soft: light-dark(#f3e3bd, #2e1f00);
-  /* Brilho do texto: só no escuro. */
-  --text-glow: light-dark(none, 0 0 5px rgb(0 255 65 / 0.4));
+  /* Brilho dos títulos: só no escuro (abaixo). light-dark() só aceita cores,
+     então o valor vem pela classe dark. */
+  --text-glow: none;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -53,6 +54,10 @@
 
   /* Largura de leitura: ~70 caracteres por linha. */
   --measure: 70ch;
+}
+
+html.dark {
+  --text-glow: 0 0 5px rgb(0 255 65 / 0.4);
 }
 
 /* Os outros temas escuros do nullclaw. matrix e light são o padrão acima
