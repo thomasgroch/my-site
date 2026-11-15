@@ -6,6 +6,10 @@ import Footer from '@/components/organisms/Footer.astro'
 import { LOCALES, LOCALE_TAGS, OG_LOCALES, createTranslator, localePath } from '@/i18n'
 import { THEMES } from '@/lib/themes.js'
 
+// Estilo das janelas de terminal: 'mac' (barra com três botões) ou 'tui'
+// (borda dupla com o título na borda). Ver .window em components.css.
+const FRAME = 'tui'
+
 // `path` é o caminho sem prefixo de idioma ('/', '/stack'...). O layout monta
 // canonical, hreflang e os links de troca de idioma a partir dele.
 // `alternates={false}` é para páginas de um idioma só (o blog): a URL não leva
@@ -21,7 +25,7 @@ const absolute = (l) => new URL(localePath(l, path), Astro.site).href
 const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
 ---
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-frame={FRAME}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

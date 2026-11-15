@@ -12,6 +12,8 @@
   --color-accent-soft: light-dark(#cfe0d3, #08301a);
   --color-line: light-dark(rgb(0 0 0 / 0.15), rgb(0 255 65 / 0.3));
   --color-glow: light-dark(rgb(0 112 42 / 0.2), rgb(0 255 65 / 0.5));
+  /* Fundo das janelas de terminal: preto nos temas escuros. */
+  --color-window: light-dark(var(--color-surface), #000);
   --color-ok: light-dark(#00702a, #00ff41);
   --color-error: light-dark(#a40e26, #ff2a2a);
   --color-info: light-dark(#0b5cad, #3fd0ff);
