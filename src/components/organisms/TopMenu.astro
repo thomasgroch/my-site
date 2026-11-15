@@ -1,9 +1,12 @@
 ---
-import Monogram from '@/components/atoms/Monogram.astro'
-import { createTranslator, localePath } from '@/i18n'
+import { LOCALES, LOCALE_NAMES, LOCALE_TAGS, createTranslator, localePath } from '@/i18n'
+import { THEMES } from '@/lib/themes.js'
 
-const { locale = 'pt', path = '/' } = Astro.props
+// Barra de status no topo, como a do nullclaw: estado, marca, navegação,
+// idioma e tema numa faixa só.
+const { locale = 'pt', path = '/', alternates = true } = Astro.props
 const t = createTranslator(locale)
+const other = LOCALES.find((code) => code !== locale)
 
 const items = [
   { to: '/projetos', label: t('general.nav_projects') },
@@ -14,10 +17,10 @@ const items = [
   { to: '/contato', label: t('general.nav_contact') },
 ]
 ---
-<header class="cluster top">
-  <a href={localePath(locale, '/')} class="brand" data-home={path === '/' ? '' : undefined}>
-    <Monogram decorative />
-    Thomas Dev
+<header class="top hud">
+  <a href={localePath(locale, '/')} class="brand">
+    <span class="dot" aria-hidden="true">●</span>
+    <span>sys@thomas</span>
   </a>
 
   <button type="button" data-menu-toggle aria-controls="main-nav" aria-expanded="false" class="burger">
@@ -37,79 +40,126 @@ const items = [
       )
     })}
   </nav>
+
+  <div class="tools">
+    {alternates && (
+      <a href={localePath(other, path === '/404' ? '/' : path)} hreflang={LOCALE_TAGS[other]} lang={LOCALE_TAGS[other]} title={LOCALE_NAMES[other]} class="lang">
+        {other.toUpperCase()}
+      </a>
+    )}
+    <label>
+      <span class="visually-hidden">{t('general.theme_toggle')}</span>
+      <select data-theme-select>
+        {THEMES.map((name) => <option value={name}>{name}</option>)}
+      </select>
+    </label>
+  </div>
 </header>
 
 <style>
   .top {
-    justify-content: space-between;
-    padding-block: var(--space-5);
-    font-size: var(--text-lg);
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 50;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-block-end: var(--space-4);
+    border-block-end: 1px solid var(--color-line);
+    padding: var(--space-2) var(--space-3);
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(6px);
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
   .brand {
-    --monogram-size: 2rem;
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-accent);
     text-decoration: none;
-    /* Na home a marca já está no centro da página; só reserva o lugar. */
-    &[data-home] {
-      visibility: hidden;
-    }
+  }
+  .dot {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% { opacity: 0.35; }
   }
   .burger {
-    border-radius: var(--radius-sm);
-    padding: var(--space-2);
+    margin-inline-start: auto;
+    padding: var(--space-1);
     color: var(--color-accent);
     background: none;
     cursor: pointer;
     > svg {
-      inline-size: 1.75rem;
-      block-size: 1.75rem;
+      inline-size: 1.5rem;
+      block-size: 1.5rem;
     }
   }
   /* Fechado até o botão abrir; em telas largas é uma linha, sem botão. */
   .menu {
     display: none;
+    order: 3;
     inline-size: 100%;
     flex-direction: column;
-    text-align: center;
     &[data-open] {
       display: flex;
     }
     a {
-      border: 2px solid transparent;
-      border-radius: var(--radius-md);
-      padding: var(--space-4) 1.25rem;
+      border: 1px solid transparent;
+      padding: var(--space-2) var(--space-3);
       color: var(--color-text-muted);
       text-decoration: none;
       &:hover {
-        border-color: var(--color-accent-soft);
+        border-color: var(--color-line);
         color: var(--color-accent);
       }
       &[aria-current] {
-        background: var(--color-accent-soft);
-        color: var(--color-accent-strong);
+        background: var(--color-accent);
+        color: var(--color-bg);
+        text-shadow: none;
+        box-shadow: 0 0 16px var(--color-glow);
       }
     }
   }
-  @media (min-width: 40em) {
-    .top {
-      justify-content: center;
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .lang,
+  select {
+    border: 1px solid var(--color-line);
+    padding: var(--space-1) var(--space-2);
+    font: inherit;
+    color: var(--color-accent);
+    background: var(--color-surface);
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    &:hover {
+      border-color: var(--color-accent);
     }
-    .brand,
+  }
+  @media (min-width: 52em) {
     .burger {
       display: none;
     }
     .menu {
       display: flex;
+      order: 0;
       inline-size: auto;
       flex-direction: row;
-      gap: var(--space-2);
-      a {
-        padding-block: var(--space-2);
-      }
+      gap: var(--space-1);
+      margin-inline: auto;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
     }
   }
 </style>

@@ -7,6 +7,13 @@ const { title, description, id } = Astro.props
 
 <style>
   .heading {
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    &::before {
+      content: '$ ';
+      color: var(--color-accent);
+    }
     margin-block-end: var(--space-2);
     color: var(--color-text-muted);
   }

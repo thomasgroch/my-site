@@ -4,6 +4,7 @@ import '@/styles/index.css'
 import TopMenu from '@/components/organisms/TopMenu.astro'
 import Footer from '@/components/organisms/Footer.astro'
 import { LOCALES, LOCALE_TAGS, OG_LOCALES, createTranslator, localePath } from '@/i18n'
+import { THEMES } from '@/lib/themes.js'
 
 // `path` é o caminho sem prefixo de idioma ('/', '/stack'...). O layout monta
 // canonical, hreflang e os links de troca de idioma a partir dele.
@@ -58,14 +59,17 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
     <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#262626" media="(prefers-color-scheme: dark)" />
 
-    <script is:inline>
+    <script is:inline define:vars={{ themes: THEMES }}>
       // Tema: escolha salva > preferência do sistema. Roda antes da pintura.
+      // Os valores antigos (dark/light) viram matrix/light. Todo tema que não
+      // é o light é escuro: a classe dark liga os efeitos de CRT e a chuva.
       ;(function () {
-        try {
-          var saved = localStorage.getItem('color-theme')
-          var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
-          document.documentElement.classList.toggle('dark', dark)
-        } catch (e) {}
+        var theme
+        try { theme = localStorage.getItem('color-theme') } catch (e) {}
+        if (theme === 'dark') theme = 'matrix'
+        if (themes.indexOf(theme) < 0) theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'matrix' : 'light'
+        document.documentElement.dataset.theme = theme
+        document.documentElement.classList.toggle('dark', theme !== 'light')
       })()
     </script>
     {locale === 'pt' ? (
@@ -90,42 +94,89 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
   <body>
     <a href="#conteudo" class="skip">{t('general.skip_to_content')}</a>
     <div class="shell center">
-      <TopMenu locale={locale} path={path} />
+      <TopMenu locale={locale} path={path} alternates={alternates} />
       <main id="conteudo">
         <slot />
       </main>
       <Footer locale={locale} path={path} alternates={alternates} />
     </div>
 
-    <button
-      type="button"
-      data-theme-toggle
-      aria-label={t('general.theme_toggle')}
-      title={t('general.theme_toggle')}
-      class="theme-toggle"
-    >
-      <svg class="sun" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
-      </svg>
-      <svg class="moon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-      </svg>
-    </button>
+    <canvas class="rain" aria-hidden="true"></canvas>
 
     <script is:inline>
       // Delegação de eventos: um listener para o site inteiro, sem re-bind.
       document.addEventListener('click', function (event) {
-        var theme = event.target.closest('[data-theme-toggle]')
-        if (theme) {
-          var dark = document.documentElement.classList.toggle('dark')
-          try { localStorage.setItem('color-theme', dark ? 'dark' : 'light') } catch (e) {}
-        }
         var menu = event.target.closest('[data-menu-toggle]')
         if (menu) {
           var open = document.getElementById('main-nav').toggleAttribute('data-open')
           menu.setAttribute('aria-expanded', String(open))
         }
       })
+
+      // Seletor de tema da barra de status.
+      var select = document.querySelector('[data-theme-select]')
+      if (select) {
+        select.value = document.documentElement.dataset.theme
+        select.addEventListener('change', function () {
+          document.documentElement.dataset.theme = select.value
+          document.documentElement.classList.toggle('dark', select.value !== 'light')
+          try { localStorage.setItem('color-theme', select.value) } catch (e) {}
+        })
+      }
+
+      var still = matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      // Título da página digitado letra por letra. O texto completo fica no
+      // aria-label, então leitores de tela não ouvem a digitação.
+      var title = document.querySelector('main h1:not(.visually-hidden)')
+      if (title && !still && title.children.length === 0) {
+        var text = title.textContent
+        title.setAttribute('aria-label', text)
+        title.textContent = ''
+        var i = 0
+        var type = setInterval(function () {
+          title.textContent = text.slice(0, ++i)
+          if (i >= text.length) {
+            clearInterval(type)
+            title.removeAttribute('aria-label')
+          }
+        }, 45)
+      }
+
+      // Chuva de código no fundo, na cor de destaque do tema. Some no tema
+      // claro e com movimento reduzido (o CSS esconde o canvas).
+      var rain = document.querySelector('.rain')
+      if (rain && !still) {
+        var ctx = rain.getContext('2d')
+        var size = 18
+        var glyphs = 'アイウエオカキクケコサシスセソ0123456789ABCDEF<>/{}[]=+*'
+        var drops = []
+        var resize = function () {
+          rain.width = innerWidth
+          rain.height = innerHeight
+          drops = Array.from({ length: Math.ceil(innerWidth / size) }, function () { return Math.random() * -50 })
+        }
+        resize()
+        addEventListener('resize', resize)
+        var last = 0
+        var frame = function (now) {
+          requestAnimationFrame(frame)
+          if (now - last < 60 || !document.documentElement.classList.contains('dark') || document.hidden) return
+          last = now
+          var styles = getComputedStyle(document.documentElement)
+          ctx.fillStyle = styles.getPropertyValue('--color-bg')
+          ctx.globalAlpha = 0.12
+          ctx.fillRect(0, 0, rain.width, rain.height)
+          ctx.globalAlpha = 1
+          ctx.fillStyle = styles.getPropertyValue('--color-accent')
+          ctx.font = size + 'px monospace'
+          drops.forEach(function (y, x) {
+            ctx.fillText(glyphs[Math.floor(Math.random() * glyphs.length)], x * size, y * size)
+            drops[x] = y * size > rain.height && Math.random() > 0.975 ? 0 : y + 1
+          })
+        }
+        requestAnimationFrame(frame)
+      }
     </script>
   </body>
 </html>
@@ -157,28 +208,4 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
     }
   }
 
-  /* Os dois ícones ocupam o mesmo lugar; o tema escolhe qual se vê. */
-  .theme-toggle {
-    position: fixed;
-    inset-block-end: 1.25rem;
-    inset-inline-start: 1.25rem;
-    display: grid;
-    border-radius: 50%;
-    padding: var(--space-2);
-    background: var(--color-toggle-bg);
-    color: var(--color-toggle);
-    box-shadow: 0 1px 3px var(--color-toggle-shadow);
-    cursor: pointer;
-    > svg {
-      grid-area: 1 / 1;
-      inline-size: 1.5rem;
-      block-size: 1.5rem;
-    }
-    .sun {
-      fill: light-dark(transparent, currentcolor);
-    }
-    .moon {
-      fill: light-dark(currentcolor, transparent);
-    }
-  }
 </style>

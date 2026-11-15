@@ -23,6 +23,10 @@
     cursor: not-allowed;
     opacity: 0.45;
   }
+  &:hover:not(:disabled),
+  &:focus-visible {
+    box-shadow: 0 0 14px var(--color-glow);
+  }
   &[data-variant='ghost'] {
     border: 1px solid var(--color-line);
     padding: 0.45em 0.95em;
@@ -36,6 +40,10 @@
 
 .chip {
   display: inline-block;
+  border: 1px solid var(--color-line);
+  font-size: 0.8125em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   border-radius: var(--radius-sm);
   padding: 0.1em 0.5em;
   background: var(--color-accent-soft);
@@ -51,6 +59,8 @@
 }
 
 .card {
+  background: var(--color-surface);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--color-glow) 25%, transparent);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   padding: 1em 1.25em;
@@ -59,7 +69,7 @@
 .field {
   display: block;
   inline-size: 100%;
-  border: 1px solid transparent;
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-sm);
   padding: 0.6em 0.8em;
   font: inherit;
@@ -70,21 +80,23 @@
     outline: none;
     border-color: var(--color-accent);
     background: var(--color-surface);
+    box-shadow: 0 0 14px var(--color-glow);
   }
 }
 
 .label {
   display: block;
   margin-block-end: var(--space-2);
-  font-size: var(--text-lg);
-  letter-spacing: 0.025em;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--color-accent);
 }
 
 .kicker {
-  font-size: 0.75em;
+  font-size: 0.8125em;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-muted);
 }
@@ -204,5 +216,46 @@ html.dark body::after {
     inset-inline-end: 6px;
     border-inline-start: 0;
     border-block-start: 0;
+  }
+}
+
+/* Glitch: títulos com link e o menu tremem em vermelho e ciano no hover. */
+:is(h1, h2, h3) a:hover,
+.menu a:hover {
+  animation: glitch 300ms steps(2) 2;
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 0 #ff2a2a, -2px 0 #00e5ff; transform: translate(0); }
+  25% { text-shadow: -2px 0 #ff2a2a, 2px 0 #00e5ff; transform: translate(-1px, 1px); }
+  50% { text-shadow: 2px 1px #ff2a2a, -2px -1px #00e5ff; transform: translate(1px, -1px); }
+  100% { text-shadow: var(--text-glow); transform: translate(0); }
+}
+
+/* Chuva de código no fundo (Layout.astro): só nos temas escuros. */
+.rain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0.25;
+  pointer-events: none;
+  transition: opacity 450ms ease;
+  html:not(.dark) & {
+    display: none;
+  }
+  /* Nas páginas de leitura a chuva quase some. */
+  body:has(.post) & {
+    opacity: 0.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(h1, h2, h3) a:hover,
+  .menu a:hover {
+    animation: none;
+  }
+  .rain {
+    display: none;
   }
 }

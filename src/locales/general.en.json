@@ -8,7 +8,7 @@
   "meta_intro": "The full list of what builds, tests and serves this site. Every version is read from the lockfile during the build, so this page does not go stale on its own.",
   "meta_description_meta": "The technologies that build, test and serve thomasdev.xyz, with the version and role of each one.",
   "skip_to_content": "Skip to content",
-  "theme_toggle": "Toggle light/dark theme",
+  "theme_toggle": "Theme",
   "language": "Language",
   "nav_about": "About",
   "nav_stack": "Stack",
