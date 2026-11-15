@@ -1,0 +1,3 @@
+mantenha na branch feat/conteudo-projetos-sobre.
+Eu quero que revise o menu precisa ser idêntico em todas as páginas e não se mexer enquanto eu navego. Entre a página about e a página blog o menu esta diferente.
+Se a altura da página não for suficiente(como na home /), o rodapé ainda deve aparecer alinhado a baixo da tela.
