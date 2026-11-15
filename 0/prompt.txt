@@ -1,0 +1,1 @@
+Eu quero que faça comite push nessa branch. E eu quero que você faça uma alteração pra tentar deixar todo o site com estética mais de terminal, como se as pequenas divisórias fossem janelas de terminal.
