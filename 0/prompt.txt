@@ -1,0 +1,14 @@
+Quero que você revise a estrutura do site e veja como seria possível economizar código e, ao mesmo tempo, tratar cada página que existe como um post do blog Astro, ou seja, tudo vira um post markdown com uma página Mestre que define estrutura do conteúdo com cabeçalho e rodapé.
+Analise e me dê suas considerações no menor número de palavras possíveis do que pode ser feito.
+
+---
+
+Sim, implementar
+
+---
+
+espera. estou confunso. volte para main. quero ver se está como em produção
+
+---
+
+sim, atualize. quero que delete feat/conteudo-projetos-sobre. E recrie feat/conteudo-projetos-sobre com as mesmas mudanças mas apartir da main.
