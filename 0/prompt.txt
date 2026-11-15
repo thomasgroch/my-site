@@ -1,0 +1,7 @@
+na home eu não quero o terminal.
+quero os terminais com fundo preto.
+Consegue fazer um outro estilo de terminal de alguma forma?
+
+---
+
+TUI (borda dupla)
