@@ -1,0 +1,11 @@
+Descreva o que mudou em poucas palavras
+
+---
+
+Investigue o tema que essa UI usa https://nullclaw.home.arpa/ quero combinar com o que uso no site.
+quero fazer o site ter um layout full wide, que funciona bem todos monitores.
+Me faça perguntas e me dê alternativas para definirmos um plano de execução.
+
+---
+
+Sim, executar no feat/conteudo-projetos-sobre
