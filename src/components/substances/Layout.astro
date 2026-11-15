@@ -89,6 +89,12 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
         try { localStorage.setItem('locale-chosen', '1') } catch (e) {}
       </script>
     )}
+    {alternates && (
+      <script is:inline define:vars={{ locale }}>
+        // Último idioma visitado: o menu do blog (só em inglês) segue ele.
+        try { localStorage.setItem('site-locale', locale) } catch (e) {}
+      </script>
+    )}
     <script defer src="https://cloud.umami.is/script.js" data-website-id="bbe5b2be-4c67-40af-830d-61783fd70cd3"></script>
   </head>
   <body>
@@ -112,6 +118,16 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
           menu.setAttribute('aria-expanded', String(open))
         }
       })
+
+      // Menu do blog no idioma do resto do site (ver TopMenu.astro).
+      try {
+        if (localStorage.getItem('site-locale') === 'en') {
+          document.querySelectorAll('.top [data-en-href]').forEach(function (link) {
+            link.href = link.dataset.enHref
+            if (link.dataset.enLabel) link.textContent = link.dataset.enLabel
+          })
+        }
+      } catch (e) {}
 
       // Seletor de tema da barra de status.
       var select = document.querySelector('[data-theme-select]')
@@ -187,6 +203,13 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
   .shell {
     --measure: 100%;
     inline-size: calc(100% - 2 * var(--gutter));
+    /* Página curta: o conteúdo cresce e o rodapé fica no fim da tela. */
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100dvh;
+    > main {
+      flex: 1;
+    }
   }
 
   /* Só aparece ao receber foco pelo teclado. */

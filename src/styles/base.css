@@ -2,6 +2,8 @@
    (Layout.astro põe `dark` no <html> antes da pintura). */
 html {
   color-scheme: light;
+  /* Mesmo espaço da barra de rolagem em toda página: nada pula ao navegar. */
+  scrollbar-gutter: stable;
 }
 html.dark {
   color-scheme: dark;

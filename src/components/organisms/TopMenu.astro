@@ -3,22 +3,31 @@ import { LOCALES, LOCALE_NAMES, LOCALE_TAGS, createTranslator, localePath } from
 import { THEMES } from '@/lib/themes.js'
 
 // Barra de status no topo, como a do nullclaw: estado, marca, navegação,
-// idioma e tema numa faixa só.
+// idioma e tema numa faixa só. É a mesma em todas as páginas.
+//
+// O blog é só em inglês e não tem versão por idioma (alternates=false), mas
+// o menu segue o idioma do resto do site: sai em português e cada item leva
+// a versão em inglês em data-en-*. Layout.astro troca para ela quando a
+// última página visitada fora do blog era em inglês.
 const { locale = 'pt', path = '/', alternates = true } = Astro.props
-const t = createTranslator(locale)
-const other = LOCALES.find((code) => code !== locale)
+const menuLocale = alternates ? locale : 'pt'
+const other = LOCALES.find((code) => code !== menuLocale)
+const t = createTranslator(menuLocale)
+const en = createTranslator('en')
 
-const items = [
-  { to: '/projetos', label: t('general.nav_projects') },
-  { to: '/stack', label: t('general.nav_stack') },
-  // O blog é só em inglês e não tem prefixo de idioma.
-  { to: '/blog', label: t('general.nav_blog'), href: '/blog' },
-  { to: '/sobre', label: t('general.nav_about') },
-  { to: '/contato', label: t('general.nav_contact') },
+const pages = [
+  { to: '/projetos', key: 'nav_projects' },
+  { to: '/stack', key: 'nav_stack' },
+  // O blog não tem prefixo de idioma.
+  { to: '/blog', key: 'nav_blog', fixed: true },
+  { to: '/sobre', key: 'nav_about' },
+  { to: '/contato', key: 'nav_contact' },
 ]
+const href = (code, page) => (page.fixed ? page.to : localePath(code, page.to))
+const langPath = alternates ? (path === '/404' ? '/' : path) : '/'
 ---
 <header class="top hud">
-  <a href={localePath(locale, '/')} class="brand">
+  <a href={localePath(menuLocale, '/')} data-en-href={alternates ? undefined : localePath('en', '/')} class="brand">
     <span class="dot" aria-hidden="true">●</span>
     <span>sys@thomas</span>
   </a>
@@ -31,22 +40,33 @@ const items = [
   </button>
 
   <nav id="main-nav" class="menu">
-    {items.map((item) => {
-      const active = path === item.to || path.startsWith(`${item.to}/`)
+    {pages.map((page) => {
+      const active = path === page.to || path.startsWith(`${page.to}/`)
       return (
-        <a href={item.href ?? localePath(locale, item.to)} aria-current={active ? 'page' : undefined}>
-          {item.label}
+        <a
+          href={href(menuLocale, page)}
+          data-en-href={alternates ? undefined : href('en', page)}
+          data-en-label={alternates ? undefined : en(`general.${page.key}`)}
+          aria-current={active ? 'page' : undefined}
+        >
+          {t(`general.${page.key}`)}
         </a>
       )
     })}
   </nav>
 
   <div class="tools">
-    {alternates && (
-      <a href={localePath(other, path === '/404' ? '/' : path)} hreflang={LOCALE_TAGS[other]} lang={LOCALE_TAGS[other]} title={LOCALE_NAMES[other]} class="lang">
-        {other.toUpperCase()}
-      </a>
-    )}
+    <a
+      href={localePath(other, langPath)}
+      data-en-href={alternates ? undefined : localePath('pt', '/')}
+      data-en-label={alternates ? undefined : 'PT'}
+      hreflang={LOCALE_TAGS[other]}
+      lang={LOCALE_TAGS[other]}
+      title={LOCALE_NAMES[other]}
+      class="lang"
+    >
+      {other.toUpperCase()}
+    </a>
     <label>
       <span class="visually-hidden">{t('general.theme_toggle')}</span>
       <select data-theme-select>
@@ -144,7 +164,13 @@ const items = [
       border-color: var(--color-accent);
     }
   }
+  /* Em telas largas: três colunas iguais nas pontas e o menu no centro. As
+     larguras não dependem do conteúdo da página, então a barra não se mexe. */
   @media (min-width: 52em) {
+    .top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+    }
     .burger {
       display: none;
     }
@@ -154,7 +180,9 @@ const items = [
       inline-size: auto;
       flex-direction: row;
       gap: var(--space-1);
-      margin-inline: auto;
+    }
+    .tools {
+      justify-self: end;
     }
   }
   @media (prefers-reduced-motion: reduce) {
