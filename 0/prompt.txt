@@ -1,0 +1,1 @@
+Consegue desligar o efeito de distorção SÓ no texto e só no texto pequeno. (Para facilitar a leitura)
