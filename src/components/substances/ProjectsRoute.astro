@@ -14,7 +14,7 @@ const projects = (await getCollection('projects')).sort(
 <Layout locale={locale} path="/projetos" title={t('general.nav_projects')} description={t('general.meta_description_projects')}>
   <h1 class="visually-hidden">{t('general.nav_projects')}</h1>
   <div class="grid projects">
-    {projects.map((project, index) => <ProjectCard item={project.data} locale={locale} eager={index < 2} />)}
+    {projects.map((project, index) => <ProjectCard item={project.data} id={project.id} locale={locale} eager={index < 2} />)}
   </div>
 </Layout>
 

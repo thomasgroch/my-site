@@ -1,0 +1,37 @@
+---
+company: Infrastructure as Code
+position:
+  pt: Desenvolvedor
+  en: Developer
+type: "3"
+startDate: "2026"
+website: https://github.com/thomasgroch/infrastructure-as-code
+summary:
+  pt: Servidor do gerenciador de senhas Passbolt configurado com Ansible, com atualização automática e reforço de segurança.
+  en: A server for the Passbolt password manager set up with Ansible, with automatic updates and security hardening.
+stack:
+  - Ansible
+  - Linux
+  - Passbolt
+  - Selenium
+order: 3
+---
+
+## O desafio
+
+Um gerenciador de senhas precisa de um servidor seguro, sempre atualizado e fácil de recriar. Configurar tudo à mão não se sustenta com o tempo.
+
+## O que foi feito
+
+- Deploy idempotente do Passbolt com Ansible
+- Atualizações automáticas via ansible-pull a cada 30 minutos
+- Reforço de segurança com UFW, Fail2ban e parâmetros de kernel
+- Testes de interface com Selenium e recuperação automática dos serviços
+
+## Meu papel
+
+Projeto pessoal open source. Cuidei da infraestrutura, da segurança e da automação.
+
+## Resultado
+
+Um servidor que se mantém atualizado e se recupera sozinho, com bem menos manutenção manual.

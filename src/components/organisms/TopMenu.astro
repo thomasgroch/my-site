@@ -6,12 +6,12 @@ const { locale = 'pt', path = '/' } = Astro.props
 const t = createTranslator(locale)
 
 const items = [
-  { to: '/', label: t('general.nav_about') },
-  { to: '/stack', label: t('general.nav_stack') },
   { to: '/projetos', label: t('general.nav_projects') },
-  { to: '/contato', label: t('general.nav_contact') },
+  { to: '/stack', label: t('general.nav_stack') },
   // O blog é só em inglês e não tem prefixo de idioma.
   { to: '/blog', label: t('general.nav_blog'), href: '/blog' },
+  { to: '/sobre', label: t('general.nav_about') },
+  { to: '/contato', label: t('general.nav_contact') },
 ]
 ---
 <header class="cluster top">

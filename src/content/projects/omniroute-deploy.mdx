@@ -1,0 +1,36 @@
+---
+company: OmniRoute (GitOps)
+position:
+  pt: Desenvolvedor
+  en: Developer
+type: "3"
+startDate: "2026"
+website: https://github.com/thomasgroch/omniroute-deploy
+summary:
+  pt: Deploy do OmniRoute num cluster k3s com Argo CD, com toda a infraestrutura declarada e versionada no repositório.
+  en: Deploy of OmniRoute to a k3s cluster with Argo CD, with all the infrastructure declared and versioned in the repository.
+stack:
+  - Kubernetes (k3s)
+  - Argo CD
+  - Docker
+  - Linux
+order: 2
+---
+
+## O desafio
+
+Subir e manter o OmniRoute dependia de passos manuais e de configurações que ficavam fora do repositório, o que torna difícil repetir o processo depois.
+
+## O que foi feito
+
+- Manifestos declarativos para rodar o OmniRoute no k3s
+- Sincronização e reconciliação contínuas com Argo CD
+- Estado do cluster versionado no Git
+
+## Meu papel
+
+Projeto pessoal open source. Escrevi a infraestrutura como código de ponta a ponta.
+
+## Resultado
+
+Um deploy que dá para reproduzir e auditar: o que muda no Git é aplicado no cluster.

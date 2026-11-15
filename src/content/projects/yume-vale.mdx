@@ -1,0 +1,39 @@
+---
+company: Yume Vale
+position:
+  pt: Desenvolvedor
+  en: Developer
+type: "3"
+startDate: "2026"
+website: https://github.com/thomasgroch/yume-vale
+summary:
+  pt: "Protótipo de aventura social multiplayer em 3D, feito em Rust com Bevy: um vale para explorar junto com outras pessoas, sem combate."
+  en: "A 3D social multiplayer adventure prototype built in Rust with Bevy: a valley to explore with other people, with no combat."
+stack:
+  - Rust
+  - Bevy
+  - WebAssembly
+  - Docker
+  - k3s
+  - Argo CD
+order: 0
+---
+
+## O desafio
+
+Criar um mundo 3D compartilhado em que a graça é explorar e encontrar outros jogadores, e não lutar. Isso exige que todo mundo veja o mesmo mundo ao mesmo tempo, tanto no navegador quanto no desktop.
+
+## O que foi feito
+
+- Protótipo em Rust com Bevy, rodando nativo e no navegador via WebAssembly
+- Multiplayer com servidor autoritativo e replicação de estado usando Lightyear
+- Física no servidor com Avian3D e Tnua
+- Build e deploy com Docker, GHCR, k3s e Argo CD
+
+## Meu papel
+
+Projeto pessoal open source. Cuidei de tudo, do gameplay ao pipeline de build e deploy.
+
+## Resultado
+
+Um protótipo jogável no navegador e no desktop, com deploy reproduzível e instruções de build no repositório.

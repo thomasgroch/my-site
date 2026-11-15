@@ -17,7 +17,7 @@
   "nav_blog": "Blog",
   "nav_open_menu": "Abrir menu",
   "role_profile": "Desenvolvedor web",
-  "profile_description": "Trabalho com desenvolvimento web no Brasil desde 1995 e, atualmente, atuo como desenvolvedor web autônomo. Já atuei também como gerente de projetos e analista de sistemas.\nForneço serviços com tecnologia de forma ágil e eficiente mas sempre com uma dose de bom humor a fim de tornar o processo agradável para ambos.\nNo meu tempo livre, além de codificar, pratico exercícios, jogo video-game, leio conteúdos técnicos e notícias e também, gosto muito de ouvir música.",
+  "profile_description": "Transformo problemas de negócio em software simples de manter. Trabalho de ponta a ponta, do código à infraestrutura, com foco em resultado prático e sem complicar o que pode ser simples.\nDesenvolvedor web autônomo em Curitiba.",
   "stack_intro": "As ferramentas com que trabalho, agrupadas por área. As que deixei de usar ficam em Histórico, no fim da página.",
   "stack_back": "Back-end",
   "stack_front": "Front-end",
@@ -36,10 +36,24 @@
     "type_0": "Acadêmico",
     "type_1": "Profissional",
     "type_2": "Freelancer",
-    "type_3": "Pessoal"
+    "type_3": "Pessoal",
+    "back": "← todos os projetos",
+    "stack": "Tecnologias",
+    "repo": "ver no GitHub ↗",
+    "site": "abrir o site ↗"
   },
   "nothing_here": "Não há nada aqui.",
   "goto_site": "ir para o site",
   "footer_build_with_node": "Compilado com node",
-  "footer_source": "código-fonte"
+  "footer_source": "código-fonte",
+  "meta_description_about": "Quem é Thomas Dev: desenvolvedor web autônomo em Curitiba, com experiência em software, infraestrutura e gestão de projetos.",
+  "about": {
+    "subtitle": "Desenvolvedor web autônomo · Curitiba",
+    "text": "Olá, aqui é o Thomas. Sou desenvolvedor web autônomo e moro em Curitiba. A curiosidade por tecnologia veio cedo: passei a infância desmontando computadores, montei meu primeiro PC antes dos 10 anos e, pouco depois, comecei a construir para a web. Nunca mais parei.\nJá passei por hardware, infraestrutura e software, e atuei como gerente de projetos e analista de sistemas em projetos em Santa Catarina, São Paulo, Rio de Janeiro e no exterior, para marcas como Sephora, Reserva e Hero99. É no software que me sinto em casa.\nSempre me interessei por open source. Gosto de aprender com outras pessoas e de ajudá-las a resolver problemas, com objetividade e uma dose de diversão. Acredito numa web livre, em que todos possam experimentar, aprender e criar, e numa tecnologia mais verde e sustentável. Para mim, um bom site carrega rápido e resolve o problema.\nNo tempo livre, jogo video game, assisto a filmes e séries, leio e ouço muita música. Se quiser conversar sobre Vue, Laravel, Linux ou qualquer assunto parecido, fique à vontade para entrar em contato.",
+    "timeline_title": "Histórico",
+    "timeline": "2000 | Primeiros passos no desenvolvimento web, na época do HTML puro e do CGI\n2002 | Primeira versão do site pessoal\n2009–2018 | Projetos como desenvolvedor, analista de sistemas e gerente de projetos de TI, em Santa Catarina, São Paulo, Rio de Janeiro e para outros países\n2019+ | Projetos pessoais open source com Rust, TypeScript, Ansible e GitOps\nHoje | Desenvolvedor web autônomo, em Curitiba",
+    "education_title": "Formação",
+    "education": "2011 | Graduação em Sistemas para Internet, Instituto Tecnológico SENAC RJ\n2008 | Técnico em Redes de Computadores, Instituto Tecnológico SENAC RJ\nIdiomas | Português nativo · inglês fluente",
+    "lets_talk": "Vamos conversar"
+  }
 }

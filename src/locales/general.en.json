@@ -17,7 +17,7 @@
   "nav_blog": "Blog",
   "nav_open_menu": "Open menu",
   "role_profile": "Web developer",
-  "profile_description": "I'm motivated and I'm always learning new technologies, updating myself through documentation and articles. I recognize the tradeoffs of client-side frameworks and analyze and test the code, always looking to improve them. I aspire to modern design but recognize that good design must also meet a real need.",
+  "profile_description": "I turn business problems into software that is simple to maintain. I work end to end, from code to infrastructure, focused on practical results and without complicating what can stay simple.\nIndependent web developer in Curitiba.",
   "stack_intro": "The tools I work with, grouped by area. The ones I no longer use are under Past stack, at the end of the page.",
   "stack_back": "Back-end",
   "stack_front": "Front-end",
@@ -36,10 +36,24 @@
     "type_0": "Academic",
     "type_1": "Professional",
     "type_2": "Freelancer",
-    "type_3": "Personal"
+    "type_3": "Personal",
+    "back": "← all projects",
+    "stack": "Technologies",
+    "repo": "view on GitHub ↗",
+    "site": "open the site ↗"
   },
   "nothing_here": "There is nothing here.",
   "goto_site": "go to site",
   "footer_build_with_node": "Built with node",
-  "footer_source": "source code"
+  "footer_source": "source code",
+  "meta_description_about": "Who Thomas Dev is: an independent web developer in Curitiba, with experience in software, infrastructure and project management.",
+  "about": {
+    "subtitle": "Independent web developer · Curitiba",
+    "text": "Hi, I'm Thomas. I'm an independent web developer based in Curitiba. My curiosity about technology started early: I spent my childhood taking computers apart, built my first PC before I was 10 and, not long after, started building for the web. I never stopped.\nI have worked across hardware, infrastructure and software, and as a project manager and systems analyst on projects in Santa Catarina, São Paulo, Rio de Janeiro and abroad, for brands such as Sephora, Reserva and Hero99. Software is where I feel at home.\nI have always been interested in open source. I like learning from other people and helping them solve problems, with objectivity and a bit of fun. I believe in a free web where everyone can experiment, learn and create, and in greener, more sustainable technology. To me, a good site loads fast and solves the problem.\nIn my free time I play video games, watch movies and series, read and listen to a lot of music. If you want to talk about Vue, Laravel, Linux or anything along those lines, feel free to get in touch.",
+    "timeline_title": "History",
+    "timeline": "2000 | First steps in web development, in the days of plain HTML and CGI\n2002 | First version of my personal site\n2009–2018 | Projects as a developer, systems analyst and IT project manager, in Santa Catarina, São Paulo, Rio de Janeiro and for other countries\n2019+ | Personal open source projects with Rust, TypeScript, Ansible and GitOps\nToday | Independent web developer, in Curitiba",
+    "education_title": "Education",
+    "education": "2011 | Degree in Internet Systems, SENAC RJ Institute of Technology\n2008 | Technical degree in Computer Networks, SENAC RJ Institute of Technology\nLanguages | Native Portuguese · fluent English",
+    "lets_talk": "Let's talk"
+  }
 }

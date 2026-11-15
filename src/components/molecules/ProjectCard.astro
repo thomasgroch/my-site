@@ -1,21 +1,21 @@
 ---
 import { Image } from 'astro:assets'
-import { createTranslator } from '@/i18n'
+import { createTranslator, localePath } from '@/i18n'
 
 // `item` é uma entrada validada da coleção `projects` (src/content.config.js).
-const { item, locale = 'pt', eager = false } = Astro.props
+const { item, id, locale = 'pt', eager = false } = Astro.props
 const t = createTranslator(locale)
-const site = item.website ?? null
 const type = t(`general.project.type_${item.type}`)
+const page = localePath(locale, `/projetos/${id}`)
 ---
 <article class="project">
   {item.image && (
-    <a href={site} target={site ? '_blank' : undefined} rel={site ? 'noopener noreferrer' : undefined} class="cover">
+    <a href={page} class="cover" tabindex="-1" aria-hidden="true">
       <Image src={item.image} alt="" width={384} densities={[1, 2]} loading={eager ? 'eager' : 'lazy'} />
     </a>
   )}
   <div class="body">
-    <h2>{site ? <a href={site} target="_blank" rel="noopener noreferrer">{item.company}</a> : item.company}</h2>
+    <h2><a href={page}>{item.company}</a></h2>
     <p class="muted position">{item.position[locale]}</p>
     <p>{item.summary[locale]}</p>
     <p class="cluster foot">

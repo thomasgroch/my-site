@@ -1,0 +1,54 @@
+---
+import Layout from '@/components/substances/Layout.astro'
+import SectionHeading from '@/components/molecules/SectionHeading.astro'
+import { createTranslator, localePath } from '@/i18n'
+
+// Página "Sobre": texto, histórico e formação. Só conteúdo, sem estilo próprio.
+const { locale } = Astro.props
+const t = createTranslator(locale)
+// Texto em seções: a primeira não tem título; cada linha "## Título" abre outra.
+const sections = t('general.about.text').split('\n').filter(Boolean).reduce((acc, line) => {
+  if (line.startsWith('## ')) acc.push({ title: line.slice(3), paragraphs: [] })
+  else acc.at(-1).paragraphs.push(line)
+  return acc
+}, [{ title: null, paragraphs: [] }])
+// "quando | o quê", uma linha por item.
+const rows = (key) => t(key).split('\n').filter(Boolean).map((line) => line.split(' | '))
+const timeline = rows('general.about.timeline')
+const education = rows('general.about.education')
+---
+<Layout locale={locale} path="/sobre" title={t('general.nav_about')} description={t('general.meta_description_about')}>
+  <article class="center stack">
+    <header class="stack">
+      <h1>{t('general.nav_about')}</h1>
+      <p class="muted">{t('general.about.subtitle')}</p>
+    </header>
+
+    {sections.map(({ title, paragraphs }) => (
+      <section class="stack">
+        {title && <SectionHeading title={title} />}
+        {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </section>
+    ))}
+
+    <section>
+      <SectionHeading title={t('general.about.timeline_title')} />
+      <dl>
+        {timeline.map(([when, what]) => (<><dt>{when}</dt><dd>{what}</dd></>))}
+      </dl>
+    </section>
+
+    <section>
+      <SectionHeading title={t('general.about.education_title')} />
+      <dl>
+        {education.map(([when, what]) => (<><dt>{when}</dt><dd>{what}</dd></>))}
+      </dl>
+    </section>
+
+    <nav class="cluster">
+      <a class="btn" href={localePath(locale, '/contato')}>{t('general.about.lets_talk')}</a>
+      <a class="btn" href={localePath(locale, '/projetos')}>{t('general.nav_projects')}</a>
+      <a class="btn" href={localePath(locale, '/stack')}>{t('general.nav_stack')}</a>
+    </nav>
+  </article>
+</Layout>

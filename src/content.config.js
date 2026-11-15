@@ -23,7 +23,10 @@ const translated = z.object({ pt: text, en: text })
 const order = z.preprocess(blank, z.number().int().default(0))
 
 const projects = defineCollection({
-  loader: glob({ pattern: '*.yaml', base: './src/content/projects' }),
+  // Cada projeto é um post: metadados no frontmatter e o estudo de caso, em
+  // português, no corpo MDX, mostrado em /projetos/<arquivo>. A lista de
+  // projetos é independente da do blog.
+  loader: glob({ pattern: '*.{md,mdx}', base: './src/content/projects' }),
   schema: ({ image }) =>
     z.object({
       company: text,
@@ -34,6 +37,7 @@ const projects = defineCollection({
       website: optional(url),
       image: z.preprocess(blank, image().optional()),
       summary: translated,
+      stack: z.preprocess(blank, z.array(text).optional()),
       // Desempate entre projetos do mesmo ano: menor aparece antes.
       order,
     }),

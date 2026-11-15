@@ -119,8 +119,8 @@ collections:
     label_singular: Projeto
     icon: work
     folder: src/content/projects
-    extension: yaml
-    format: yaml
+    extension: mdx
+    format: frontmatter
     identifier_field: company
     slug: '{{company}}'
     summary: '{{startDate}} · {{company}}'
@@ -157,7 +157,14 @@ collections:
         fields:
           - { name: pt, label: Português, widget: text }
           - { name: en, label: English, widget: text }
+      - { name: stack, label: Tecnologias, widget: list, required: false }
       - { name: order, label: Ordem, widget: number, value_type: int, default: 0, required: false, hint: 'Desempate entre projetos do mesmo ano: menor aparece antes.' }
+      # Só o modo raw: o rich text reescreveria o MDX.
+      - name: body
+        label: Estudo de caso
+        widget: richtext
+        modes: [raw]
+        hint: 'Em português, como um post: ## O desafio, ## O que foi feito, ## Meu papel, ## Resultado.'
 
   - name: stack
     label: Stack
@@ -241,10 +248,26 @@ collections:
               - { name: type_1, widget: string, i18n: true }
               - { name: type_2, widget: string, i18n: true }
               - { name: type_3, widget: string, i18n: true }
+              - { name: back, widget: string, i18n: true }
+              - { name: stack, widget: string, i18n: true }
+              - { name: repo, widget: string, i18n: true }
+              - { name: site, widget: string, i18n: true }
           - { name: nothing_here, widget: string, i18n: true }
           - { name: goto_site, widget: string, i18n: true }
           - { name: footer_build_with_node, widget: string, i18n: true }
           - { name: footer_source, widget: string, i18n: true }
+          - { name: meta_description_about, widget: text, i18n: true }
+          - name: about
+            widget: object
+            i18n: true
+            fields:
+              - { name: subtitle, widget: string, i18n: true }
+              - { name: text, widget: text, i18n: true, hint: 'Um parágrafo por linha. Uma linha começando com "## " vira o título de uma seção.' }
+              - { name: timeline_title, widget: string, i18n: true }
+              - { name: timeline, widget: text, i18n: true, hint: 'Uma linha por item: quando | o quê' }
+              - { name: education_title, widget: string, i18n: true }
+              - { name: education, widget: text, i18n: true, hint: 'Uma linha por item: quando | o quê' }
+              - { name: lets_talk, widget: string, i18n: true }
       - name: contact
         label: Formulário de contato
         file: src/locales/contact.{{locale}}.json

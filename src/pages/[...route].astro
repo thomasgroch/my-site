@@ -6,21 +6,28 @@ import StackRoute from '@/components/substances/StackRoute.astro'
 import ProjectsRoute from '@/components/substances/ProjectsRoute.astro'
 import ContactRoute from '@/components/substances/ContactRoute.astro'
 import MetaRoute from '@/components/substances/MetaRoute.astro'
+import AboutRoute from '@/components/substances/AboutRoute.astro'
+import ProjectRoute from '@/components/substances/ProjectRoute.astro'
+import { getCollection } from 'astro:content'
 import { LOCALES, DEFAULT_LOCALE } from '@/i18n'
 
-const ROUTES = { '': HomeRoute, stack: StackRoute, projetos: ProjectsRoute, contato: ContactRoute, meta: MetaRoute }
+const ROUTES = { '': HomeRoute, stack: StackRoute, projetos: ProjectsRoute, contato: ContactRoute, meta: MetaRoute, sobre: AboutRoute }
 
-export function getStaticPaths() {
-  const pages = ['', 'stack', 'projetos', 'contato', 'meta']
-  return LOCALES.flatMap((locale) =>
-    pages.map((page) => {
-      const route = [locale === DEFAULT_LOCALE ? '' : locale, page].filter(Boolean).join('/')
-      return { params: { route: route || undefined }, props: { locale, page } }
-    })
-  )
+export async function getStaticPaths() {
+  const pages = ['', 'stack', 'projetos', 'contato', 'meta', 'sobre']
+  // Cada projeto ganha a sua página: /projetos/<arquivo> e /en/projetos/<arquivo>.
+  const projects = await getCollection('projects')
+  const path = (locale, page) => [locale === DEFAULT_LOCALE ? '' : locale, page].filter(Boolean).join('/') || undefined
+  return LOCALES.flatMap((locale) => [
+    ...pages.map((page) => ({ params: { route: path(locale, page) }, props: { locale, page } })),
+    ...projects.map((project) => ({
+      params: { route: path(locale, `projetos/${project.id}`) },
+      props: { locale, page: 'project', project },
+    })),
+  ])
 }
 
-const { locale, page } = Astro.props
-const Route = ROUTES[page]
+const { locale, page, project } = Astro.props
+const Route = page === 'project' ? ProjectRoute : ROUTES[page]
 ---
-<Route locale={locale} />
+<Route locale={locale} project={project} />

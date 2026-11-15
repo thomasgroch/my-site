@@ -1,0 +1,38 @@
+---
+import Layout from '@/components/substances/Layout.astro'
+import SectionHeading from '@/components/molecules/SectionHeading.astro'
+import { render } from 'astro:content'
+import { LOCALE_TAGS, createTranslator, localePath } from '@/i18n'
+
+// Página de um projeto, lida como um post: o cabeçalho vem do frontmatter e o
+// estudo de caso, sempre em português, do corpo MDX. Só conteúdo; o corpo usa
+// os estilos de leitura dos posts (.post-content).
+const { locale, project } = Astro.props
+const t = createTranslator(locale)
+const { company, position, type, startDate, website, summary, stack } = project.data
+const { Content } = await render(project)
+const repo = website?.startsWith('https://github.com/')
+---
+<Layout locale={locale} path={`/projetos/${project.id}`} title={company} description={summary[locale]} ogType="article">
+  <article class="center stack">
+    <p><a href={localePath(locale, '/projetos')}>{t('general.project.back')}</a></p>
+    <header class="stack">
+      <h1>{company}</h1>
+      <p class="muted">{position[locale]} · {t(`general.project.type_${type}`)} · <time datetime={startDate}>{startDate}</time></p>
+      <p>{summary[locale]}</p>
+    </header>
+
+    {project.body?.trim() && <div class="post-content" lang={LOCALE_TAGS.pt}><Content /></div>}
+
+    {stack && (
+      <section>
+        <SectionHeading title={t('general.project.stack')} />
+        <ul class="cluster">{stack.map((name) => <li class="chip">{name}</li>)}</ul>
+      </section>
+    )}
+
+    {website && (
+      <p><a class="btn" href={website} target="_blank" rel="noopener noreferrer">{t(repo ? 'general.project.repo' : 'general.project.site')}</a></p>
+    )}
+  </article>
+</Layout>
