@@ -1,0 +1,189 @@
+---
+// Moldura de leitura comum a toda página de conteúdo (posts do blog,
+// projetos, Sobre): coluna de 70ch, cabeçalho e corpo com os estilos de
+// leitura. Slots: "meta" (no cabeçalho, abaixo da descrição), "before"
+// (entre o cabeçalho e o corpo) e "after" (depois do corpo).
+const { title, description, back, lang } = Astro.props
+---
+<article class="post">
+  <header class="stack">
+    {back && <p class="back"><a href={back.href}>{back.label}</a></p>}
+    <h1>{title}</h1>
+    {description && <p>{description}</p>}
+    <slot name="meta" />
+  </header>
+  <slot name="before" />
+  <div class="post-content" lang={lang}><slot /></div>
+  <slot name="after" />
+</article>
+
+<style>
+  /* Leitura: 18→20px conforme a tela, numa coluna de 70ch. A página é mais
+     larga que a coluna (Layout: 76rem): o post é uma grade de três faixas, e
+     cada filho fica na do meio; o que precisa de espaço (código, tabelas,
+     diagramas, <Wide>) ocupa as três e cresce só até onde precisa. As demos
+     SemIf ficam na coluna: o canvas mede a largura da caixa, e uma caixa que
+     mede o conteúdo entraria em círculo. */
+  .post {
+    --measure: 70ch;
+    display: grid;
+    grid-template-columns: [full-start] minmax(0, 1fr) [content-start] min(100%, var(--measure)) [content-end] minmax(0, 1fr) [full-end];
+    padding-block: clamp(2rem, 5vw, 5rem);
+    font-size: clamp(1.125rem, 1rem + 0.2vw, 1.25rem);
+    > :global(*) {
+      grid-column: content;
+    }
+    header {
+      --gap: var(--space-3);
+    }
+  }
+
+  .back {
+    font-size: var(--text-base);
+  }
+
+  .post :global(.tags) {
+    --gap: var(--space-2);
+    font-size: var(--text-base);
+    list-style: none;
+    padding: 0;
+  }
+
+  .post-content {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: full;
+    margin-block-start: var(--space-6);
+  }
+</style>
+
+<style is:global>
+  /* O corpo do post vem do MDX, sem escopo: tudo aqui é por elemento. */
+  @scope (.post-content) {
+    :scope { line-height: 1.75; }
+    p { font-weight: 400; line-height: inherit; }
+    :scope > * { grid-column: content; }
+    :scope > * + * { margin-top: 1.25em; }
+    /* Largos: as três faixas, centrados, nunca mais estreitos que a coluna. */
+    :scope > :is(.wide, .code-block, table, pre.mermaid, .embed) {
+      grid-column: full;
+      justify-self: center;
+      inline-size: fit-content;
+      /* O ch acompanha a fonte: quem é menor que o texto compensa com --shrink. */
+      min-inline-size: min(100%, calc(var(--measure) / var(--shrink, 1)));
+      max-inline-size: 100%;
+    }
+    :is(h2, h3, h4) { line-height: 1.25; font-weight: 600; text-wrap: balance; scroll-margin-top: 1.5rem; }
+    h2 { margin-top: 2.25em; font-size: 1.5em; }
+    h3 { margin-top: 1.75em; font-size: 1.25em; }
+    h4 { margin-top: 1.5em; font-size: 1em; }
+    :is(h2, h3, h4) + * { margin-top: 0.75em; }
+    a { text-decoration-thickness: 0.08em; text-underline-offset: 0.2em; }
+
+    ul { list-style: disc; padding-left: 1.5em; }
+    ol { list-style: decimal; padding-left: 1.5em; }
+    li + li, li > ul { margin-top: 0.35em; }
+    li::marker { color: var(--color-accent); }
+    .contains-task-list { list-style: none; padding-left: 0.25em; }
+    .task-list-item input { margin: 0 0.5em 0.2em 0; border-radius: 0.2em; accent-color: var(--color-accent); }
+
+    blockquote { border-left: 3px solid var(--color-accent); border-radius: 0 0.5rem 0.5rem 0; background: color-mix(in srgb, var(--color-accent) 7%, transparent); padding: 0.75em 1.25em; }
+    blockquote > * + * { margin-top: 0.75em; }
+    cite { font-size: 0.9em; font-style: normal; color: var(--color-text-muted); }
+
+    hr { margin-block: 2.5em; border-color: var(--color-line); }
+    img, iframe { border-radius: 0.5rem; }
+    figcaption { margin-top: 0.6em; text-align: center; font-size: 0.85em; color: var(--color-text-muted); }
+    .embed { inline-size: 100%; }
+    .embed iframe { display: block; width: 100%; border: 1px solid var(--color-line); background: white; }
+
+    .wide { inline-size: 100%; }
+    .wide img { width: 100%; }
+
+    table { --shrink: 0.9; border-collapse: collapse; font-size: 0.9em; font-variant-numeric: tabular-nums; }
+    th, td { border-bottom: 1px solid var(--color-line); padding: 0.5em 0.75em; }
+    th { font-weight: 600; border-bottom-width: 2px; }
+
+    :not(pre) > code { border-radius: 0.25rem; background: color-mix(in srgb, var(--color-text) 8%, transparent); padding: 0.1em 0.35em; font-size: 0.85em; }
+    kbd { border: 1px solid var(--color-line); border-bottom-width: 2px; border-radius: 0.25rem; padding: 0.05em 0.4em; font-family: var(--font-mono); font-size: 0.8em; }
+    mark { border-radius: 0.2em; background: color-mix(in srgb, var(--color-accent) 30%, transparent); padding: 0 0.15em; color: inherit; }
+    abbr[title] { text-decoration: underline dotted; cursor: help; }
+    :is(sub, sup) { line-height: 0; }
+
+    details { border: 1px solid var(--color-line); border-radius: 0.5rem; padding: 0.75em 1em; }
+    summary { cursor: pointer; font-weight: 600; }
+    details[open] summary { margin-bottom: 0.75em; }
+
+    .footnotes { margin-top: 3em; border-top: 1px solid var(--color-line); padding-top: 1em; font-size: 0.85em; }
+    .footnotes h2 { margin-top: 0; font-size: 1em; }
+    .footnotes li + li { margin-top: 0.5em; }
+    [data-footnote-ref] { text-decoration: none; font-weight: 600; }
+
+    /* Diagramas mermaid: sem moldura de código; o fonte só aparece sem JS. */
+    pre.mermaid { --shrink: 0.8; overflow-x: auto; padding: 0; background: none; font-size: 0.8em; line-height: 1.5; white-space: pre-wrap; }
+    /* Mesma fonte e tamanho com que o mermaid mediu os rótulos. */
+    pre.mermaid[data-rendered] { text-align: center; font-family: var(--font-sans); font-size: 16px; white-space: normal; }
+    /* O mermaid mede os rótulos fora do post, onde <p> tem peso 300. */
+    pre.mermaid p { font-weight: 300; }
+    pre.mermaid svg { max-width: 100%; height: auto; }
+
+    /* Blocos de código: cabeçalho gerado em src/lib/shiki.js. */
+    .code-block { overflow: hidden; border: 1px solid var(--color-line); border-radius: 0.75rem; }
+    .code-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--color-line); padding: 0.35em 0.5em 0.35em 1em; font-family: var(--font-mono); font-size: 0.75em; color: var(--color-text-muted); }
+    .code-lang { text-transform: lowercase; }
+    .code-title { color: inherit; font-weight: 600; }
+    .code-copy { border-radius: 0.25rem; padding: 0.2em 0.6em; background: none; cursor: pointer; }
+    .code-copy:hover { background: color-mix(in srgb, var(--color-text) 8%, transparent); }
+    pre { overflow-x: auto; padding: 1em 0; font-size: 0.85em; line-height: 1.6; }
+    pre code { display: block; min-width: max-content; }
+    pre .line { display: inline-block; width: 100%; padding-inline: 1.25em; }
+    pre .line.highlighted { background: color-mix(in srgb, var(--color-accent) 12%, transparent); box-shadow: inset 3px 0 var(--color-accent); }
+    pre .line.diff.add { background: color-mix(in srgb, var(--color-ok) 14%, transparent); }
+    pre .line.diff.remove { background: color-mix(in srgb, var(--color-error) 14%, transparent); opacity: 0.8; }
+    pre .line.diff.add::before { content: '+'; margin-left: -1em; position: absolute; color: var(--color-ok); }
+    pre .line.diff.remove::before { content: '−'; margin-left: -1em; position: absolute; color: var(--color-error); }
+
+    /* Código com dois temas do Shiki (astro.config.mjs, defaultColor: false):
+       segue o color-scheme do site, não a preferência do sistema. */
+    .astro-code, .astro-code span {
+      color: light-dark(var(--shiki-light), var(--shiki-dark));
+      background-color: light-dark(var(--shiki-light-bg), var(--shiki-dark-bg));
+    }
+  }
+</style>
+
+<script>
+  // Botão "Copy" dos blocos de código (src/lib/shiki.js).
+  document.addEventListener('click', async (event) => {
+    const button = event.target.closest('.code-copy')
+    if (!button) return
+    const code = button.closest('.code-block').querySelector('pre').innerText
+    await navigator.clipboard.writeText(code)
+    button.textContent = 'Copied'
+    setTimeout(() => { button.textContent = 'Copy' }, 1500)
+  })
+
+  // Diagramas ```mermaid (src/lib/shiki.js). A biblioteca é grande, então só
+  // é baixada nas páginas que têm um diagrama, e ele é redesenhado quando o
+  // tema do site muda.
+  const diagrams = [...document.querySelectorAll('pre[data-mermaid]')]
+  if (diagrams.length) {
+    const { default: mermaid } = await import('mermaid')
+    const draw = async () => {
+      const dark = document.documentElement.classList.contains('dark')
+      mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'neutral', fontFamily: getComputedStyle(document.body).fontFamily, flowchart: { useMaxWidth: true, wrappingWidth: 320 } })
+      for (const [index, pre] of diagrams.entries()) {
+        try {
+          const { svg } = await mermaid.render(`mermaid-${index}-${dark ? 'd' : 'l'}`, pre.dataset.mermaid)
+          pre.innerHTML = svg
+          pre.dataset.rendered = ''
+        } catch (error) {
+          console.error('Mermaid:', error)
+        }
+      }
+    }
+    await draw()
+    new MutationObserver(draw).observe(document.documentElement, { attributeFilter: ['class'] })
+  }
+</script>
+
