@@ -11,6 +11,8 @@ const { title, description, id } = Astro.props
     color: var(--color-text-muted);
   }
   .description {
+    /* Em telas largas a linha de apoio não passa de ~70 caracteres. */
+    max-inline-size: 70ch;
     margin-block-end: var(--space-4);
     color: var(--color-text-muted);
   }

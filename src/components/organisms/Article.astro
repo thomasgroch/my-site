@@ -19,7 +19,7 @@ const { title, description, back, lang } = Astro.props
 
 <style>
   /* Leitura: 18→20px conforme a tela, numa coluna de 70ch. A página é mais
-     larga que a coluna (Layout: 76rem): o post é uma grade de três faixas, e
+     larga que a coluna (Layout: tela toda): o post é uma grade de três faixas, e
      cada filho fica na do meio; o que precisa de espaço (código, tabelas,
      diagramas, <Wide>) ocupa as três e cresce só até onde precisa. As demos
      SemIf ficam na coluna: o canvas mede a largura da caixa, e uma caixa que
@@ -122,7 +122,7 @@ const { title, description, back, lang } = Astro.props
     /* Diagramas mermaid: sem moldura de código; o fonte só aparece sem JS. */
     pre.mermaid { --shrink: 0.8; overflow-x: auto; padding: 0; background: none; font-size: 0.8em; line-height: 1.5; white-space: pre-wrap; }
     /* Mesma fonte e tamanho com que o mermaid mediu os rótulos. */
-    pre.mermaid[data-rendered] { text-align: center; font-family: var(--font-sans); font-size: 16px; white-space: normal; }
+    pre.mermaid[data-rendered] { text-align: center; font-family: var(--font-mono); font-size: 16px; white-space: normal; }
     /* O mermaid mede os rótulos fora do post, onde <p> tem peso 300. */
     pre.mermaid p { font-weight: 300; }
     pre.mermaid svg { max-width: 100%; height: auto; }

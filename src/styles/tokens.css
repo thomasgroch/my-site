@@ -1,24 +1,28 @@
 /* Decisões visuais do site, em um lugar só (docs/convencoes.md). Semânticos:
    o nome diz o papel, não a cor. O tema vem de `color-scheme` (base.css):
    light-dark() escolhe o valor, sem `html.dark .x`. */
+/* Paleta do tema do nullclaw: o escuro é o "matrix" e o claro, o "light". */
 :root {
-  --color-bg: light-dark(#f3f4f6, #262626);
-  --color-surface: light-dark(#fff, #171717);
-  --color-text: light-dark(#262626, #e5e5e5);
-  --color-text-muted: light-dark(#737373, #a3a3a3);
-  --color-accent: light-dark(#4ade80, #4ade80);
-  --color-accent-strong: light-dark(#22c55e, #4ade80);
-  --color-accent-soft: light-dark(#dcfce7, #404040);
-  --color-line: light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.15));
-  --color-ok: light-dark(#15803d, #4ade80);
-  --color-error: light-dark(#dc2626, #f87171);
-  --color-info: light-dark(#0284c7, #38bdf8);
-  --color-warning: light-dark(#854d0e, #fef9c3);
-  --color-warning-soft: light-dark(#fef9c3, #713f12);
-  /* O botão de tema mostra o tema para onde vai: lua azul no claro, sol amarelo no escuro. */
-  --color-toggle: light-dark(#1e3a8a, #eab308);
-  --color-toggle-bg: light-dark(#bfdbfe, #fef9c3);
-  --color-toggle-shadow: light-dark(#93c5fd, #fde047);
+  --color-bg: light-dark(#e4e2de, #030a05);
+  --color-surface: light-dark(#f2f1ee, #04140a);
+  --color-text: light-dark(#2b2b2b, #00ff41);
+  --color-text-muted: light-dark(#5c5c5c, #00aa2a);
+  --color-accent: light-dark(#00702a, #00ff41);
+  --color-accent-strong: light-dark(#004b1c, #00ff41);
+  --color-accent-soft: light-dark(#cfe0d3, #08301a);
+  --color-line: light-dark(rgb(0 0 0 / 0.15), rgb(0 255 65 / 0.3));
+  --color-glow: light-dark(rgb(0 112 42 / 0.2), rgb(0 255 65 / 0.5));
+  --color-ok: light-dark(#00702a, #00ff41);
+  --color-error: light-dark(#a40e26, #ff2a2a);
+  --color-info: light-dark(#0b5cad, #3fd0ff);
+  --color-warning: light-dark(#9a6700, #ffaa00);
+  --color-warning-soft: light-dark(#f3e3bd, #2e1f00);
+  /* Brilho do texto: só no escuro. */
+  --text-glow: light-dark(none, 0 0 5px rgb(0 255 65 / 0.4));
+  /* Botão de tema: mesma paleta, sem cor própria. */
+  --color-toggle: var(--color-accent);
+  --color-toggle-bg: var(--color-surface);
+  --color-toggle-shadow: var(--color-glow);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -40,8 +44,13 @@
   --text-2xl: 2.25rem;
   --text-3xl: 3rem;
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* O site inteiro é monoespaçado, como o terminal. --font-sans fica como
+     apelido para quem já usa o nome. */
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, Consolas, monospace;
+  --font-sans: var(--font-mono);
+
+  /* Respiro lateral da página: cresce com a tela, de 1rem a 4rem. */
+  --gutter: clamp(1rem, 4vw, 4rem);
 
   /* Largura de leitura: ~70 caracteres por linha. */
   --measure: 70ch;

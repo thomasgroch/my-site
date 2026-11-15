@@ -1,4 +1,5 @@
 ---
+import '@fontsource-variable/jetbrains-mono'
 import '@/styles/index.css'
 import TopMenu from '@/components/organisms/TopMenu.astro'
 import Footer from '@/components/organisms/Footer.astro'
@@ -130,10 +131,11 @@ const canonical = alternates ? absolute(locale) : new URL(path, Astro.site).href
 </html>
 
 <style>
-  /* A página inteira: 76rem com 1,5rem de respiro de cada lado. */
+  /* A página ocupa a tela toda, com respiro lateral que cresce com ela
+     (--gutter). Textos longos limitam a própria coluna (Article, .center). */
   .shell {
-    --measure: 76rem;
-    inline-size: min(100% - 3rem, var(--measure));
+    --measure: 100%;
+    inline-size: calc(100% - 2 * var(--gutter));
   }
 
   /* Só aparece ao receber foco pelo teclado. */

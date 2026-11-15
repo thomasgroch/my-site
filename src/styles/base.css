@@ -35,6 +35,7 @@ a {
   line-height: 1.2;
   letter-spacing: 0.025em;
   text-wrap: balance;
+  text-shadow: var(--text-glow);
 }
 h1 {
   font-size: var(--text-3xl);
