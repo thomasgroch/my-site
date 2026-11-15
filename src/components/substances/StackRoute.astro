@@ -30,14 +30,14 @@ const note = t('general.stack_note')
   {intro && <p class="intro center muted">{intro}</p>}
 
   {sections.map((section) => (
-    <section class="group">
+    <section class="group window" data-title={`~/stack/${section.key}`}>
       <SectionHeading title={section.title} description={section.description} />
       <StackList stack={group(section.key)} />
     </section>
   ))}
   {note && <p class="muted">{note}</p>}
 
-  <section class="group history">
+  <section class="group window" data-title="~/stack/history">
     <SectionHeading title={t('general.stack_history')} description={t('general.stack_history_description')} />
     <StackList stack={group('history')} muted />
   </section>
@@ -50,11 +50,7 @@ const note = t('general.stack_note')
     text-align: center;
   }
   .group {
-    padding-block: var(--space-5);
-  }
-  .history {
-    margin-block-start: var(--space-6);
-    border-block-start: 1px dashed var(--color-line);
-    padding-block: var(--space-6);
+    margin-block-end: var(--space-6);
+    padding: var(--space-5);
   }
 </style>

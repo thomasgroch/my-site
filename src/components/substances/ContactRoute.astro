@@ -27,7 +27,8 @@ const optional = `(${t('contact.optional')})`
       hx-swap="innerHTML"
       hx-disable="find button"
       hx-indicator="#contact-form"
-      class="form stack hud"
+      class="form stack window"
+      data-title="~/contato/mensagem.sh"
     >
       <input type="hidden" name="locale" value={locale} />
       <div hidden aria-hidden="true">

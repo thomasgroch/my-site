@@ -18,7 +18,7 @@ const { posts, drafts = false } = Astro.props
     <ol class="stack list">
       {posts.map((post) => (
         <li>
-          <article class="stack">
+          <article class="stack window" data-title={`~/blog/${post.id}`}>
             <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
             <PostMeta post={post} />
             <p>{post.data.description}</p>

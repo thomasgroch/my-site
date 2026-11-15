@@ -8,7 +8,7 @@ const t = createTranslator(locale)
 const type = t(`general.project.type_${item.type}`)
 const page = localePath(locale, `/projetos/${id}`)
 ---
-<article class="project hud">
+<article class="project window" data-title={`~/projetos/${id}`}>
   {item.image && (
     <a href={page} class="cover" tabindex="-1" aria-hidden="true">
       <Image src={item.image} alt="" width={384} densities={[1, 2]} loading={eager ? 'eager' : 'lazy'} />
@@ -29,11 +29,7 @@ const page = localePath(locale, `/projetos/${id}`)
   .project {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
-    background: var(--color-surface);
-    box-shadow: 0 0 24px color-mix(in srgb, var(--color-glow) 25%, transparent);
+    padding: 0;
   }
   .cover {
     display: block;

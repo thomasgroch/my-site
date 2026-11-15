@@ -11,7 +11,7 @@ const { data: basics } = await getEntry('resume', 'basics')
 const bio = t('general.profile_description').split('\n').map((s) => s.trim()).filter(Boolean)
 ---
 <Layout locale={locale} path="/" title={t('general.nav_about')} description={t('general.meta_description_home')}>
-  <section class="hero">
+  <section class="hero window" data-title="~/thomas">
     <Monogram />
     <h1>{basics.name}</h1>
     <p class="muted">
@@ -37,7 +37,8 @@ const bio = t('general.profile_description').split('\n').map((s) => s.trim()).fi
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-block: 2.5rem;
+    margin-block: var(--space-6);
+    padding: 2.5rem var(--space-4);
     text-align: center;
     color: var(--color-accent);
     h1 {
@@ -59,7 +60,7 @@ const bio = t('general.profile_description').split('\n').map((s) => s.trim()).fi
   }
   @media (min-width: 48em) {
     .hero {
-      padding-block: 5rem;
+      padding-block: 4rem;
     }
   }
 </style>

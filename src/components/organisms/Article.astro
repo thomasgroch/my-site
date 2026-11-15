@@ -4,9 +4,10 @@
 // leitura. Slots: "meta" (no cabeçalho, abaixo da descrição), "before"
 // (entre o cabeçalho e o corpo) e "after" (depois do corpo).
 const { title, description, back, lang } = Astro.props
+const path = `~${Astro.url.pathname.replace(/\/$/, '') || '/'}`
 ---
 <article class="post">
-  <header class="stack hud">
+  <header class="stack window" data-title={path}>
     {back && <p class="back"><a href={back.href}>{back.label}</a></p>}
     <h1>{title}</h1>
     {description && <p>{description}</p>}
@@ -35,10 +36,7 @@ const { title, description, back, lang } = Astro.props
     }
     header {
       --gap: var(--space-3);
-      border: 1px solid var(--color-line);
       padding: var(--space-5);
-      background: var(--color-surface);
-      box-shadow: 0 0 24px color-mix(in srgb, var(--color-glow) 25%, transparent);
     }
   }
 

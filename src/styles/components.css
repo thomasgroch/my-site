@@ -259,3 +259,41 @@ html.dark body::after {
     display: none;
   }
 }
+
+/* Janela de terminal: toda divisória do site. A barra de título é a borda
+   de cima, larga, com os três botões e o caminho em data-title. Usar a borda
+   (e não padding) deixa o espaçamento interno a cargo de cada componente. */
+.window {
+  --bar: 1.75rem;
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-block-start: var(--bar) solid color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+  padding: var(--space-4);
+  background: var(--color-surface);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--color-glow) 25%, transparent);
+  &::before {
+    content: attr(data-title);
+    position: absolute;
+    inset-block-start: calc(-1 * var(--bar));
+    inset-inline: 0;
+    block-size: var(--bar);
+    overflow: hidden;
+    padding-inline: 3.75rem var(--space-3);
+    border-block-end: 1px solid var(--color-line);
+    background:
+      radial-gradient(circle at 0.9rem 50%, var(--color-error) 0.3rem, transparent 0.33rem),
+      radial-gradient(circle at 1.75rem 50%, var(--color-warning) 0.3rem, transparent 0.33rem),
+      radial-gradient(circle at 2.6rem 50%, var(--color-ok) 0.3rem, transparent 0.33rem);
+    font-size: 0.75rem;
+    line-height: var(--bar);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--color-text-muted);
+    text-shadow: none;
+  }
+  &:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    border-block-start-color: color-mix(in srgb, var(--color-accent) 20%, var(--color-surface));
+  }
+}
